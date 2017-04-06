@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <TextView
+            tools:text="food"
             android:id="@+id/name"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/padding_small"
@@ -18,6 +20,7 @@
 
     <TextView
             android:id="@+id/price"
+            tools:text="50"
             android:textColor="@android:color/white"
             android:padding="@dimen/padding"
             android:background="@color/red"

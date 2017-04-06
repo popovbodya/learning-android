@@ -2,11 +2,12 @@ package ru.popovbodya.moneytracker;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private static class Item {
         private final String name;
@@ -25,7 +26,7 @@ public class MainActivity extends Activity {
         final EditText name = (EditText) findViewById(R.id.name_id);
         final EditText price = (EditText) findViewById(R.id.price_id);
         final Button addButton = (Button) findViewById(R.id.add_button_id);
-        final ListView items = (ListView) findViewById(R.id.list);
+        final ListView items = (ListView) findViewById(R.id.items);
         final ItemsAdapter adapter = new ItemsAdapter();
         items.setAdapter(adapter);
         addButton.setOnClickListener(new View.OnClickListener() {

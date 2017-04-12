@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/android_dev_color"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
@@ -28,18 +29,19 @@
 
     <LinearLayout
 
-        android:weightSum="5"
+        android:layout_marginLeft="@dimen/game_dimen"
+        android:layout_marginRight="@dimen/game_dimen"
+        android:weightSum="4"
         android:layout_marginTop="40dp"
         android:layout_below="@id/attempt_counter"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:textSize="@dimen/game_text_size"
+
             android:text="@string/your_number"
-            android:layout_weight="2.2"
+            android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
@@ -48,10 +50,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="@dimen/game_text_size"
-            android:paddingRight="@dimen/game_text_size"
             android:textSize="@dimen/game_text_size"
-            tools:text="9" />
+            tools:text="10" />
 
         <Button
 

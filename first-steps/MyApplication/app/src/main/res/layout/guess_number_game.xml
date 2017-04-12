@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/task_desc"
+        android:text="@string/task_desc"
+        android:textSize="@dimen/game_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+    <TextView
+        android:id="@+id/attempt_counter"
+        android:text="@string/attempt_counter"
+        android:textSize="@dimen/game_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task_desc"
+        android:layout_alignLeft="@+id/task_desc"
+        android:layout_alignStart="@+id/task_desc"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+
+        android:weightSum="5"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/attempt_counter"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="@dimen/game_text_size"
+            android:text="@string/your_number"
+            android:layout_weight="2.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/game_text_size"
+            android:paddingRight="@dimen/game_text_size"
+            android:textSize="@dimen/game_text_size"
+            tools:text="9" />
+
+        <Button
+
+            android:id="@+id/try_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/try_button_name" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:weightSum="3"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/back_toMain_button"
+            android:text="@string/go_back"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/start_new_game_button"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/reveal_answer_button"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</RelativeLayout>

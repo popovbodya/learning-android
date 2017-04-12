@@ -1,6 +1,7 @@
 package ru.popovbodya.myapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +11,6 @@ import android.widget.TextView;
 public class MyActivity extends Activity {
 
     private TextView textView;
-    private Button button;
-    private ImageButton kittyButton;
 
 
     @Override
@@ -20,7 +19,7 @@ public class MyActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         textView = (TextView) findViewById(R.id.textView);
-        button = (Button) findViewById(R.id.button);
+        Button button = (Button) findViewById(R.id.button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,11 +28,11 @@ public class MyActivity extends Activity {
             }
         });
 
-        kittyButton = (ImageButton) findViewById(R.id.imageButton);
+        ImageButton kittyButton = (ImageButton) findViewById(R.id.imageButton);
         kittyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setVisible(v);
+                goToGuessNumberGame();
             }
         });
     }
@@ -42,7 +41,12 @@ public class MyActivity extends Activity {
         textView.setText(R.string.new_hello);
     }
 
-    private void setVisible(View view) {
+    private void goToGuessNumberGame() {
+        Intent intent = new Intent(MyActivity.this, GuessNumberGameActivity.class);
+        startActivity(intent);
+    }
+
+    private void setVisible() {
         if (textView.getVisibility() == View.VISIBLE) {
             textView.setVisibility(View.INVISIBLE);
         } else {

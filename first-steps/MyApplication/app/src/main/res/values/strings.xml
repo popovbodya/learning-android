@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">My Super App</string>
+    <string name="hot_welcome">hot welcome form Russia!</string>
+    <string name="buttonName">Click On Me!</string>
+    <string name="new_hello">New Hello</string>
+    <string name="click">Click</string>
 </resources>

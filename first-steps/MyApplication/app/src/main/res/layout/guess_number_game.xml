@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/android_dev_color"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
@@ -63,23 +64,6 @@
 
     </LinearLayout>
 
-
-    <ListView
-        android:id="@+id/attempts"
-        android:layout_marginLeft="@dimen/game_dimen"
-        android:layout_marginStart="@dimen/game_dimen"
-        android:layout_marginRight="@dimen/game_dimen"
-        android:layout_marginEnd="@dimen/game_dimen"
-        android:layout_below="@id/linear_guess_number_layout"
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="@dimen/padding_small"
-        tools:listitem="@layout/attempts_list"
-        android:padding="@dimen/padding_small"
-        android:divider="@android:color/transparent" />
-
-
     <LinearLayout
         android:id="@+id/command_buttons"
         android:weightSum="3"
@@ -104,5 +88,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/attempts"
+        android:layout_marginLeft="@dimen/game_dimen"
+        android:layout_marginStart="@dimen/game_dimen"
+        android:layout_marginRight="@dimen/game_dimen"
+        android:layout_marginEnd="@dimen/game_dimen"
+        android:layout_above="@id/command_buttons"
+        android:layout_below="@id/linear_guess_number_layout"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="@dimen/padding_small"
+        tools:listitem="@layout/attempts_list"
+        android:padding="@dimen/padding_small"
+        android:divider="@android:color/transparent" />
+
+
 
 </RelativeLayout>

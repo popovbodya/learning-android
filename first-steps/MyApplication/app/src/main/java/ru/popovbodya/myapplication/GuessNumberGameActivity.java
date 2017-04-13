@@ -1,10 +1,7 @@
 package ru.popovbodya.myapplication;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -25,6 +22,8 @@ public class GuessNumberGameActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.guess_number_game);
+
+        Attempt.counter = 0;
 
         Button goBackButton = (Button) findViewById(R.id.back_toMain_button);
         goBackButton.setOnClickListener(new View.OnClickListener() {
@@ -72,12 +71,14 @@ public class GuessNumberGameActivity extends Activity {
 
     private static class Attempt {
         private static final String TEMPLATE = "Попытка # ";
-        private int attempt_number = 0;
+        private static int counter = 0;
         private int number;
+        private int attempt_number;
 
         public Attempt(int number) {
-            this.attempt_number++;
+            counter++;
             this.number = number;
+            this.attempt_number = counter;
         }
     }
 

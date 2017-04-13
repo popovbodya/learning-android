@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/android_dev_color"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
@@ -28,7 +27,7 @@
         android:layout_marginTop="20dp" />
 
     <LinearLayout
-
+        android:id="@+id/linear_guess_number_layout"
         android:layout_marginLeft="@dimen/game_dimen"
         android:layout_marginRight="@dimen/game_dimen"
         android:weightSum="4"
@@ -39,33 +38,50 @@
 
         <TextView
             android:textSize="@dimen/game_text_size"
-
+            android:paddingTop="@dimen/game_dimen"
             android:text="@string/your_number"
             android:layout_weight="2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
         <EditText
             android:id="@+id/editText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:textSize="@dimen/game_text_size"
-            tools:text="10" />
+            tools:text="10"
+            android:inputType="number" />
 
         <Button
 
             android:id="@+id/try_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/try_button_name" />
 
     </LinearLayout>
 
 
+    <ListView
+        android:id="@+id/attempts"
+        android:layout_marginLeft="@dimen/game_dimen"
+        android:layout_marginStart="@dimen/game_dimen"
+        android:layout_marginRight="@dimen/game_dimen"
+        android:layout_marginEnd="@dimen/game_dimen"
+        android:layout_below="@id/linear_guess_number_layout"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="@dimen/padding_small"
+        tools:listitem="@layout/attempts_list"
+        android:padding="@dimen/padding_small"
+        android:divider="@android:color/transparent" />
+
 
     <LinearLayout
+        android:id="@+id/command_buttons"
         android:weightSum="3"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"

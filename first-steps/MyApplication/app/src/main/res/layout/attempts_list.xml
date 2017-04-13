@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/attempt_counter_value"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/proposed_number_text_block"
+        android:layout_alignBottom="@+id/proposed_number_text_block"
+        android:layout_alignTop="@+id/proposed_number_text_block"
+        android:background="@color/yellow"
+        android:textColor="@android:color/white"
+        android:layout_alignParentStart="true"
+
+        tools:text="Попытка #1" />
+
+    <TextView
+        android:id="@+id/proposed_number_text_block"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:background="@color/red"
+        android:padding="@dimen/game_text_size"
+        tools:text="50" />
+
+
+</RelativeLayout>

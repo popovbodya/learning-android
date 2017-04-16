@@ -3,6 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="batOn">#2fff00</color>
-    <color name="batOff">#7d7d7d</color>
+    <color name="battery_green">#2fff00</color>
+    <color name="battery_grey">#808080</color>
 </resources>

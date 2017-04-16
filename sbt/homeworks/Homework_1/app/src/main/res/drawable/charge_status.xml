@@ -5,7 +5,7 @@
     <solid
         android:useLevel="true"
         android:type="linear"
-        android:color="@color/batOn" />
+        android:color="@color/battery_green" />
 
     <corners android:radius="6dp" />
 

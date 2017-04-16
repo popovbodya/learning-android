@@ -14,7 +14,8 @@
 
 
    <item android:drawable="@drawable/flash"
-       android:bottom="10dp" android:top="10dp" android:left="60dp" android:right="60dp" />
+       android:bottom="@dimen/lightning_vertical_dimen" android:top="@dimen/lightning_vertical_dimen"
+       android:left="@dimen/lightning_horizontal_dimen" android:right="@dimen/lightning_horizontal_dimen" />
 
 
 </layer-list>

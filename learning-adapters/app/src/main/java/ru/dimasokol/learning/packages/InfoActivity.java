@@ -56,21 +56,16 @@ public class InfoActivity extends Activity {
             finish();
             return;
         }
-        getActionBar().setTitle(info.applicationInfo != null?
-                getPackageManager().getApplicationLabel(info.applicationInfo)
-                :
-                packageName
+        getActionBar().setTitle(info.applicationInfo != null ?
+                getPackageManager().getApplicationLabel(info.applicationInfo) : packageName
         );
 
-        List<ActivityInfo> activities = (info.activities != null)?
-                Arrays.asList(info.activities)
-                :
-                Collections.<ActivityInfo>emptyList();
+        List<ActivityInfo> activities = (info.activities != null) ?
+                Arrays.asList(info.activities) : Collections.<ActivityInfo>emptyList();
 
-        List<String> permissions = (info.requestedPermissions != null)?
-                Arrays.asList(info.requestedPermissions)
-                :
-                Collections.<String>emptyList();
+
+        List<String> permissions = (info.requestedPermissions != null) ?
+                Arrays.asList(info.requestedPermissions) : Collections.<String>emptyList();
 
         mAdapter = new PackageInfoAdapter(activities, permissions);
         mInfoListView.setAdapter(mAdapter);

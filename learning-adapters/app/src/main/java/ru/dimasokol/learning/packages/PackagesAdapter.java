@@ -5,7 +5,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.nfc.Tag;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +19,11 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Дмитрий Соколов <DPSokolov.SBT@sberbank.ru>
- */
-
 public class PackagesAdapter extends BaseAdapter {
 
+    private static final String TAG = "PackagesAdapter";
     private List<PackageInfo> mPackages;
+    int count = 0;
 
     public PackagesAdapter(List<PackageInfo> packages) {
         this.mPackages = Collections.unmodifiableList(packages);
@@ -50,10 +50,11 @@ public class PackagesAdapter extends BaseAdapter {
         View view = convertView;
 
         if (view == null) {
+
+            Log.i(TAG, "index " + ++count);
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             view = inflater.inflate(R.layout.package_list_item, parent, false);
             ViewHolder holder = new ViewHolder();
-
             holder.mIcon = (ImageView) view.findViewById(R.id.package_icon);
             holder.mTitle = (TextView) view.findViewById(R.id.package_title);
             holder.mSubtitle = (TextView) view.findViewById(R.id.package_subtitle);
@@ -89,6 +90,8 @@ public class PackagesAdapter extends BaseAdapter {
 
     private static class InfoLoader extends AsyncTask<Void, Void, InfoLoader.InfoBundle> {
 
+        private static String TAG = "InfoLoader";
+
         private ApplicationInfo mPackage;
         private WeakReference<ImageView> mImageTarget;
         private WeakReference<TextView> mTextTarget;
@@ -119,6 +122,9 @@ public class PackagesAdapter extends BaseAdapter {
 
             if (bundle == null || imageView == null || textView == null ||
                     !mPackage.packageName.equals(imageView.getTag().toString())) {
+                if (bundle == null) {
+                    Log.i(TAG, "bundle is null");
+                }
                 return;
             }
 
@@ -126,7 +132,7 @@ public class PackagesAdapter extends BaseAdapter {
             textView.setText(bundle.mTitle);
         }
 
-        public static class InfoBundle {
+        static class InfoBundle {
             Drawable mIcon;
             CharSequence mTitle;
         }

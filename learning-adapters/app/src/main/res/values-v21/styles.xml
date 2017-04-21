@@ -1,0 +1,26 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ListTitle" parent="android:TextAppearance.Material.Title">
+    </style>
+
+    <style name="ListSubtitle" parent="android:TextAppearance.Material.Small">
+    </style>
+
+    <style name="ListHeaderAppearance" parent="android:TextAppearance.Material.Widget">
+
+    </style>
+
+    <style name="ListHeader">
+        <item name="android:background">@color/list_header_background</item>
+        <item name="android:textAppearance">@style/ListHeaderAppearance</item>
+        <item name="android:padding">@dimen/list_header_padding</item>
+    </style>
+
+</resources>

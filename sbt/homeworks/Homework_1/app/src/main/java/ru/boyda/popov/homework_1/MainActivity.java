@@ -1,5 +1,7 @@
 package ru.boyda.popov.homework_1;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.animation.DecelerateInterpolator;
 public class MainActivity extends AppCompatActivity {
 
     private View battery;
+    private boolean isCharging = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAnimator.setDuration(2000);
         mAnimator.setInterpolator(new DecelerateInterpolator(2));
+
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -31,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         mAnimator.start();
     }
+
 
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="icon_margin">8dp</dimen>
+    <dimen name="list_header_padding">12dp</dimen>
+
+</resources>

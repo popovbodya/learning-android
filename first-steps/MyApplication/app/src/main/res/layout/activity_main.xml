@@ -40,7 +40,7 @@
         android:id="@+id/imageButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        app:srcCompat="@drawable/pinkhellokitty"
+        android:src="@drawable/pinkhellokitty"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />

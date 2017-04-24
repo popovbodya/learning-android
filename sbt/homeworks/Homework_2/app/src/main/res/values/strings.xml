@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Homework_2</string>
+    <string name="tool_welcome">Tools Library</string>
+    <string name="choose_shape">Choose shape</string>
+    <string name="save_tool">save tool</string>
+    <string name="free_mode">free mode</string>
+    <string name="tools">tools</string>
+    <string name="clear">clear</string>
+</resources>

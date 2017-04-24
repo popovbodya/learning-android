@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ru.boyda.popov.homework_2.ToolsActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:text="@string/choose_shape"
+        android:textAppearance="@style/Title" />
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp">
+
+        <ImageButton
+            android:id="@+id/rectangle"
+            android:layout_margin="@dimen/drawable_dimen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/rectangle" />
+
+        <ImageButton
+            android:id="@+id/square"
+            android:layout_margin="@dimen/drawable_dimen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/square" />
+
+        <ImageButton
+            android:id="@+id/circle"
+            android:layout_margin="@dimen/drawable_dimen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/circle" />
+
+        <ImageButton
+            android:id="@+id/line"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/straight_line" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/final_result"
+        android:layout_margin="40dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/rectangle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <Button
+        android:id="@+id/save_tool"
+        android:text="@string/save_tool"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+</LinearLayout>

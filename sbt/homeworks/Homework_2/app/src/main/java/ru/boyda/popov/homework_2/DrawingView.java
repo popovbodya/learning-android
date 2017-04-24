@@ -24,11 +24,6 @@ public class DrawingView extends View {
 
     public static final float TOUCH_TOLERANCE = 4;
 
-    public static final int CURVE_LINE = 1;
-    public static final int LINE = 2;
-    public static final int RECTANGLE = 3;
-    public static final int SQUARE = 4;
-    public static final int CIRCLE = 5;
 
     protected Bitmap mBitmap;
     protected Canvas mCanvas;
@@ -118,19 +113,19 @@ public class DrawingView extends View {
         mx = event.getX();
         my = event.getY();
         switch (shapeID) {
-            case RECTANGLE:
+            case ToolsBundle.RECTANGLE:
                 onTouchEventRectangle(event);
                 break;
-            case SQUARE:
+            case ToolsBundle.SQUARE:
                 onTouchEventSquare(event);
                 break;
-            case CIRCLE:
+            case ToolsBundle.CIRCLE:
                 onTouchEventCircle(event);
                 break;
-            case LINE:
+            case ToolsBundle.LINE:
                 onTouchEventLine(event);
                 break;
-            case CURVE_LINE:
+            case ToolsBundle.CURVE_LINE:
                 onTouchEventSmoothLine(event);
                 break;
         }
@@ -148,16 +143,16 @@ public class DrawingView extends View {
 
         if (isDrawing) {
             switch (shapeID) {
-                case LINE:
+                case ToolsBundle.LINE:
                     onDrawLine(canvas);
                     break;
-                case RECTANGLE:
+                case ToolsBundle.RECTANGLE:
                     onDrawRectangle(canvas);
                     break;
-                case SQUARE:
+                case ToolsBundle.SQUARE:
                     onDrawRectangle(canvas);
                     break;
-                case CIRCLE:
+                case ToolsBundle.CIRCLE:
                     onDrawCircle(canvas);
                     break;
 

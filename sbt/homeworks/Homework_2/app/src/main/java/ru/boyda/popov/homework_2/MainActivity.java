@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
             return;
         }
         drawingView.setShapeID(data.getIntExtra("Shape", ToolsBundle.RECTANGLE));
+        drawingView.setColorID(data.getIntExtra("Color", 0));
 
     }
 }

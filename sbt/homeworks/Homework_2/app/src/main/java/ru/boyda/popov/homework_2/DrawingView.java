@@ -20,8 +20,8 @@ import android.view.View;
 public class DrawingView extends View {
 
     private int shapeID;
+    private int colorID;
 
-    public static final float TOUCH_STROKE_WIDTH = 5;
     public static final float TOUCH_TOLERANCE = 4;
 
     public static final int CURVE_LINE = 1;
@@ -42,16 +42,20 @@ public class DrawingView extends View {
     protected float mStartX;
     protected float mStartY;
 
-    private Paint[] mPredefinedPaints;
+    private Paint mainPaint;
     private Paint mEditModePaint = new Paint();
-    private int mNextPaint = 0;
     private SparseArray<PointF> mLastPoints = new SparseArray<>(10);
     private SparseArray<Paint> mPaints = new SparseArray<>(10);
 
 
+    public void setColorID(int colorID) {
+        Log.i("SetColor", "colorID = " + colorID);
+        this.colorID = colorID;
+        mainPaint.setColor(this.colorID);
+    }
+
     public void setShapeID(int shapeID) {
         this.shapeID = shapeID;
-        mNextPaint++;
     }
 
     @Override
@@ -74,22 +78,17 @@ public class DrawingView extends View {
     protected void init() {
 
         shapeID = ToolsBundle.CURVE_LINE;
+        colorID = getResources().getColor(R.color.green);
 
         if (getRootView().isInEditMode()) {
             mEditModePaint.setColor(Color.TRANSPARENT);
         } else {
-            TypedArray ta = getResources().obtainTypedArray(R.array.paint_colors);
-            mPredefinedPaints = new Paint[ta.length()];
-
-            for (int i = 0; i < ta.length(); i++) {
-                Paint paint = new Paint();
-                paint.setAntiAlias(true);
-                paint.setColor(ta.getColor(i, 0));
-                paint.setStrokeCap(Paint.Cap.ROUND);
-                paint.setStrokeJoin(Paint.Join.ROUND);
-                paint.setStrokeWidth(getResources().getDimension(R.dimen.default_paint_width));
-                mPredefinedPaints[i] = paint;
-            }
+            mainPaint = new Paint();
+            mainPaint.setAntiAlias(true);
+            mainPaint.setColor(colorID);
+            mainPaint.setStrokeCap(Paint.Cap.ROUND);
+            mainPaint.setStrokeJoin(Paint.Join.ROUND);
+            mainPaint.setStrokeWidth(getResources().getDimension(R.dimen.default_paint_width));
         }
     }
 
@@ -142,7 +141,7 @@ public class DrawingView extends View {
     protected void onDraw(Canvas canvas) {
 
         if (isInEditMode()) {
-            canvas.drawRect(0, 0, getRight(), getBottom(), mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
+            canvas.drawRect(0, 0, getRight(), getBottom(), mainPaint);
         }
 
         canvas.drawBitmap(mBitmap, 0, 0, null);
@@ -174,8 +173,7 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_POINTER_DOWN:
                 int pointerId = event.getPointerId(event.getActionIndex());
                 mLastPoints.put(pointerId, new PointF(event.getX(event.getActionIndex()), event.getY(event.getActionIndex())));
-                mPaints.put(pointerId, mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
-                mNextPaint++;
+                mPaints.put(pointerId, mainPaint);
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -210,7 +208,6 @@ public class DrawingView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mNextPaint++;
                 isDrawing = true;
                 mStartX = mx;
                 mStartY = my;
@@ -222,7 +219,7 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_UP:
                 Log.i("ACTION_UP", "action up");
                 isDrawing = false;
-                drawRectangle(mCanvas, mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
+                drawRectangle(mCanvas, mainPaint);
                 invalidate();
                 break;
         }
@@ -232,7 +229,6 @@ public class DrawingView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mNextPaint++;
                 isDrawing = true;
                 mStartX = mx;
                 mStartY = my;
@@ -246,7 +242,7 @@ public class DrawingView extends View {
 
                 isDrawing = false;
                 adjustSquare(mx, my);
-                drawRectangle(mCanvas, mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
+                drawRectangle(mCanvas, mainPaint);
                 invalidate();
                 break;
         }
@@ -263,7 +259,7 @@ public class DrawingView extends View {
     }
 
     private void onDrawRectangle(Canvas canvas) {
-        drawRectangle(canvas, mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
+        drawRectangle(canvas, mainPaint);
     }
 
     private void drawRectangle(Canvas canvas, Paint paint) {
@@ -275,13 +271,12 @@ public class DrawingView extends View {
     }
 
     private void onDrawCircle(Canvas canvas) {
-        canvas.drawCircle(mStartX, mStartY, calculateRadius(mStartX, mStartY, mx, my), mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
+        canvas.drawCircle(mStartX, mStartY, calculateRadius(mStartX, mStartY, mx, my), mainPaint);
     }
 
     private void onTouchEventCircle(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mNextPaint++;
                 isDrawing = true;
                 mStartX = mx;
                 mStartY = my;
@@ -293,7 +288,7 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_UP:
                 isDrawing = false;
                 mCanvas.drawCircle(mStartX, mStartY,
-                        calculateRadius(mStartX, mStartY, mx, my), mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
+                        calculateRadius(mStartX, mStartY, mx, my), mainPaint);
                 invalidate();
                 break;
         }
@@ -313,7 +308,7 @@ public class DrawingView extends View {
         float dx = Math.abs(mx - mStartX);
         float dy = Math.abs(my - mStartY);
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            canvas.drawLine(mStartX, mStartY, mx, my, mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
+            canvas.drawLine(mStartX, mStartY, mx, my, mainPaint);
         }
     }
 
@@ -322,7 +317,6 @@ public class DrawingView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 isDrawing = true;
-                mNextPaint++;
                 mStartX = mx;
                 mStartY = my;
                 invalidate();
@@ -332,7 +326,7 @@ public class DrawingView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 isDrawing = false;
-                mCanvas.drawLine(mStartX, mStartY, mx, my, mPredefinedPaints[mNextPaint % mPredefinedPaints.length]);
+                mCanvas.drawLine(mStartX, mStartY, mx, my, mainPaint);
                 invalidate();
                 break;
         }

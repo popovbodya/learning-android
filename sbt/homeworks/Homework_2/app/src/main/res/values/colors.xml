@@ -4,6 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="red">#f44336</color>
+    <color name="green">#4caf50</color>
+    <color name="blue">#3f51b5</color>
+    <color name="yellow">#ffc107</color>
+    <color name="grey">#607d8b</color>
+
     <array name="paint_colors">
         <item>#f44336</item>
         <item>#4caf50</item>

@@ -16,60 +16,108 @@
         android:textAppearance="@style/Title" />
 
     <LinearLayout
-        android:layout_weight="1"
+
         android:layout_width="wrap_content"
-        android:layout_height="0dp">
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/rectangle"
-            android:layout_margin="@dimen/drawable_dimen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/drawable_dimen"
             android:background="@android:color/transparent"
             android:src="@drawable/rectangle" />
 
         <ImageButton
             android:id="@+id/square"
-            android:layout_margin="@dimen/drawable_dimen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/drawable_dimen"
             android:background="@android:color/transparent"
             android:src="@drawable/square" />
 
         <ImageButton
             android:id="@+id/circle"
-            android:layout_margin="@dimen/drawable_dimen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/drawable_dimen"
             android:background="@android:color/transparent"
             android:src="@drawable/circle" />
 
         <ImageButton
             android:id="@+id/line"
-            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
             android:src="@drawable/straight_line" />
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:text="@string/choose_color"
+        android:textAppearance="@style/Title" />
+
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/red_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/red" />
+
+        <RadioButton
+            android:id="@+id/green_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/green" />
+
+        <RadioButton
+            android:id="@+id/blue_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/blue" />
+
+        <RadioButton
+            android:id="@+id/yellow_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/yellow" />
+
+        <RadioButton
+            android:id="@+id/grey_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/grey" />
+    </RadioGroup>
+
     <ImageView
         android:id="@+id/final_result"
-        android:layout_margin="40dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/rectangle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="40dp"
+        android:src="@drawable/rectangle" />
 
 
     <Button
         android:id="@+id/save_tool"
-        android:text="@string/save_tool"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        />
+        android:text="@string/save_tool" />
 
 
 </LinearLayout>

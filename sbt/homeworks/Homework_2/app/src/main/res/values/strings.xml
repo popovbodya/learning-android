@@ -12,4 +12,5 @@
     <string name="blue">Blue</string>
     <string name="yellow">Yellow</string>
     <string name="grey">Grey</string>
+    <string name="my_transient">Transient</string>
 </resources>

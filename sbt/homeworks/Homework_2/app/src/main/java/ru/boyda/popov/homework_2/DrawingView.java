@@ -1,7 +1,6 @@
 package ru.boyda.popov.homework_2;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -22,20 +21,15 @@ public class DrawingView extends View {
     private int shapeID;
     private int colorID;
 
-    public static final float TOUCH_TOLERANCE = 4;
-
-
     protected Bitmap mBitmap;
     protected Canvas mCanvas;
 
     protected boolean isDrawing = false;
 
-
-    protected float mx;
-    protected float my;
-
-    protected float mStartX;
-    protected float mStartY;
+    protected float startX;
+    protected float startY;
+    protected float currentX;
+    protected float currentY;
 
     private Paint mainPaint;
     private Paint mEditModePaint = new Paint();
@@ -46,46 +40,18 @@ public class DrawingView extends View {
     public void setColorID(int colorID) {
         Log.i("SetColor", "colorID = " + colorID);
         this.colorID = colorID;
-        mainPaint.setColor(this.colorID);
+        if (colorID == 0) {
+            mainPaint.setStyle(Paint.Style.STROKE);
+        } else {
+            mainPaint.setColor(this.colorID);
+            mainPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        }
     }
 
     public void setShapeID(int shapeID) {
         this.shapeID = shapeID;
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        if (w > 0 && h > 0) {
-            Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-
-            if (mBitmap != null) {
-                canvas.drawBitmap(mBitmap, 0, 0, null);
-                mBitmap.recycle();
-            }
-
-            mBitmap = bitmap;
-            mCanvas = canvas;
-        }
-    }
-
-    protected void init() {
-
-        shapeID = ToolsBundle.CURVE_LINE;
-        colorID = getResources().getColor(R.color.green);
-
-        if (getRootView().isInEditMode()) {
-            mEditModePaint.setColor(Color.TRANSPARENT);
-        } else {
-            mainPaint = new Paint();
-            mainPaint.setAntiAlias(true);
-            mainPaint.setColor(colorID);
-            mainPaint.setStrokeCap(Paint.Cap.ROUND);
-            mainPaint.setStrokeJoin(Paint.Join.ROUND);
-            mainPaint.setStrokeWidth(getResources().getDimension(R.dimen.default_paint_width));
-        }
-    }
 
     public DrawingView(Context context) {
         super(context);
@@ -108,10 +74,15 @@ public class DrawingView extends View {
         init();
     }
 
+    public void clear() {
+        mCanvas.drawColor(Color.WHITE);
+        invalidate();
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mx = event.getX();
-        my = event.getY();
+        currentX = event.getX();
+        currentY = event.getY();
         switch (shapeID) {
             case ToolsBundle.RECTANGLE:
                 onTouchEventRectangle(event);
@@ -126,10 +97,47 @@ public class DrawingView extends View {
                 onTouchEventLine(event);
                 break;
             case ToolsBundle.CURVE_LINE:
-                onTouchEventSmoothLine(event);
+                onTouchEventCurveLine(event);
                 break;
         }
         return true;
+    }
+
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (w > 0 && h > 0) {
+            Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+
+            if (mBitmap != null) {
+                canvas.drawBitmap(mBitmap, 0, 0, null);
+                mBitmap.recycle();
+            }
+
+            mBitmap = bitmap;
+            mCanvas = canvas;
+        }
+    }
+
+
+    protected void init() {
+
+        shapeID = ToolsBundle.CURVE_LINE;
+        colorID = getResources().getColor(R.color.green);
+
+        if (getRootView().isInEditMode()) {
+            mEditModePaint.setColor(Color.TRANSPARENT);
+        } else {
+            mainPaint = new Paint(Paint.DITHER_FLAG);
+            mainPaint.setAntiAlias(true);
+            mainPaint.setDither(true);
+            mainPaint.setColor(colorID);
+            mainPaint.setStrokeCap(Paint.Cap.ROUND);
+            mainPaint.setStrokeJoin(Paint.Join.ROUND);
+            mainPaint.setStrokeWidth(getResources().getDimension(R.dimen.default_paint_width));
+        }
     }
 
     @Override
@@ -138,7 +146,6 @@ public class DrawingView extends View {
         if (isInEditMode()) {
             canvas.drawRect(0, 0, getRight(), getBottom(), mainPaint);
         }
-
         canvas.drawBitmap(mBitmap, 0, 0, null);
 
         if (isDrawing) {
@@ -147,22 +154,22 @@ public class DrawingView extends View {
                     onDrawLine(canvas);
                     break;
                 case ToolsBundle.RECTANGLE:
-                    onDrawRectangle(canvas);
+                    drawRect(canvas, mainPaint);
                     break;
                 case ToolsBundle.SQUARE:
-                    onDrawRectangle(canvas);
+                    drawRect(canvas, mainPaint);
                     break;
                 case ToolsBundle.CIRCLE:
-                    onDrawCircle(canvas);
+                    drawCircle(canvas);
                     break;
+                default:
+                    canvas.drawBitmap(mBitmap, 0, 0, null);
 
             }
         }
-
-
     }
 
-    private void onTouchEventSmoothLine(MotionEvent event) {
+    private void onTouchEventCurveLine(MotionEvent event) {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -203,10 +210,7 @@ public class DrawingView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                isDrawing = true;
-                mStartX = mx;
-                mStartY = my;
-                invalidate();
+                defaultConfig();
                 break;
             case MotionEvent.ACTION_MOVE:
                 invalidate();
@@ -214,7 +218,41 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_UP:
                 Log.i("ACTION_UP", "action up");
                 isDrawing = false;
-                drawRectangle(mCanvas, mainPaint);
+                drawRect(mCanvas, mainPaint);
+                invalidate();
+                break;
+        }
+    }
+
+
+    private void onTouchEventCircle(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                defaultConfig();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                isDrawing = false;
+                mCanvas.drawCircle(startX, startY, calculateRadius(startX, startY, currentX, currentY), mainPaint);
+                invalidate();
+                break;
+        }
+    }
+
+    private void onTouchEventLine(MotionEvent event) {
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                defaultConfig();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                isDrawing = false;
+                mCanvas.drawLine(startX, startY, currentX, currentY, mainPaint);
                 invalidate();
                 break;
         }
@@ -224,112 +262,61 @@ public class DrawingView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                isDrawing = true;
-                mStartX = mx;
-                mStartY = my;
-                invalidate();
+                defaultConfig();
                 break;
             case MotionEvent.ACTION_MOVE:
-                adjustSquare(mx, my);
+                findSquare(currentX, currentY);
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
 
                 isDrawing = false;
-                adjustSquare(mx, my);
-                drawRectangle(mCanvas, mainPaint);
+                findSquare(currentX, currentY);
+                drawRect(mCanvas, mainPaint);
                 invalidate();
                 break;
         }
     }
 
-    protected void adjustSquare(float x, float y) {
-        float deltaX = Math.abs(mStartX - x);
-        float deltaY = Math.abs(mStartY - y);
 
-        float max = Math.max(deltaX, deltaY);
-
-        mx = mStartX - x < 0 ? mStartX + max : mStartX - max;
-        my = mStartY - y < 0 ? mStartY + max : mStartY - max;
-    }
-
-    private void onDrawRectangle(Canvas canvas) {
-        drawRectangle(canvas, mainPaint);
-    }
-
-    private void drawRectangle(Canvas canvas, Paint paint) {
-        float right = mStartX > mx ? mStartX : mx;
-        float left = mStartX > mx ? mx : mStartX;
-        float bottom = mStartY > my ? mStartY : my;
-        float top = mStartY > my ? my : mStartY;
+    private void drawRect(Canvas canvas, Paint paint) {
+        float right = startX > currentX ? startX : currentX;
+        float left = startX > currentX ? currentX : startX;
+        float bottom = startY > currentY ? startY : currentY;
+        float top = startY > currentY ? currentY : startY;
         canvas.drawRect(left, top, right, bottom, paint);
     }
 
-    private void onDrawCircle(Canvas canvas) {
-        canvas.drawCircle(mStartX, mStartY, calculateRadius(mStartX, mStartY, mx, my), mainPaint);
+
+    private void drawCircle(Canvas canvas) {
+        canvas.drawCircle(startX, startY, calculateRadius(startX, startY, currentX, currentY), mainPaint);
     }
 
-    private void onTouchEventCircle(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                isDrawing = true;
-                mStartX = mx;
-                mStartY = my;
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                isDrawing = false;
-                mCanvas.drawCircle(mStartX, mStartY,
-                        calculateRadius(mStartX, mStartY, mx, my), mainPaint);
-                invalidate();
-                break;
-        }
+
+    private void onDrawLine(Canvas canvas) {
+        canvas.drawLine(startX, startY, currentX, currentY, mainPaint);
     }
 
 
     protected float calculateRadius(float x1, float y1, float x2, float y2) {
-
-        return (float) Math.sqrt(
-                Math.pow(x1 - x2, 2) +
-                        Math.pow(y1 - y2, 2)
-        );
+        return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 
-    private void onDrawLine(Canvas canvas) {
-
-        float dx = Math.abs(mx - mStartX);
-        float dy = Math.abs(my - mStartY);
-        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            canvas.drawLine(mStartX, mStartY, mx, my, mainPaint);
-        }
+    protected void findSquare(float x, float y) {
+        float deltaX = Math.abs(startX - x);
+        float deltaY = Math.abs(startY - y);
+        float max = Math.max(deltaX, deltaY);
+        currentX = startX - x < 0 ? startX + max : startX - max;
+        currentY = startY - y < 0 ? startY + max : startY - max;
     }
 
-    private void onTouchEventLine(MotionEvent event) {
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                isDrawing = true;
-                mStartX = mx;
-                mStartY = my;
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                isDrawing = false;
-                mCanvas.drawLine(mStartX, mStartY, mx, my, mainPaint);
-                invalidate();
-                break;
-        }
-    }
-
-    public void clear() {
-        mCanvas.drawColor(Color.WHITE);
+    private void defaultConfig() {
+        isDrawing = true;
+        startX = currentX;
+        startY = currentY;
         invalidate();
     }
+
+
 
 }

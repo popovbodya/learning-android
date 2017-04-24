@@ -10,12 +10,5 @@
     <color name="yellow">#ffc107</color>
     <color name="grey">#607d8b</color>
 
-    <array name="paint_colors">
-        <item>#f44336</item>
-        <item>#4caf50</item>
-        <item>#3f51b5</item>
-        <item>#ffc107</item>
-        <item>#607d8b</item>
-    </array>
 
 </resources>

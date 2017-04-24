@@ -19,8 +19,7 @@ public class ToolsActivity extends Activity {
 
 
     private int shapeId = 0;
-    private int colorId = 0;
-    TypedArray typedArray;
+    private int colorId = -1;
 
     ImageView finalResult;
     ImageButton rectangle;
@@ -33,8 +32,6 @@ public class ToolsActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tools);
-
-        typedArray = getResources().obtainTypedArray(R.array.paint_colors);
 
         rectangle = (ImageButton) findViewById(R.id.rectangle);
         square = (ImageButton) findViewById(R.id.square);
@@ -84,7 +81,7 @@ public class ToolsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                if (shapeId != 0 && colorId != 0) {
+                if (shapeId != 0 && colorId != -1) {
                     intent.putExtra("Shape", shapeId);
                     intent.putExtra("Color", colorId);
                     setResult(RESULT_OK, intent);
@@ -121,6 +118,9 @@ public class ToolsActivity extends Activity {
                 if (checked)
                     colorId = getResources().getColor(R.color.grey);
                 break;
+            case R.id.transient_radio:
+                if (checked)
+                    colorId = 0;
         }
     }
 

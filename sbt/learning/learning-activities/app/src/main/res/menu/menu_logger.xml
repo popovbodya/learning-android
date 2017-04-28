@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_clear"
+          android:title="@string/menu_clear_log" />
+
+    <item android:id="@+id/action_run_activity"
+          android:title="@string/menu_run_activity" />
+
+    <item android:id="@+id/action_nop"
+          android:title="@string/menu_do_nothing" />
+
+</menu>

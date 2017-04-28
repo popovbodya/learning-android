@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/package_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@mipmap/ic_no_icon"
+        android:layout_margin="@dimen/icon_margin"
+        android:layout_centerVertical="true"
+        />
+
+    <TextView
+        android:id="@+id/package_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_toRightOf="@id/package_icon"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/icon_margin"
+        android:layout_marginTop="@dimen/icon_margin"
+        android:layout_marginRight="@dimen/icon_margin"
+        android:textAppearance="@style/ListTitle"
+
+        android:lines="1"
+
+        tools:text="Some Application"
+        />
+
+    <TextView
+        android:id="@+id/package_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_toRightOf="@id/package_icon"
+        android:layout_below="@id/package_title"
+        android:layout_alignParentRight="true"
+        android:textAppearance="@style/ListSubtitle"
+        android:layout_marginBottom="@dimen/icon_margin"
+        android:layout_marginLeft="@dimen/icon_margin"
+        android:layout_marginRight="@dimen/icon_margin"
+
+        android:lines="1"
+
+        tools:text="com.example.application"
+        />
+
+</RelativeLayout>

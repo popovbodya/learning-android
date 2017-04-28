@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Packages</string>
+    <string name="main_activity_title">All packages</string>
+
+    <string name="package_system">(system package)</string>
+
+    <string name="title_activities">Activities</string>
+    <string name="title_permissions">Requested permissions</string>
+
+    <string name="activity_info_format">%1$s (%2$s)</string>
+
+    <string name="button_launch">Launch app</string>
+</resources>

@@ -2,19 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/yellow"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/yellow">
 
     <TextView
         android:id="@+id/value"
-        android:background="@color/red"
-        android:layout_width="92dp"
+        android:layout_width="@dimen/value_width"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:background="@color/red"
         android:padding="@dimen/padding"
         android:textAppearance="@style/ListTitle"
-        tools:text="88.7638" />
+        tools:text="88.78" />
 
     <TextView
         android:id="@+id/nominal"
@@ -41,7 +41,7 @@
         tools:text="Венгерских форинтов" />
 
     <TextView
-        android:id="@+id/num_code"
+        android:id="@+id/char_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/nominal"
@@ -49,8 +49,19 @@
         android:paddingLeft="@dimen/padding"
         android:paddingRight="@dimen/padding"
         android:textAppearance="@style/ListSubtitle"
-        tools:text="132" />
+        tools:text="USD" />
 
+    <TextView
+        android:id="@+id/num_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:layout_toEndOf="@id/char_code"
+        android:layout_toRightOf="@id/char_code"
+        tools:text="(132)" />
 
 
 </RelativeLayout>
+
+
+

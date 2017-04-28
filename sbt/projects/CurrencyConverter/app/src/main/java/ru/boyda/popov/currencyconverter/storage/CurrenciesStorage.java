@@ -44,7 +44,7 @@ public final class CurrenciesStorage {
     }
 
     public void setListener(IMessagesListener listener) {
-        mListener =  new WeakReference<>(listener);
+        mListener = new WeakReference<>(listener);
     }
 
     public interface IMessagesListener {

@@ -28,8 +28,6 @@ public class Loader extends AsyncTask<Void, Void, CurrenciesList> {
             String urlString = "http://www.cbr.ru/scripts/XML_daily.asp";
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
             urlConnection.setDoInput(true);

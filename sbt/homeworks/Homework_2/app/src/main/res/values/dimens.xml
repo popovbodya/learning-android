@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="default_paint_width">4dp</dimen>
-    <dimen name="drawable_dimen">20dp</dimen>
-    <dimen name="stroke">2dp</dimen>
-</resources>

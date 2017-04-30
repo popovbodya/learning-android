@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">CurrencyConverter</string>
-    <string name="status">STATUS</string>
-    <string name="status_done">STATUS = DONE!</string>
-    <string name="running">RUNNING</string>
-    <string name="code_code_format">(%s)</string>
-</resources>

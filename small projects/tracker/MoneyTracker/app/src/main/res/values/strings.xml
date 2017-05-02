@@ -1,6 +1,0 @@
-<resources>
-    <string name="product_name">Название товара</string>
-    <string name="app_name">Мои покупки</string>
-    <string name="price">0</string>
-    <string name="add">+</string>
-</resources>

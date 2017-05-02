@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="PercentTextAppearance" parent="android:TextAppearance.Holo.Large">
+        <item name="android:textColor">@color/battery_border</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <style name="StatusTextAppearance" parent="android:TextAppearance.Holo.Medium">
+        <item name="android:textColor">@color/battery_border</item>
+    </style>
+
+    <style name="InfoTextAppearance" parent="android:TextAppearance.Holo.Large">
+    </style>
+
+</resources>

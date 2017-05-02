@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="battery_angle_rounding">8dp</dimen>
+    <dimen name="battery_border_width">2dp</dimen>
+
+    <dimen name="battery_indicator_width">128dp</dimen>
+    <dimen name="battery_indicator_height">192dp</dimen>
+    <dimen name="battery_indicator_margin">16dp</dimen>
+
+    <dimen name="icon_padding">16dp</dimen>
+
+</resources>

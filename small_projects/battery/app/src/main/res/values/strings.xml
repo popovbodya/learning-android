@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Battery</string>
+    <string name="app_description">Displays information about device battery state</string>
+
+    <string name="battery_percentage">%1$d%%</string>
+    <string name="battery_voltage">%1$dmV</string>
+    <string name="battery_temperature">%1$.1f°</string>
+
+    <string-array name="battery_status">
+        <item>Not present</item>
+        <item>Unknown</item>
+        <item>Charging</item>
+        <item>Discharging</item>
+        <item>Not charging</item>
+        <item>Full</item>
+    </string-array>
+
+
+    <string-array name="battery_health">
+        <item>Not present</item>
+        <item>Unknown</item>
+        <item>Good</item>
+        <item>Overheated</item>
+        <item>Dead</item>
+        <item>Too high voltage</item>
+        <item>Failure</item>
+        <item>Cold</item>
+    </string-array>
+
+    <string name="battery_technology_not_present">Not applicable</string>
+    <string name="battery_technology_unknown">Unknown</string>
+
+    <string name="accessibility_battery">Battery indicator</string>
+</resources>

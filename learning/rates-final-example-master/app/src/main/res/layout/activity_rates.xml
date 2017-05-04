@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/currencies_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        tools:context="ru.dimasokol.currencies.RatesActivity"
+        tools:listitem="@layout/currency_list_item">
+
+    </ListView>
+
+    <ProgressBar
+        android:id="@+id/progress_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        style="?android:attr/progressBarStyleLarge"
+        />
+
+    <LinearLayout
+        android:id="@+id/layout_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/error_unable_to_load"
+            android:gravity="center"
+            android:padding="@dimen/currency_padding"
+            android:drawableTop="@drawable/ic_cloud_off_64dp"
+            />
+
+        <Button
+            android:id="@+id/button_try_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_try_again"
+            android:layout_gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+</FrameLayout>

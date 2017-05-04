@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="currency_padding">16dp</dimen>
+    <dimen name="diagram_height">148dp</dimen>
+
+</resources>

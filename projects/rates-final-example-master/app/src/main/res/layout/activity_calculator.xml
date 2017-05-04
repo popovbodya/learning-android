@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:padding="@dimen/currency_padding"
+        tools:context="ru.dimasokol.currencies.CalculatorActivity">
+
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/currency_code"
+
+            android:imeOptions="flagNoExtractUi"
+            android:inputType="numberDecimal"
+
+            tools:text="13"
+            />
+
+        <TextView
+            android:id="@+id/currency_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/amount"
+            android:paddingLeft="@dimen/currency_padding"
+
+            android:textAppearance="@style/CurrencyNameTextAppearance"
+
+            tools:text="VBZ"
+            />
+
+        <TextView
+            android:id="@+id/eq_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/amount"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/currency_padding"
+            android:text="="
+
+            android:textAppearance="@style/CurrencyRateTextAppearance"
+            />
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/eq_sign"
+            android:layout_centerHorizontal="true"
+
+            android:textAppearance="@style/CurrencyRateTextAppearance"
+
+            tools:text="666 P"
+            />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/diagram_height"
+            android:layout_below="@+id/result"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/currency_padding"
+            >
+
+            <FrameLayout
+                android:id="@+id/diagram"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/diagram_height"
+                android:layout_gravity="bottom"
+                >
+
+                <TextView
+                    android:id="@+id/no_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/error_no_history_found"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/progress_loading"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+
+    </RelativeLayout>
+</ScrollView>

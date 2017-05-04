@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/currency_padding"
+    >
+
+    <TextView
+        android:id="@+id/currency_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_toLeftOf="@+id/currency_rate"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="@dimen/currency_padding"
+
+        android:textAppearance="@style/CurrencyNameTextAppearance"
+        android:maxLines="1"
+        android:ellipsize="end"
+
+        tools:text="100 венерианских буказоидов"
+        />
+
+    <TextView
+        android:id="@+id/currency_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/currency_name"
+
+        android:textAppearance="@style/CurrencyCodeTextAppearance"
+
+        tools:text="VBZ"
+        />
+
+    <TextView
+        android:id="@+id/currency_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+
+        android:lines="1"
+        android:maxLines="1"
+        android:textAppearance="@style/CurrencyRateTextAppearance"
+
+        tools:text="666.13"
+        />
+
+</RelativeLayout>

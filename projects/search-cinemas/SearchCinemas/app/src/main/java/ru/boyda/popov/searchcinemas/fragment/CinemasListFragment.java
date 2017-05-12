@@ -7,10 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import java.util.List;
 
+import ru.boyda.popov.searchcinemas.CinemaDetailsType;
 import ru.boyda.popov.searchcinemas.CinemasAdapter;
 import ru.boyda.popov.searchcinemas.R;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsHost;
@@ -24,6 +29,9 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
     private View progressBar;
     private List<CinemaDetails> cinemaDetailsList;
     private LoadTask loadTask;
+    private CinemaDetailsType cinemaDetailsType;
+    private TextView errorTextView;
+    private Button tryAgainButton;
 
 
     @Override
@@ -31,46 +39,96 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        if (cinemaDetailsList == null || loadTask == null) {
-            loadTask = new LoadTask(this);
-            loadTask.execute();
-        }
+        tryToLoad();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_list_cinemas, container, false);
+
         listView = (ListView) root.findViewById(R.id.cinemas_list);
         progressBar = root.findViewById(R.id.progress_bar);
+        tryAgainButton = (Button) root.findViewById(R.id.button_try_again);
+        errorTextView = (TextView) root.findViewById(R.id.text_view_error);
+
+        Switch typeSwitch = (Switch) root.findViewById(R.id.monitored_switch);
+
+
+        typeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    cinemaDetailsType = CinemaDetailsType.MapView;
+
+                } else {
+                    cinemaDetailsType = CinemaDetailsType.CardView;
+                }
+            }
+        });
+
+        tryAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showError(false);
+                tryToLoad();
+            }
+        });
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CinemaDetails details = ((CinemasAdapter) parent.getAdapter()).getItem(position);
-                ((CinemaDetailsHost) getActivity()).displayCinemaWithDetails(details);
+                ((CinemaDetailsHost) getActivity()).displayCinemaWithDetails(details, cinemaDetailsType);
             }
         });
 
         showContent();
+        showError(false);
+
         return root;
+    }
+
+    private void tryToLoad() {
+        if (cinemaDetailsList == null || loadTask == null) {
+            loadTask = new LoadTask(this);
+            loadTask.execute();
+        }
     }
 
     private void showContent() {
         if (cinemaDetailsList != null) {
             listView.setAdapter(new CinemasAdapter(cinemaDetailsList));
-            progressBar.setVisibility(View.GONE);
+            showProgress(false);
         } else {
-            progressBar.setVisibility(View.VISIBLE);
+            showProgress(true);
         }
+    }
+
+    private void showProgress(boolean show) {
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void showError(boolean show) {
+        errorTextView.setVisibility(show ? View.VISIBLE : View.GONE);
+        tryAgainButton.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
 
     @Override
     public void onReady(List<CinemaDetails> result) {
-        cinemaDetailsList = result;
-        if (isVisible()) {
-            showContent();
+
+        loadTask = null;
+
+        if (result == null || result.size() == 0) {
+            showError(true);
+            showProgress(false);
+        } else {
+            cinemaDetailsList = result;
+            if (isVisible()) {
+                showContent();
+            }
         }
     }
 }

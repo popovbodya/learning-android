@@ -2,6 +2,10 @@ package ru.boyda.popov.searchcinemas;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,13 +19,14 @@ import ru.boyda.popov.searchcinemas.fragment.CinemasListFragment;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsHost;
 import ru.boyda.popov.searchcinemas.parser.desc.CinemaDetails;
 
-public class MapsActivity extends FragmentActivity implements CinemaDetailsHost {
+public class MainActivity extends FragmentActivity implements CinemaDetailsHost {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
 
         if (savedInstanceState == null) {
             CinemasListFragment fragment = new CinemasListFragment();
@@ -34,11 +39,12 @@ public class MapsActivity extends FragmentActivity implements CinemaDetailsHost 
 
 
     @Override
-    public void displayCinemaWithDetails(CinemaDetails cinemaDetails) {
-        BaseCinemaDetailsFragment fragment = BaseCinemaDetailsFragment.newInstance(cinemaDetails);
+    public void displayCinemaWithDetails(CinemaDetails cinemaDetails, CinemaDetailsType cinemaDetailsType) {
+        BaseCinemaDetailsFragment fragment = BaseCinemaDetailsFragment.newInstance(cinemaDetails, cinemaDetailsType);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_for_map, fragment)
                 .commit();
     }
+
 }

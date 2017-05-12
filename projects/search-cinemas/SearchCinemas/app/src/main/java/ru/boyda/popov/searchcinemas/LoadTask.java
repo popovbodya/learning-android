@@ -20,6 +20,7 @@ import ru.boyda.popov.searchcinemas.parser.geo.Result;
 public class LoadTask extends AsyncTask<Void, Void, List<CinemaDetails>> {
 
     private WeakReference<CinemaDetailsListener> listenerRef;
+    private final String API_KEY = "AIzaSyAGti4f1uIhzPQMGwHXYs1mmsGxjBzIVpQ";
 
     public LoadTask(CinemaDetailsListener listener) {
         listenerRef = new WeakReference<>(listener);
@@ -35,6 +36,7 @@ public class LoadTask extends AsyncTask<Void, Void, List<CinemaDetails>> {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
         return cinemaDetailsList;
     }
@@ -55,9 +57,9 @@ public class LoadTask extends AsyncTask<Void, Void, List<CinemaDetails>> {
     }
 
     private CinemaDetails getCinemaDetails(String placeId) throws IOException {
-        URL url = new URL("https://maps.googleapis.com/maps/api/place/details/json?language=ru&placeid=" + placeId + "&key=AIzaSyBg0KyLyomd-XTGpOX9TzNNUnYabywSx3w");
+        URL url = new URL("https://maps.googleapis.com/maps/api/place/details/json?language=ru&placeid=" + placeId + "&key=" + API_KEY);
         ObjectMapper mapper = new ObjectMapper();
-        CinemaDetails details = mapper.readValue(url, DeskResponse.class).getResult();
-        return details;
+        CinemaDetails result = mapper.readValue(url, DeskResponse.class).getResult();
+        return result;
     }
 }

@@ -20,6 +20,9 @@ public class CinemaDetails implements Serializable {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("rating")
+    private String rating;
+
     public String getName() {
         return name;
     }
@@ -30,5 +33,9 @@ public class CinemaDetails implements Serializable {
 
     public String getFormattedAddress() {
         return formattedAddress;
+    }
+
+    public String getRating() {
+        return rating;
     }
 }

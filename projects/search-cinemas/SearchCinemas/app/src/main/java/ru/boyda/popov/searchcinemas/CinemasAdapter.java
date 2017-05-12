@@ -14,11 +14,9 @@ import ru.boyda.popov.searchcinemas.parser.desc.CinemaDetails;
 public class CinemasAdapter extends BaseAdapter {
 
     private List<CinemaDetails> cinemaDetailsList;
-    private int size;
 
     public CinemasAdapter(List<CinemaDetails> cinemaDetailsList) {
         this.cinemaDetailsList = cinemaDetailsList;
-        size = cinemaDetailsList.size();
     }
 
     @Override

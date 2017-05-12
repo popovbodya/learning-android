@@ -1,20 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/cinemas_list"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </ListView>
+        <Switch
+            android:id="@+id/monitored_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/text_view_padding"
+            android:switchPadding="@dimen/text_view_padding"
+            android:text="@string/cinema_details_type"
+            android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+            android:textOff="@string/card_view"
+            android:textOn="@string/map" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
+        <ListView
+            android:id="@+id/cinemas_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/monitored_switch">
+        </ListView>
+    </RelativeLayout>
+
+
+    <LinearLayout
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
         android:layout_gravity="center"
-        />
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+        <TextView
+            android:id="@+id/text_view_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_cloud"
+            android:gravity="center"
+            android:padding="@dimen/warning_padding"
+            android:text="@string/error_unable_to_load" />
+
+        <Button
+            android:id="@+id/button_try_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/button_try_again" />
+
+    </LinearLayout>
 
 </FrameLayout>

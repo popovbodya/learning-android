@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">SearchCinemas</string>
     <string name="title_activity_maps">SearchingCinemas</string>
+    <string name="cinema_name">%s</string>
+    <string name="cinema_address">Address: %s</string>
+    <string name="cinema_rating">Rating: %s</string>
+    <string name="map_type">Map</string>
+    <string name="card_type">Card</string>
+    <string name="cinema_details_type">Details type</string>
+    <string name="card_view">CardView</string>
+    <string name="map">Map</string>
+    <string name="error_unable_to_load">Unable to load cinemas, please check your network connection</string>
+    <string name="button_try_again">Try again</string>
 </resources>

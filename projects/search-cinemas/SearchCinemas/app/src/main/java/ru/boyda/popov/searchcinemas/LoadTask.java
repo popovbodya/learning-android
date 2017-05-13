@@ -12,15 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsListener;
-import ru.boyda.popov.searchcinemas.parser.desc.CinemaDetails;
-import ru.boyda.popov.searchcinemas.parser.desc.DeskResponse;
+import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 import ru.boyda.popov.searchcinemas.parser.geo.GeoResponse;
-import ru.boyda.popov.searchcinemas.parser.geo.Result;
 
 public class LoadTask extends AsyncTask<Void, Void, List<CinemaDetails>> {
 
     private WeakReference<CinemaDetailsListener> listenerRef;
-    private final String API_KEY = "AIzaSyAGti4f1uIhzPQMGwHXYs1mmsGxjBzIVpQ";
+    private final String API_KEY = "AIzaSyCeGZSUUx4PjkA-_jC3CPaT1LMYpeq66L4";
 
     public LoadTask(CinemaDetailsListener listener) {
         listenerRef = new WeakReference<>(listener);
@@ -31,9 +29,8 @@ public class LoadTask extends AsyncTask<Void, Void, List<CinemaDetails>> {
         List<CinemaDetails> cinemaDetailsList = new ArrayList<>();
         try {
             GeoResponse geoResponse = getGeoResponse();
-            for (Result result : geoResponse.getResults()) {
-                cinemaDetailsList.add(getCinemaDetails(result.getPlaceId()));
-            }
+            cinemaDetailsList.addAll(geoResponse.getResults());
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -50,16 +47,12 @@ public class LoadTask extends AsyncTask<Void, Void, List<CinemaDetails>> {
     }
 
     private GeoResponse getGeoResponse() throws IOException {
-        URL url = new URL("https://maps.googleapis.com/maps/api/place/radarsearch/json?location=55.7475048,37.6203333&radius=5000&keyword=кинотеатр&language=ru&key=AIzaSyBg0KyLyomd-XTGpOX9TzNNUnYabywSx3w");
+        // https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken&language=ru&query=кинотеатры в москве&key=AIzaSyCeGZSUUx4PjkA-_jC3CPaT1LMYpeq66L4
+        URL url = new URL("https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken&language=ru&query=кинотеатры%20в%20москве&key=" + API_KEY);
         ObjectMapper mapper = new ObjectMapper();
         GeoResponse geoResponse = mapper.readValue(url, GeoResponse.class);
         return geoResponse;
     }
 
-    private CinemaDetails getCinemaDetails(String placeId) throws IOException {
-        URL url = new URL("https://maps.googleapis.com/maps/api/place/details/json?language=ru&placeid=" + placeId + "&key=" + API_KEY);
-        ObjectMapper mapper = new ObjectMapper();
-        CinemaDetails result = mapper.readValue(url, DeskResponse.class).getResult();
-        return result;
-    }
+
 }

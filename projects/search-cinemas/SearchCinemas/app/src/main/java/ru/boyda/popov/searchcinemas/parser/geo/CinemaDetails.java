@@ -1,4 +1,4 @@
-package ru.boyda.popov.searchcinemas.parser.desc;
+package ru.boyda.popov.searchcinemas.parser.geo;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

@@ -2,22 +2,11 @@ package ru.boyda.popov.searchcinemas;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import ru.boyda.popov.searchcinemas.fragment.BaseCinemaDetailsFragment;
 import ru.boyda.popov.searchcinemas.fragment.CinemasListFragment;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsHost;
-import ru.boyda.popov.searchcinemas.parser.desc.CinemaDetails;
+import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 
 public class MainActivity extends FragmentActivity implements CinemaDetailsHost {
 

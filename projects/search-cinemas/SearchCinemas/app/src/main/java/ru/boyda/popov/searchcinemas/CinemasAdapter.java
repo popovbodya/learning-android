@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ru.boyda.popov.searchcinemas.parser.desc.CinemaDetails;
+import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 
 public class CinemasAdapter extends BaseAdapter {
 

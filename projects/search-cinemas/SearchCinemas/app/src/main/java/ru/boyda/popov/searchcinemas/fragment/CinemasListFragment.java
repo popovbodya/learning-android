@@ -21,7 +21,7 @@ import ru.boyda.popov.searchcinemas.R;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsHost;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsListener;
 import ru.boyda.popov.searchcinemas.LoadTask;
-import ru.boyda.popov.searchcinemas.parser.desc.CinemaDetails;
+import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 
 public class CinemasListFragment extends Fragment implements CinemaDetailsListener {
 

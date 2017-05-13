@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import ru.boyda.popov.searchcinemas.CinemaDetailsType;
-import ru.boyda.popov.searchcinemas.parser.desc.CinemaDetails;
+import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 
 public class BaseCinemaDetailsFragment extends Fragment {
 

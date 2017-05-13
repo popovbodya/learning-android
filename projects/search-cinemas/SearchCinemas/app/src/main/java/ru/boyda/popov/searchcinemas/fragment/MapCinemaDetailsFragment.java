@@ -73,7 +73,7 @@ public class MapCinemaDetailsFragment extends BaseCinemaDetailsFragment implemen
 
         Location cinemaLocation = getDetails().getGeometry().getLocation();
         LatLng point = new LatLng(Double.valueOf(cinemaLocation.getLat()), Double.valueOf(cinemaLocation.getLng()));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 15f));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(point, 17f));
         MarkerOptions marker = new MarkerOptions();
         marker.position(point).title(getDetails().getName());
         map.addMarker(marker);

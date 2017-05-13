@@ -9,10 +9,9 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GeoResponse {
     @JsonProperty("results")
-    private List<Result> results;
+    private List<CinemaDetails> results;
 
-    public List<Result> getResults() {
+    public List<CinemaDetails> getResults() {
         return results;
     }
-
 }

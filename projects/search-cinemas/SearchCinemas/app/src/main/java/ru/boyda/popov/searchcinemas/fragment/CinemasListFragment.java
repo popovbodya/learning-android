@@ -23,16 +23,14 @@ import ru.boyda.popov.searchcinemas.CinemasAdapter;
 import ru.boyda.popov.searchcinemas.Loader;
 import ru.boyda.popov.searchcinemas.R;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsHost;
-import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsListener;
-import ru.boyda.popov.searchcinemas.LoadTask;
+
 import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 
-public class CinemasListFragment extends Fragment implements CinemaDetailsListener, Loader.Callback {
+public class CinemasListFragment extends Fragment implements Loader.Callback {
 
     private ListView listView;
     private View progressBar;
     private List<CinemaDetails> cinemaDetailsList;
-    private LoadTask loadTask;
     private CinemaDetailsType cinemaDetailsType;
     private TextView errorTextView;
     private Button tryAgainButton;
@@ -111,11 +109,7 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
     }
 
     private void tryToLoad() {
-        if (cinemaDetailsList == null || loadTask == null) {
-//            loadTask = new LoadTask(this);
-//            loadTask.execute();
-            mWorkerThread.queueTask();
-        }
+        mWorkerThread.queueTask();
     }
 
     private void showContent() {
@@ -134,23 +128,6 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
     private void showError(boolean show) {
         errorTextView.setVisibility(show ? View.VISIBLE : View.GONE);
         tryAgainButton.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-
-    @Override
-    public void onReady(List<CinemaDetails> result) {
-
-        loadTask = null;
-
-        if (result == null || result.size() == 0) {
-            showError(true);
-            showProgress(false);
-        } else {
-            cinemaDetailsList = result;
-            if (isVisible()) {
-                showContent();
-            }
-        }
     }
 
 

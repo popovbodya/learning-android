@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-import ru.boyda.popov.searchcinemas.parser.geo.Geometry;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CinemaDetails implements Serializable {
 

@@ -166,4 +166,11 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
             }
         }
     }
+
+    @Override
+    public void onDestroy() {
+        mWorkerThread.quit();
+        super.onDestroy();
+    }
+
 }

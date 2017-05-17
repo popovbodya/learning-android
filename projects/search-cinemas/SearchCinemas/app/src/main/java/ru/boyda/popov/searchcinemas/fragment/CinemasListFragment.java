@@ -1,6 +1,7 @@
 package ru.boyda.popov.searchcinemas.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,17 +14,19 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.boyda.popov.searchcinemas.CinemaDetailsType;
 import ru.boyda.popov.searchcinemas.CinemasAdapter;
+import ru.boyda.popov.searchcinemas.Loader;
 import ru.boyda.popov.searchcinemas.R;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsHost;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsListener;
 import ru.boyda.popov.searchcinemas.LoadTask;
 import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 
-public class CinemasListFragment extends Fragment implements CinemaDetailsListener {
+public class CinemasListFragment extends Fragment implements CinemaDetailsListener, Loader.Callback {
 
     private ListView listView;
     private View progressBar;
@@ -32,12 +35,19 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
     private CinemaDetailsType cinemaDetailsType;
     private TextView errorTextView;
     private Button tryAgainButton;
+    private Button searchButton;
+
+    private Loader mWorkerThread;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        mWorkerThread = new Loader(new Handler(), this);
+        mWorkerThread.start();
+        mWorkerThread.prepareHandler();
 
         tryToLoad();
     }
@@ -51,6 +61,7 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
         progressBar = root.findViewById(R.id.progress_bar);
         tryAgainButton = (Button) root.findViewById(R.id.button_try_again);
         errorTextView = (TextView) root.findViewById(R.id.text_view_error);
+        searchButton = (Button) root.findViewById(R.id.search_button_fragment);
 
         Switch typeSwitch = (Switch) root.findViewById(R.id.monitored_switch);
 
@@ -64,6 +75,14 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
                 } else {
                     cinemaDetailsType = CinemaDetailsType.CardView;
                 }
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress(true);
+                tryToLoad();
             }
         });
 
@@ -92,8 +111,9 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
 
     private void tryToLoad() {
         if (cinemaDetailsList == null || loadTask == null) {
-            loadTask = new LoadTask(this);
-            loadTask.execute();
+//            loadTask = new LoadTask(this);
+//            loadTask.execute();
+            mWorkerThread.queueTask();
         }
     }
 
@@ -126,6 +146,21 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
             showProgress(false);
         } else {
             cinemaDetailsList = result;
+            if (isVisible()) {
+                showContent();
+            }
+        }
+    }
+
+
+    @Override
+    public void onCinemasDownloaded(List<CinemaDetails> cinemaDetailsList) {
+        if (cinemaDetailsList != null) {
+
+            if (this.cinemaDetailsList == null) {
+                this.cinemaDetailsList = new ArrayList<>();
+            }
+            this.cinemaDetailsList.addAll(cinemaDetailsList);
             if (isVisible()) {
                 showContent();
             }

@@ -10,15 +10,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 import ru.boyda.popov.searchcinemas.parser.geo.GeoResponse;
 
-public class Loader extends HandlerThread {
+public class LoaderWorker extends HandlerThread {
 
-    private static final String TAG = Loader.class.getSimpleName();
+    private static final String TAG = LoaderWorker.class.getSimpleName();
     private static final String API_KEY = "AIzaSyCeGZSUUx4PjkA-_jC3CPaT1LMYpeq66L4";
     private static final int DOWNLOAD_NEW_CINEMAS_TASK = 0;
 
@@ -32,7 +33,7 @@ public class Loader extends HandlerThread {
         void onCinemasDownloaded(List<CinemaDetails> cinemaDetailsList);
     }
 
-    public Loader(Handler responseHandler, Callback callback) {
+    public LoaderWorker(Handler responseHandler, Callback callback) {
         super(TAG);
         mResponseHandler = responseHandler;
         mCallback = callback;
@@ -63,6 +64,14 @@ public class Loader extends HandlerThread {
                             }
                         });
                     }
+                } catch (UnknownHostException unHost) {
+                    mResponseHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mCallback.onCinemasDownloaded(null);
+                        }
+                    });
+                    return true;
                 } catch (IOException e) {
                     e.printStackTrace();
                     return false;

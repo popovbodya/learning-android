@@ -20,13 +20,13 @@ import java.util.List;
 
 import ru.boyda.popov.searchcinemas.CinemaDetailsType;
 import ru.boyda.popov.searchcinemas.CinemasAdapter;
-import ru.boyda.popov.searchcinemas.Loader;
+import ru.boyda.popov.searchcinemas.LoaderWorker;
 import ru.boyda.popov.searchcinemas.R;
 import ru.boyda.popov.searchcinemas.interfaces.CinemaDetailsHost;
 
 import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 
-public class CinemasListFragment extends Fragment implements Loader.Callback {
+public class CinemasListFragment extends Fragment implements LoaderWorker.Callback {
 
     private ListView listView;
     private View progressBar;
@@ -36,7 +36,7 @@ public class CinemasListFragment extends Fragment implements Loader.Callback {
     private Button tryAgainButton;
     private Button searchButton;
 
-    private Loader mWorkerThread;
+    private LoaderWorker mWorkerThread;
 
 
     @Override
@@ -44,11 +44,11 @@ public class CinemasListFragment extends Fragment implements Loader.Callback {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        mWorkerThread = new Loader(new Handler(), this);
+        mWorkerThread = new LoaderWorker(new Handler(), this);
         mWorkerThread.start();
         mWorkerThread.prepareHandler();
 
-        tryToLoad();
+        startLoad();
     }
 
     @Nullable
@@ -107,8 +107,12 @@ public class CinemasListFragment extends Fragment implements Loader.Callback {
 
         return root;
     }
+    private void startLoad() {
+        mWorkerThread.queueTask();
+    }
 
     private void tryToLoad() {
+        showProgress(true);
         mWorkerThread.queueTask();
     }
 
@@ -132,18 +136,21 @@ public class CinemasListFragment extends Fragment implements Loader.Callback {
 
 
     @Override
-    public void onCinemasDownloaded(List<CinemaDetails> cinemaDetailsList) {
-        if (cinemaDetailsList != null) {
+    public void onCinemasDownloaded(List<CinemaDetails> loadedList) {
+        if (loadedList != null) {
 
             Toast.makeText(getContext(), "new cinemas downloaded", Toast.LENGTH_LONG).show();
 
-            if (this.cinemaDetailsList == null) {
-                this.cinemaDetailsList = new ArrayList<>();
+            if (cinemaDetailsList == null) {
+                cinemaDetailsList = new ArrayList<>();
             }
-            this.cinemaDetailsList.addAll(cinemaDetailsList);
+            cinemaDetailsList.addAll(loadedList);
             if (isVisible()) {
                 showContent();
             }
+        } else {
+            showProgress(false);
+            showError(true);
         }
     }
 

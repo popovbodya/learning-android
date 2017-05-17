@@ -1,4 +1,4 @@
-package ru.boyda.popov.learning_threading_part_1.basics;
+package ru.bodya.popov.learning_threading_part_1.basics;
 
 
 import android.app.Activity;
@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
-import ru.boyda.popov.learning_threading_part_1.R;
+import ru.bodya.popov.learning_threading_part_1.R;
 
 public class MyActivity extends Activity {
 

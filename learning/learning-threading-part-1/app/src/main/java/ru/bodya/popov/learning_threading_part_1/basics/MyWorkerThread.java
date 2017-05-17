@@ -1,4 +1,4 @@
-package ru.boyda.popov.learning_threading_part_1.basics;
+package ru.bodya.popov.learning_threading_part_1.basics;
 
 
 import android.os.Handler;

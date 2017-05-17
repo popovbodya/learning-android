@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,6 +157,8 @@ public class CinemasListFragment extends Fragment implements CinemaDetailsListen
     @Override
     public void onCinemasDownloaded(List<CinemaDetails> cinemaDetailsList) {
         if (cinemaDetailsList != null) {
+
+            Toast.makeText(getContext(), "new cinemas downloaded", Toast.LENGTH_LONG).show();
 
             if (this.cinemaDetailsList == null) {
                 this.cinemaDetailsList = new ArrayList<>();

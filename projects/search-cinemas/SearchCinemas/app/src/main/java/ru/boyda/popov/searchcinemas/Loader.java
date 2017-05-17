@@ -12,24 +12,24 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import ru.boyda.popov.searchcinemas.parser.geo.CinemaDetails;
 import ru.boyda.popov.searchcinemas.parser.geo.GeoResponse;
 
 public class Loader extends HandlerThread {
 
+    private static final String TAG = Loader.class.getSimpleName();
+    private static final String API_KEY = "AIzaSyCeGZSUUx4PjkA-_jC3CPaT1LMYpeq66L4";
+    private static final int DOWNLOAD_NEW_CINEMAS_TASK = 0;
+
     private Handler mWorkerHandler;
     private Handler mResponseHandler;
     private Callback mCallback;
-    private static final String TAG = Loader.class.getSimpleName();
-    private final String API_KEY = "AIzaSyCeGZSUUx4PjkA-_jC3CPaT1LMYpeq66L4";
-    private final int DOWNLOAD_NEW_CINEMAS_TASK = 0;
     private String nextPageToken;
     private int counter;
 
     public interface Callback {
-        public void onCinemasDownloaded(List<CinemaDetails> cinemaDetailsList);
+        void onCinemasDownloaded(List<CinemaDetails> cinemaDetailsList);
     }
 
     public Loader(Handler responseHandler, Callback callback) {

@@ -47,11 +47,9 @@ public class LoadTask extends AsyncTask<Void, Void, List<CinemaDetails>> {
     }
 
     private GeoResponse getGeoResponse() throws IOException {
-        // https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken&language=ru&query=кинотеатры в москве&key=AIzaSyCeGZSUUx4PjkA-_jC3CPaT1LMYpeq66L4
         URL url = new URL("https://maps.googleapis.com/maps/api/place/textsearch/json?pagetoken&language=ru&query=кинотеатры%20в%20москве&key=" + API_KEY);
         ObjectMapper mapper = new ObjectMapper();
-        GeoResponse geoResponse = mapper.readValue(url, GeoResponse.class);
-        return geoResponse;
+        return mapper.readValue(url, GeoResponse.class);
     }
 
 

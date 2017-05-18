@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CurrentWork</string>
+    <string name="update">Update</string>
+    <string name="weight">Weight: %d</string>
+    <string name="height">Height: %d</string>
+    <string name="age">Age: %d</string>
+    <string name="name">Name: %s</string>
+    <string name="type">Type: %s</string>
+</resources>

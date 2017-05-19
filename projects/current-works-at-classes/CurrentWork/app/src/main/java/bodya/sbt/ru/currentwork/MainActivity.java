@@ -21,6 +21,7 @@ import android.widget.Button;
 public class MainActivity extends FragmentActivity implements Worker.Callback {
 
     private static final String TAG = "MainActivity";
+    private static int ANIMAL_ID = 0;
     private Worker worker;
     private FragmentManager fragmentManager;
 
@@ -37,14 +38,18 @@ public class MainActivity extends FragmentActivity implements Worker.Callback {
             @Override
             public void onClick(View v) {
 //                worker.queueTask();
-                getSupportLoaderManager().getLoader(0).forceLoad();
+                getSupportLoaderManager().getLoader(ANIMAL_ID).forceLoad();
             }
         });
 
-        getSupportLoaderManager().initLoader(0, null, new RatesLoaderCallbacks());
+        getSupportLoaderManager().initLoader(ANIMAL_ID, null, new RatesLoaderCallbacks());
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onAnimalDownloaded(Animal animal) {

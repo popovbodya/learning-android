@@ -21,7 +21,6 @@ import android.widget.Button;
 public class MainActivity extends FragmentActivity implements Worker.Callback {
 
     private static final String TAG = "MainActivity";
-    private Worker worker;
     private FragmentManager fragmentManager;
 
     @Override
@@ -30,13 +29,12 @@ public class MainActivity extends FragmentActivity implements Worker.Callback {
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
-//        worker = ((MyApplication) getApplication()).getWorker(new Handler(), this);
+
 
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                worker.queueTask();
                 getSupportLoaderManager().getLoader(0).forceLoad();
             }
         });
@@ -48,11 +46,16 @@ public class MainActivity extends FragmentActivity implements Worker.Callback {
 
     @Override
     public void onAnimalDownloaded(Animal animal) {
-        createFragment(animal);
+        MyApplication myApplication = (MyApplication) getApplication();
+        if (!animal.equals(myApplication.getCache())) {
+            createFragment(animal);
+            myApplication.setCache(animal);
+        }
     }
 
     private void createFragment(Animal animal) {
-        AnimalInfoFragment fragment = (AnimalInfoFragment) BaseFragment.newInstance(animal);
+        AnimalInfoFragment fragment = AnimalInfoFragment.newInstance(animal);
+
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.frame_for_data, fragment)
@@ -68,7 +71,12 @@ public class MainActivity extends FragmentActivity implements Worker.Callback {
         @Override
         public void onLoadFinished(Loader<Animal> loader, Animal data) {
             Log.e(TAG, "onLoadFinished");
-            createFragment(data);
+            MyApplication myApplication = (MyApplication) getApplication();
+            if (!data.equals(myApplication.getCache())) {
+                createFragment(data);
+                myApplication.setCache(data);
+            }
+
         }
 
         @Override

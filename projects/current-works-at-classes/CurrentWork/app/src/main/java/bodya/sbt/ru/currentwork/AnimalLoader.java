@@ -18,7 +18,6 @@ public class AnimalLoader extends AsyncTaskLoader<Animal> {
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
-        forceLoad();
         Log.e(TAG, "onStartLoading");
     }
 

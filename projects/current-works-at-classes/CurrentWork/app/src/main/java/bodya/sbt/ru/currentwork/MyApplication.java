@@ -10,9 +10,13 @@ import java.util.List;
 public class MyApplication extends Application {
 
     private Worker worker;
-    private static List<Animal> animalList;
+    private List<Animal> animalList;
+    private Animal Cache;
 
-    public MyApplication() {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
         animalList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             int age = (int) (Math.random() * 15) + 1;
@@ -20,6 +24,7 @@ public class MyApplication extends Application {
             int weight = (int) (Math.random() * 50) + 1;
             animalList.add(new Animal("Animal " + i, age, height, weight));
         }
+
     }
 
     public List<Animal> getAnimalList() {
@@ -35,5 +40,11 @@ public class MyApplication extends Application {
         return worker;
     }
 
+    public Animal getCache() {
+        return Cache;
+    }
 
+    public void setCache(Animal cache) {
+        Cache = cache;
+    }
 }

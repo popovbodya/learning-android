@@ -21,6 +21,11 @@ import android.widget.Button;
 public class MainActivity extends FragmentActivity implements Worker.Callback {
 
     private static final String TAG = "MainActivity";
+<<<<<<< HEAD
+=======
+    private static int ANIMAL_ID = 0;
+    private Worker worker;
+>>>>>>> b19a674d9a9a143a9f5bbb9b84fa21f6280a2b10
     private FragmentManager fragmentManager;
 
     @Override
@@ -35,14 +40,23 @@ public class MainActivity extends FragmentActivity implements Worker.Callback {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
                 getSupportLoaderManager().getLoader(0).forceLoad();
+=======
+//                worker.queueTask();
+                getSupportLoaderManager().getLoader(ANIMAL_ID).forceLoad();
+>>>>>>> b19a674d9a9a143a9f5bbb9b84fa21f6280a2b10
             }
         });
 
-        getSupportLoaderManager().initLoader(0, null, new RatesLoaderCallbacks());
+        getSupportLoaderManager().initLoader(ANIMAL_ID, null, new RatesLoaderCallbacks());
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onAnimalDownloaded(Animal animal) {

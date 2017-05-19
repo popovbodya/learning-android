@@ -23,7 +23,7 @@ public class AnimalLoader extends AsyncTaskLoader<Animal> {
 
     @Override
     public Animal loadInBackground() {
-        Log.e(TAG, "loadInBackGround");
+        Log.e(TAG, "loadInBackground");
         List<Animal> list = ((MyApplication) getContext()).getAnimalList();
         int index = (int) (Math.random() * list.size());
         return list.get(index);

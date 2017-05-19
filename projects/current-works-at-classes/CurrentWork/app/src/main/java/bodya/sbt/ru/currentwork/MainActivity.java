@@ -11,21 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-
-/*
-Есть список из 10 животных.
-Лоадер должен из него взять случайное животное и вывести информацию о нём (биологический вид, масса, рост, кличка).
-При перевороте информация должна сохраниться. При клике на кнопку Обновить -- информация должна перегрузиться
- */
-
 public class MainActivity extends FragmentActivity implements Worker.Callback {
 
     private static final String TAG = "MainActivity";
-<<<<<<< HEAD
-=======
+
     private static int ANIMAL_ID = 0;
-    private Worker worker;
->>>>>>> b19a674d9a9a143a9f5bbb9b84fa21f6280a2b10
     private FragmentManager fragmentManager;
 
     @Override
@@ -40,12 +30,7 @@ public class MainActivity extends FragmentActivity implements Worker.Callback {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
-                getSupportLoaderManager().getLoader(0).forceLoad();
-=======
-//                worker.queueTask();
                 getSupportLoaderManager().getLoader(ANIMAL_ID).forceLoad();
->>>>>>> b19a674d9a9a143a9f5bbb9b84fa21f6280a2b10
             }
         });
 

@@ -35,7 +35,6 @@ public class Animal implements Serializable {
         this.animalType = getRandomType();
     }
 
-
     public String getName() {
         return name;
     }
@@ -52,10 +51,6 @@ public class Animal implements Serializable {
         this.name = name;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
     public void setHeight(int height) {
         this.height = height;
     }
@@ -64,17 +59,10 @@ public class Animal implements Serializable {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public AnimalType getAnimalType() {
         return animalType;
     }
 
-    public void setAnimalType(AnimalType animalType) {
-        this.animalType = animalType;
-    }
 
     @Override
     public boolean equals(Object o) {

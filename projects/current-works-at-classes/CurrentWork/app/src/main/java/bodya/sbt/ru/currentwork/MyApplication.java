@@ -2,16 +2,18 @@ package bodya.sbt.ru.currentwork;
 
 
 import android.app.Application;
-import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyApplication extends Application {
 
-    private Worker worker;
     private List<Animal> animalList;
-    private Animal Cache;
+    private final List<OnContentChangeListener> onContentChangeListeners;
+
+    public MyApplication() {
+        onContentChangeListeners = new ArrayList<>();
+    }
 
     @Override
     public void onCreate() {
@@ -24,27 +26,28 @@ public class MyApplication extends Application {
             int weight = (int) (Math.random() * 50) + 1;
             animalList.add(new Animal("Animal " + i, age, height, weight));
         }
-
     }
 
     public List<Animal> getAnimalList() {
-        return animalList;
+        return new ArrayList<>(animalList);
     }
 
-    public Worker getWorker(Handler handler, Worker.Callback callback) {
-        if (worker == null) {
-            worker = new Worker(handler, callback);
-            worker.start();
-            worker.prepareHandler();
+    public void addOnContentChangeListener(OnContentChangeListener listener) {
+        onContentChangeListeners.add(listener);
+    }
+
+    public void addAnimal(Animal animal) {
+        animalList.add(animal);
+        for (OnContentChangeListener listener : onContentChangeListeners) {
+            listener.onAnimalAdded(animal);
         }
-        return worker;
     }
 
-    public Animal getCache() {
-        return Cache;
+    public void removeOnContentChangeListener(OnContentChangeListener listener) {
+        onContentChangeListeners.remove(listener);
     }
 
-    public void setCache(Animal cache) {
-        Cache = cache;
+    public interface OnContentChangeListener {
+        void onAnimalAdded(Animal animal);
     }
 }

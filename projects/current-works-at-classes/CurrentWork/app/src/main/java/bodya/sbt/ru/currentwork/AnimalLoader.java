@@ -3,29 +3,48 @@ package bodya.sbt.ru.currentwork;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import java.util.List;
 
-public class AnimalLoader extends AsyncTaskLoader<Animal> {
+public class AnimalLoader extends AsyncTaskLoader<List<Animal>> implements MyApplication.OnContentChangeListener {
 
-    private static final String TAG = "AnimalLoader";
+    private List<Animal> mCachedResult;
+    private MyApplication myApplication;
 
     public AnimalLoader(Context context) {
         super(context);
+        myApplication = (MyApplication) context.getApplicationContext();
+        myApplication.addOnContentChangeListener(this);
     }
 
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
-        Log.e(TAG, "onStartLoading");
+        if ((mCachedResult == null) || takeContentChanged()) {
+            forceLoad();
+        }
     }
 
     @Override
-    public Animal loadInBackground() {
-        Log.e(TAG, "loadInBackground");
-        List<Animal> list = ((MyApplication) getContext()).getAnimalList();
-        int index = (int) (Math.random() * list.size());
-        return list.get(index);
+    public void deliverResult(List<Animal> data) {
+        super.deliverResult(data);
+        mCachedResult = data;
     }
+
+    @Override
+    public List<Animal> loadInBackground() {
+        return myApplication.getAnimalList();
+    }
+
+    @Override
+    protected void onReset() {
+        super.onReset();
+        myApplication.removeOnContentChangeListener(this);
+    }
+
+    @Override
+    public void onAnimalAdded(Animal animal) {
+        onContentChanged();
+    }
+
 }

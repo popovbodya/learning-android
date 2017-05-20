@@ -1,7 +1,6 @@
-package bodya.sbt.ru.currentwork;
+package unused.ru.popov.bodya;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import bodya.sbt.ru.currentwork.Animal;
+import bodya.sbt.ru.currentwork.R;
 
 public class AnimalInfoFragment extends Fragment {
 

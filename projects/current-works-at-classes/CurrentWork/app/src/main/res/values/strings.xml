@@ -6,4 +6,11 @@
     <string name="age">Age: %d</string>
     <string name="name">Name: %s</string>
     <string name="type">Type: %s</string>
+    <string name="animal_type">Animal Type:</string>
+    <string name="name_edit_text">Name:</string>
+    <string name="height_edit_text">Height:</string>
+    <string name="add_new_animal">Add new Animal</string>
+    <string name="age_edit_text">Age:</string>
+    <string name="weight_edit_text">Weight</string>
+    <string name="add_animal">add animal</string>
 </resources>

@@ -1,18 +1,16 @@
-package bodya.sbt.ru.currentwork;
+package unused.ru.popov.bodya;
 
 
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.os.Process;
-import android.renderscript.RenderScript;
 import android.util.Log;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
+
+import bodya.sbt.ru.currentwork.Animal;
+import bodya.sbt.ru.currentwork.MainActivity;
+import bodya.sbt.ru.currentwork.MyApplication;
 
 public class Worker extends HandlerThread {
 

@@ -1,4 +1,4 @@
-package bodya.sbt.ru.currentwork;
+package bodya.sbt.ru.currentwork.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -12,18 +12,29 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import bodya.sbt.ru.currentwork.Animal;
+import bodya.sbt.ru.currentwork.AnimalLoader;
+import bodya.sbt.ru.currentwork.AnimalStorage;
+import bodya.sbt.ru.currentwork.AnimalsAdapter;
+import bodya.sbt.ru.currentwork.R;
+import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
 
-public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+public class AnimalInfoActivity extends AppCompatActivity {
 
+    private static final String TAG = "AnimalInfoActivity";
     private static int ANIMAL_ID = 0;
+
+    private AnimalStorage animalStorage;
     private AnimalsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AnimalsStorageProvider animalsStorageProvider = (AnimalsStorageProvider) getApplication();
+        animalStorage = animalsStorageProvider.getAnimalsStorage();
 
         adapter = new AnimalsAdapter();
         ListView listView = (ListView) findViewById(R.id.list_view);
@@ -56,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
             }
             default: {
                 handled = super.onOptionsItemSelected(item);
-                break;
             }
         }
         return handled;
@@ -66,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Loader<List<Animal>> onCreateLoader(int id, Bundle args) {
-            return new AnimalLoader(MainActivity.this);
+            return new AnimalLoader(AnimalInfoActivity.this, animalStorage);
         }
 
         @Override

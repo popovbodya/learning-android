@@ -13,20 +13,20 @@ import java.util.List;
 
 public class AnimalsAdapter extends BaseAdapter {
 
-    private final List<Animal> mAnimals;
+    private final List<Animal> animalList;
 
     public AnimalsAdapter() {
-        mAnimals = new ArrayList<>();
+        animalList = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        return mAnimals.size();
+        return animalList.size();
     }
 
     @Override
     public Animal getItem(int position) {
-        return mAnimals.get(position);
+        return animalList.get(position);
     }
 
     @Override
@@ -36,29 +36,29 @@ public class AnimalsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = convertView;
-        if (itemView == null) {
-            itemView = inflater.inflate(R.layout.animal_list_item, parent, false);
-            itemView.setTag(new ViewHolder(itemView));
+        View currentView = convertView;
+        if (currentView == null) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            currentView = inflater.inflate(R.layout.animal_list_item, parent, false);
+            currentView.setTag(new ViewHolder(currentView));
         }
 
-        ViewHolder holder = (ViewHolder) itemView.getTag();
+        ViewHolder holder = (ViewHolder) currentView.getTag();
+        Animal animal = animalList.get(position);
 
-        Animal animal = mAnimals.get(position);
-        Context context = itemView.getContext();
-
+        Context context = currentView.getContext();
         holder.ageTextView.setText(context.getString(R.string.age, animal.getAge()));
         holder.nameTextView.setText(context.getString(R.string.name, animal.getName()));
+        holder.animalTypeTextView.setText(context.getString(R.string.type, animal.getAnimalType()));
         holder.weightTextView.setText(context.getString(R.string.weight, animal.getWeight()));
         holder.heightTextView.setText(context.getString(R.string.height, animal.getHeight()));
 
-        return itemView;
+        return currentView;
     }
 
     public void setAnimals(List<Animal> animals) {
-        mAnimals.clear();
-        mAnimals.addAll(animals);
+        animalList.clear();
+        animalList.addAll(animals);
         notifyDataSetChanged();
     }
 
@@ -68,10 +68,12 @@ public class AnimalsAdapter extends BaseAdapter {
         final TextView nameTextView;
         final TextView weightTextView;
         final TextView heightTextView;
+        final TextView animalTypeTextView;
 
         ViewHolder(View itemView) {
-            ageTextView = (TextView) itemView.findViewById(R.id.age_text_view);
             nameTextView = (TextView) itemView.findViewById(R.id.name_text_view);
+            ageTextView = (TextView) itemView.findViewById(R.id.age_text_view);
+            animalTypeTextView = (TextView) itemView.findViewById(R.id.animal_type_text_view);
             weightTextView = (TextView) itemView.findViewById(R.id.weight_text_view);
             heightTextView = (TextView) itemView.findViewById(R.id.height_text_view);
         }

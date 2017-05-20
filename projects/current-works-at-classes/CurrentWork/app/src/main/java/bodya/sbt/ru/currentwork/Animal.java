@@ -1,11 +1,5 @@
 package bodya.sbt.ru.currentwork;
 
-/*
-Есть список из 10 животных.
-Лоадер должен из него взять случайное животное и вывести информацию о нём (биологический вид, масса, рост, кличка).
-При перевороте информация должна сохраниться. При клике на кнопку Обновить -- информация должна перегрузиться
- */
-
 import java.io.Serializable;
 
 public class Animal implements Serializable {
@@ -22,10 +16,10 @@ public class Animal implements Serializable {
     }
 
     private String name;
+    private AnimalType animalType;
     private int weight;
     private int height;
     private int age;
-    private AnimalType animalType;
 
     public Animal(String name, int age, int weight, int height) {
         this.name = name;
@@ -62,7 +56,6 @@ public class Animal implements Serializable {
     public AnimalType getAnimalType() {
         return animalType;
     }
-
 
     @Override
     public boolean equals(Object o) {

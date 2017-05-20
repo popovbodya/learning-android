@@ -4,10 +4,12 @@ package bodya.sbt.ru.currentwork;
 import java.util.ArrayList;
 import java.util.List;
 
+import bodya.sbt.ru.currentwork.interfaces.OnAnimalContentChangeListener;
+
 public class AnimalStorage {
 
     private List<Animal> animalList;
-    private final List<OnContentChangeListener> onContentChangeListeners;
+    private final List<OnAnimalContentChangeListener> onContentChangeListeners;
 
     public AnimalStorage() {
         onContentChangeListeners = new ArrayList<>();
@@ -28,23 +30,20 @@ public class AnimalStorage {
         return new ArrayList<>(animalList);
     }
 
-    public void addOnContentChangeListener(OnContentChangeListener listener) {
+    public void addOnContentChangeListener(OnAnimalContentChangeListener listener) {
         onContentChangeListeners.add(listener);
     }
 
     public void addAnimal(Animal animal) {
         animalList.add(animal);
-        for (OnContentChangeListener listener : onContentChangeListeners) {
+        for (OnAnimalContentChangeListener listener : onContentChangeListeners) {
             listener.onAnimalAdded(animal);
         }
     }
 
-    public void removeOnContentChangeListener(OnContentChangeListener listener) {
+    public void removeOnContentChangeListener(OnAnimalContentChangeListener listener) {
         onContentChangeListeners.remove(listener);
     }
 
-    public interface OnContentChangeListener {
-        void onAnimalAdded(Animal animal);
-    }
 
 }

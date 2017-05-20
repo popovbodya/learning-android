@@ -25,7 +25,6 @@ public class AddNewAnimalActivity extends AppCompatActivity {
     private EditText weightEditText;
     private EditText nameEditText;
     private EditText[] editTexts;
-
     private Button addButton;
 
     private AnimalStorage animalStorage;
@@ -52,7 +51,7 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         editTexts = new EditText[]{ageEditText, nameEditText, weightEditText, heightEditText};
 
         for (EditText editText : editTexts) {
-            editText.addTextChangedListener(new TextWatcherImpl());
+            editText.addTextChangedListener(new EditTextWatcherImpl());
         }
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -68,12 +67,13 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         int weight = Integer.valueOf(weightEditText.getText().toString());
         int height = Integer.valueOf(heightEditText.getText().toString());
         String name = nameEditText.getText().toString();
+
         Animal animal = new Animal(name, age, weight, height);
         animalStorage.addAnimal(animal);
         finish();
     }
 
-    private class TextWatcherImpl implements TextWatcher {
+    private class EditTextWatcherImpl implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }

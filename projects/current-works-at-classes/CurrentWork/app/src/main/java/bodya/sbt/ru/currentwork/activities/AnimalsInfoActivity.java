@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +21,8 @@ import bodya.sbt.ru.currentwork.R;
 import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
 
 
-public class AnimalInfoActivity extends AppCompatActivity {
+public class AnimalsInfoActivity extends AppCompatActivity {
 
-    private static final String TAG = "AnimalInfoActivity";
     private static int ANIMAL_ID = 0;
 
     private AnimalStorage animalStorage;
@@ -76,7 +76,7 @@ public class AnimalInfoActivity extends AppCompatActivity {
 
         @Override
         public Loader<List<Animal>> onCreateLoader(int id, Bundle args) {
-            return new AnimalLoader(AnimalInfoActivity.this, animalStorage);
+            return new AnimalLoader(AnimalsInfoActivity.this, animalStorage);
         }
 
         @Override

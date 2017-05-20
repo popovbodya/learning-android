@@ -5,7 +5,7 @@ import android.app.Application;
 
 import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
 
-public class MyApplication extends Application implements AnimalsStorageProvider {
+public class AnimalsInfoApplication extends Application implements AnimalsStorageProvider {
 
     private AnimalStorage animalsStorage;
 
@@ -19,5 +19,4 @@ public class MyApplication extends Application implements AnimalsStorageProvider
     public AnimalStorage getAnimalsStorage() {
         return animalsStorage;
     }
-
 }

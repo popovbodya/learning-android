@@ -12,6 +12,7 @@ public class AnimalStorage {
     private static final int MAX_HEIGHT = 50;
     private static final int MAX_WEIGHT = 40;
     private static final int NOT_ZERO_HELPER = 1;
+    private static final int INIT_LIST_SIZE = 10;
 
     private List<Animal> animalList;
     private final List<OnAnimalContentChangeListener> onContentChangeListeners;
@@ -23,7 +24,7 @@ public class AnimalStorage {
 
     private void createAnimalList() {
         animalList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < INIT_LIST_SIZE; i++) {
             int age = (int) (Math.random() * MAX_AGE) + NOT_ZERO_HELPER;
             int height = (int) (Math.random() * MAX_HEIGHT) + NOT_ZERO_HELPER;
             int weight = (int) (Math.random() * MAX_WEIGHT) + NOT_ZERO_HELPER;

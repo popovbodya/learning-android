@@ -23,7 +23,7 @@ import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
 
 public class AnimalsInfoActivity extends AppCompatActivity {
 
-    private static int ANIMAL_ID = 0;
+    private static final int ANIMAL_ID = 0;
 
     private AnimalStorage animalStorage;
     private AnimalsAdapter adapter;

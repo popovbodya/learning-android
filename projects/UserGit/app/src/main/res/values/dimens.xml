@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_size">48dp</dimen>
+    <dimen name="common_dimen">40dp</dimen>
+    <dimen name="common_lower_dimen">24dp</dimen>
+    <dimen name="small_dimen">8dp</dimen>
+    <dimen name="icon_margin">8dp</dimen>
+    <dimen name="list_header_padding">12dp</dimen>
+    <dimen name="warning_padding">16dp</dimen>
+    <dimen name="index_view_size">48dp</dimen>
+    <dimen name="icon_size">48dp</dimen>
+</resources>

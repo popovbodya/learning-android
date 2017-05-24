@@ -85,7 +85,7 @@
                 android:drawableTop="@drawable/no_network_icon"
                 android:gravity="center"
                 android:padding="@dimen/warning_padding"
-                android:text="@string/error_unable_to_load"
+                android:text="@string/error_unable_to_load_repo"
                 android:textAppearance="@style/ListTitle" />
 
             <Button

@@ -3,6 +3,7 @@
     <string name="search_more_than_millions_users">search users..</string>
     <string name="search">search</string>
     <string name="error_unable_to_load">Unable to load users, please check your network connection</string>
+    <string name="error_unable_to_load_repo">Unable to load repositories, please check your network connection</string>
     <string name="button_try_again">Try again</string>
     <string name="no_users_found">No such users found</string>
     <string name="load_more">Load more users</string>

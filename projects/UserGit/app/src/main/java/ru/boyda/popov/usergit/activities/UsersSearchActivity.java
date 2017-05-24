@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +43,7 @@ public class UsersSearchActivity extends AppCompatActivity {
     private View errorLayout;
     private TextView noUsersTextView;
     private ListView listView;
+    private Button mSearchButton;
 
     private ArrayAdapter<String> autoCompleteAdapter;
     private UsersStorage usersStorage;
@@ -90,8 +94,10 @@ public class UsersSearchActivity extends AppCompatActivity {
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.auto_complete_text_view);
         autoCompleteAdapter = new ArrayAdapter<>(UsersSearchActivity.this, R.layout.dropdown_layout, searchValues);
         autoCompleteTextView.setAdapter(autoCompleteAdapter);
+        autoCompleteTextView.addTextChangedListener(new EditTextWatcherImpl());
 
-        Button mSearchButton = (Button) findViewById(R.id.search_button);
+        mSearchButton = (Button) findViewById(R.id.search_button);
+        mSearchButton.setEnabled(false);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +155,6 @@ public class UsersSearchActivity extends AppCompatActivity {
 
     private void showLoadedResult(boolean show) {
         listView.setVisibility(show ? View.VISIBLE : View.GONE);
-        Toast.makeText(this, "Users loaded", Toast.LENGTH_LONG).show();
     }
 
     private void showNoUsersFoundResult(boolean show) {
@@ -194,6 +199,25 @@ public class UsersSearchActivity extends AppCompatActivity {
 
         @Override
         public void onLoaderReset(Loader<LoadResult<User>> loader) {
+        }
+    }
+
+    private class EditTextWatcherImpl implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            boolean setEnabled = false;
+            if (!TextUtils.isEmpty(autoCompleteTextView.getText())) {
+                setEnabled = true;
+            }
+            mSearchButton.setEnabled(setEnabled);
         }
     }
 

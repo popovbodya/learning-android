@@ -45,7 +45,7 @@ public class UsersStorage {
     }
 
     public void notifyOnLoadMoreListeners() {
-        for (OnLoadMoreListener onLoadMoreListener: onLoadMoreListeners) {
+        for (OnLoadMoreListener onLoadMoreListener : onLoadMoreListeners) {
             onLoadMoreListener.onLoadMore();
         }
     }

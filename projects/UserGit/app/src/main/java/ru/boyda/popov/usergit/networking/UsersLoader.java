@@ -18,7 +18,6 @@ import ru.boyda.popov.usergit.storages.UsersStorage;
 
 public class UsersLoader extends AsyncTaskLoader<LoadResult<User>> implements OnLoadMoreListener {
 
-    private static final String TAG = "UsersLoader";
     private static final int DEFAULT_PAGE_NUMBER = 1;
 
     private LoadResult<User> cachedResult;
@@ -45,7 +44,6 @@ public class UsersLoader extends AsyncTaskLoader<LoadResult<User>> implements On
 
     @Override
     public void deliverResult(LoadResult<User> data) {
-        Log.e(TAG, "deliverResult with data: " + data);
         super.deliverResult(data);
         cachedResult = data;
     }
@@ -56,15 +54,12 @@ public class UsersLoader extends AsyncTaskLoader<LoadResult<User>> implements On
         String searchValue = usersStorage.getLastSearchValue();
 
         if (cachedResult != null && cachedResult.getSearchValue().equals(searchValue) && !addToCache && cachedResult.getException() == null) {
-            Log.e(TAG, "loadInBackground + used cached result");
             return new LoadResult<>(cachedResult);
         }
 
         try {
-            Log.e(TAG, "loadInBackground");
             response = getResponseWithSpecifiedValue(searchValue);
         } catch (IOException e) {
-            Log.e(TAG, "IO Exception in loadInBackground");
             return new LoadResult<>(searchValue, null, e);
         }
         if (addToCache) {

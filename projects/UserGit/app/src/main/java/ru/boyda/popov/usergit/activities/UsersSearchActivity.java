@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,8 @@ import ru.boyda.popov.usergit.networking.UsersLoader;
 public class UsersSearchActivity extends AppCompatActivity {
 
     private static final int USER_DOWNLOAD_ID = 0;
-    private static final String SEARCH_VALUES_KEY = "SearchValues";
+    private static final String SEARCH_VALUES_KEY = "search_values";
     private static final String USER_INDEX_KEY = "user_index";
-    private static final String TAG = "UsersSearchActivity";
 
     private AutoCompleteTextView autoCompleteTextView;
     private ProgressBar progressBar;
@@ -149,6 +149,7 @@ public class UsersSearchActivity extends AppCompatActivity {
 
     private void showLoadedResult(boolean show) {
         listView.setVisibility(show ? View.VISIBLE : View.GONE);
+        Toast.makeText(this, "Users loaded", Toast.LENGTH_LONG).show();
     }
 
     private void showNoUsersFoundResult(boolean show) {
@@ -173,7 +174,6 @@ public class UsersSearchActivity extends AppCompatActivity {
         @Override
         public void onLoadFinished(Loader<LoadResult<User>> loader, LoadResult<User> data) {
             showProgress(false);
-            Log.e(TAG, "onLoadFinished");
 
             if (data.getException() != null) {
                 showError(true);
@@ -181,7 +181,6 @@ public class UsersSearchActivity extends AppCompatActivity {
             }
 
             List<User> loadedList = data.getResult();
-            Log.e(TAG, "onLoadFinished with data size: " + loadedList.size());
             usersListAdapter.setUserList(loadedList);
             usersStorage.setUsersList(loadedList);
 

@@ -17,7 +17,6 @@ import ru.boyda.popov.usergit.storages.UsersStorage;
 
 public class RepoLoader extends AsyncTaskLoader<LoadResult<Repository>> {
 
-    private static final String TAG = "RepoLoader";
     private LoadResult<Repository> cachedResult;
     private UsersStorage usersStorage;
 
@@ -36,7 +35,6 @@ public class RepoLoader extends AsyncTaskLoader<LoadResult<Repository>> {
 
     @Override
     public void deliverResult(LoadResult<Repository> data) {
-        Log.e(TAG, "deliverResult with data: " + data);
         super.deliverResult(data);
         cachedResult = data;
     }
@@ -53,7 +51,6 @@ public class RepoLoader extends AsyncTaskLoader<LoadResult<Repository>> {
             ObjectMapper mapper = new ObjectMapper();
             repositoryList = Arrays.asList(mapper.readValue(url, Repository[].class));
         } catch (IOException e) {
-            Log.e(TAG, "IO Exception in loadInBackground");
             return new LoadResult<>(username, null, e);
         }
         return new LoadResult<>(username, repositoryList, null);

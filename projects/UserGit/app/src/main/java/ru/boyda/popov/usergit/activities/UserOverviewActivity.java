@@ -29,7 +29,6 @@ import ru.boyda.popov.usergit.storages.UsersStorage;
 
 public class UserOverviewActivity extends AppCompatActivity {
 
-    private static final String TAG = "UserOverviewActivity";
     private static final String USER_INDEX_KEY = "user_index";
     private static final int REPO_DOWNLOAD_ID = 0;
     private static final int IMAGE_DOWNLOAD_ID = 1;
@@ -40,8 +39,8 @@ public class UserOverviewActivity extends AppCompatActivity {
     private View errorLayout;
 
     private UsersStorage usersStorage;
-    private int userIndex;
     private RepoListAdapter repoListAdapter;
+    private int userIndex;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,15 +51,12 @@ public class UserOverviewActivity extends AppCompatActivity {
         usersStorage = usersStorageProvider.getUsersStorage();
 
         if (savedInstanceState == null) {
-            Log.e(TAG, "savedInstanceState == null");
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 userIndex = bundle.getInt(USER_INDEX_KEY);
                 usersStorage.setUserIndexInList(userIndex);
-                Log.e(TAG, "setUserIndexInList: " + userIndex);
             }
         } else {
-            Log.e(TAG, "restored from savedInstanceState");
             userIndex = savedInstanceState.getInt(USER_INDEX_KEY);
             usersStorage.setUserIndexInList(userIndex);
         }
@@ -140,7 +136,6 @@ public class UserOverviewActivity extends AppCompatActivity {
                 return;
             }
             List<Repository> loadedList = data.getResult();
-            Log.e(TAG, "onLoadFinished with repository data size: " + loadedList.size());
             repoListAdapter.setUserList(loadedList);
         }
 

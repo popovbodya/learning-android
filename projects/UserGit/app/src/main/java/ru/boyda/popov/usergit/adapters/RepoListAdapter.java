@@ -17,6 +17,7 @@ import ru.boyda.popov.usergit.pojo.Repository;
 public class RepoListAdapter extends BaseAdapter {
 
     private List<Repository> userList;
+    private static final int INDEX_HELPER = 1;
 
     @Override
     public int getCount() {
@@ -51,7 +52,7 @@ public class RepoListAdapter extends BaseAdapter {
         ViewHolder holder = (ViewHolder) currentView.getTag();
         Context context = currentView.getContext();
         Repository repository = getItem(position);
-        holder.index.setText(String.valueOf(position + 1));
+        holder.index.setText(String.valueOf(position + INDEX_HELPER));
         holder.repositoryName.setText(repository.getName());
         holder.size.setText(context.getString(R.string.repo_size, repository.getSize()));
         return currentView;

@@ -4,13 +4,17 @@ package ru.boyda.popov.usergit.networking;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 import ru.boyda.popov.usergit.storages.UsersStorage;
 
 public class ImageLoader extends AsyncTaskLoader<Drawable> {
+
+    private static final String SRC_NAME = "avatar";
 
     private Drawable cachedResult;
     private UsersStorage usersStorage;
@@ -37,12 +41,27 @@ public class ImageLoader extends AsyncTaskLoader<Drawable> {
     @Override
     public Drawable loadInBackground() {
 
-        String url = usersStorage.getUsersList().get(usersStorage.getUserIndexInList()).getAvatarUrl();
+        int index = usersStorage.getUserIndexInList();
+        String url = usersStorage.getUsersList().get(index).getAvatarUrl();
+        Drawable drawable = null;
+        InputStream is = null;
         try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            return Drawable.createFromStream(is, "src name");
-        } catch (Exception e) {
-            return null;
+            is = (InputStream) new URL(url).getContent();
+            drawable = Drawable.createFromStream(is, SRC_NAME);
+        } catch (Exception ignored) {
+        } finally {
+            closeStream(is);
+        }
+        return drawable;
+    }
+
+    private void closeStream(InputStream stream) {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

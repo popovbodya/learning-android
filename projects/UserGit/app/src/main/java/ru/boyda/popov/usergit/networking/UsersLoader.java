@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import ru.boyda.popov.usergit.interfaces.OnLoadMoreListener;
 import ru.boyda.popov.usergit.pojo.User;
@@ -19,6 +20,7 @@ import ru.boyda.popov.usergit.storages.UsersStorage;
 public class UsersLoader extends AsyncTaskLoader<LoadResult<User>> implements OnLoadMoreListener {
 
     private static final int DEFAULT_PAGE_NUMBER = 1;
+    private static final String API_QUERY_FORMAT = "https://api.github.com/search/users?q=%s&page=%d";
 
     private LoadResult<User> cachedResult;
     private UsersStorage usersStorage;
@@ -78,7 +80,8 @@ public class UsersLoader extends AsyncTaskLoader<LoadResult<User>> implements On
         } else {
             usersStorage.setPageCounter(DEFAULT_PAGE_NUMBER);
         }
-        URL url = new URL("https://api.github.com/search/users?q=" + value + "&page=" + usersStorage.getPageCounter());
+
+        URL url = new URL(String.format(Locale.ENGLISH, API_QUERY_FORMAT, value, usersStorage.getPageCounter()));
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(url, Response.class);
     }

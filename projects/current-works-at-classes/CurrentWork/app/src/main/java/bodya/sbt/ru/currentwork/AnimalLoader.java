@@ -2,12 +2,15 @@ package bodya.sbt.ru.currentwork;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import java.util.List;
 
 import bodya.sbt.ru.currentwork.interfaces.OnAnimalContentChangeListener;
 
 public class AnimalLoader extends AsyncTaskLoader<List<Animal>> implements OnAnimalContentChangeListener {
+
+    private static final String TAG = "AnimalLoader";
 
     private List<Animal> cachedResult;
     private AnimalStorage animalStorage;
@@ -20,6 +23,7 @@ public class AnimalLoader extends AsyncTaskLoader<List<Animal>> implements OnAni
 
     @Override
     protected void onStartLoading() {
+        Log.e(TAG, "onStartLoading:  " + getContext());
         super.onStartLoading();
         if ((cachedResult == null) || takeContentChanged()) {
             forceLoad();
@@ -34,6 +38,7 @@ public class AnimalLoader extends AsyncTaskLoader<List<Animal>> implements OnAni
 
     @Override
     public List<Animal> loadInBackground() {
+        Log.e(TAG, "loadInBackground:  " + getContext());
         return animalStorage.getAnimalList();
     }
 

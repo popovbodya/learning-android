@@ -24,6 +24,7 @@ import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
 public class AnimalsInfoActivity extends AppCompatActivity {
 
     private static final int ANIMAL_ID = 0;
+    private static final String TAG  = "AnimalsInfoActivity";
 
     private AnimalStorage animalStorage;
     private AnimalsAdapter adapter;
@@ -76,6 +77,7 @@ public class AnimalsInfoActivity extends AppCompatActivity {
 
         @Override
         public Loader<List<Animal>> onCreateLoader(int id, Bundle args) {
+            Log.e(TAG, "onCreateLoader with: " + AnimalsInfoActivity.this);
             return new AnimalLoader(AnimalsInfoActivity.this, animalStorage);
         }
 

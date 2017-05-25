@@ -1,6 +1,5 @@
 package bodya.sbt.ru.currentwork;
 
-
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 

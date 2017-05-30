@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NetworkService</string>
+    <string name="let_s_rock">Let\'s rock!</string>
+    <string name="notification_file_downloading">Файл загружается</string>
+</resources>

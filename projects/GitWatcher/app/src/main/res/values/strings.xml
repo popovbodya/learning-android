@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GitWatcher</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="add_user">Add user</string>
+    <string name="delete_user">Delete user</string>
+    <string name="user_list_interaction">User list interaction</string>
+    <string name="nav_header_icon">Navigation header icon</string>
+    <string name="username">user name</string>
+    <string name="login_error">username is empty</string>
+
+</resources>

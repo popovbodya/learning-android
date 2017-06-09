@@ -14,4 +14,6 @@
     <string name="weight_edit_text">Weight:</string>
     <string name="add_animal">add animal</string>
     <string name="animal_type_edit_text">Type:</string>
+    <string name="update_animal">update animal</string>
+    <string name="delete_animal">delete_animal</string>
 </resources>

@@ -49,7 +49,7 @@ public class AnimalLoader extends AsyncTaskLoader<List<Animal>> implements OnAni
     }
 
     @Override
-    public void onAnimalAdded(Animal animal) {
+    public void onContentChanged(Animal animal) {
         onContentChanged();
     }
 

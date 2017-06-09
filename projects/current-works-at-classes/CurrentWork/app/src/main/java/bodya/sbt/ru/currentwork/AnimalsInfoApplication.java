@@ -3,6 +3,8 @@ package bodya.sbt.ru.currentwork;
 
 import android.app.Application;
 
+import bodya.sbt.ru.currentwork.db.AnimalsDao;
+import bodya.sbt.ru.currentwork.db.SQLiteAnimalsDao;
 import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
 
 public class AnimalsInfoApplication extends Application implements AnimalsStorageProvider {
@@ -12,7 +14,8 @@ public class AnimalsInfoApplication extends Application implements AnimalsStorag
     @Override
     public void onCreate() {
         super.onCreate();
-        animalsStorage = new AnimalStorage();
+        AnimalsDao animalsDao = new SQLiteAnimalsDao(this);
+        animalsStorage = new AnimalStorage(animalsDao);
     }
 
     @Override

@@ -20,6 +20,13 @@ import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
 
 public class AddNewAnimalActivity extends AppCompatActivity {
 
+    private static final String NAME_KEY = "name_key";
+    private static final String AGE_KEY = "age_key";
+    private static final String WEIGHT_KEY = "weight_key";
+    private static final String HEIGHT_KEY = "height_key";
+    private static final String ID_KEY = "id_key";
+    private static final String TYPE_KEY = "type_key";
+
     private EditText ageEditText;
     private EditText heightEditText;
     private EditText weightEditText;
@@ -28,6 +35,7 @@ public class AddNewAnimalActivity extends AppCompatActivity {
     private Button addButton;
 
     private AnimalStorage animalStorage;
+    private boolean updateMode = false;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, AddNewAnimalActivity.class);
@@ -41,8 +49,8 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         AnimalsStorageProvider animalsStorageProvider = (AnimalsStorageProvider) getApplication();
         animalStorage = animalsStorageProvider.getAnimalsStorage();
 
-        ageEditText = (EditText) findViewById(R.id.age_edit_text);
         nameEditText = (EditText) findViewById(R.id.name_edit_text);
+        ageEditText = (EditText) findViewById(R.id.age_edit_text);
         weightEditText = (EditText) findViewById(R.id.weight_edit_text);
         heightEditText = (EditText) findViewById(R.id.height_edit_text);
 
@@ -57,18 +65,45 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAnimal();
+                if (updateMode) {
+                    updateAnimal();
+                } else {
+                    createAnimal();
+                }
             }
         });
+
+        if (getIntent().getExtras() != null) {
+            getDataFromExtras();
+            updateMode = true;
+        }
     }
 
-    private void createAnimal() {
+    private Animal createAnimalFromEditTexts() {
         int age = Integer.valueOf(ageEditText.getText().toString());
         int weight = Integer.valueOf(weightEditText.getText().toString());
         int height = Integer.valueOf(heightEditText.getText().toString());
         String name = nameEditText.getText().toString();
 
-        Animal animal = new Animal(name, age, weight, height);
+        return new Animal(name, age, weight, height);
+    }
+
+    private void fillNotEditableParams(Animal animal) {
+        Bundle bundle = getIntent().getExtras();
+        animal.setId(bundle.getLong(ID_KEY));
+        animal.setAnimalType(Animal.AnimalType.valueOf(bundle.getString(TYPE_KEY)));
+    }
+
+    private void updateAnimal() {
+        Animal animal = createAnimalFromEditTexts();
+        fillNotEditableParams(animal);
+        animalStorage.updateAnimal(animal);
+        updateMode = false;
+        finish();
+    }
+
+    private void createAnimal() {
+        Animal animal = createAnimalFromEditTexts();
         animalStorage.addAnimal(animal);
         finish();
     }
@@ -93,5 +128,13 @@ public class AddNewAnimalActivity extends AppCompatActivity {
             }
             addButton.setEnabled(setEnabled);
         }
+    }
+
+    private void getDataFromExtras() {
+        Bundle bundle = getIntent().getExtras();
+        nameEditText.setText(bundle.getString(NAME_KEY));
+        ageEditText.setText(String.valueOf(bundle.getInt(AGE_KEY)));
+        weightEditText.setText(String.valueOf(bundle.getInt(WEIGHT_KEY)));
+        heightEditText.setText(String.valueOf(bundle.getInt(HEIGHT_KEY)));
     }
 }

@@ -1,46 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp">
+    card_view:cardCornerRadius="@dimen/card_view_corner_dimen">
 
-    <TextView
-        android:id="@+id/name_text_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="name" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/age_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="age" />
+        <ImageView
+            android:id="@+id/animal_image"
+            android:layout_width="@dimen/image_width"
+            android:layout_height="@dimen/image_height"
+            android:layout_margin="@dimen/image_margin"
+            android:src="@drawable/animal" />
 
-    <TextView
-        android:id="@+id/animal_type_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="monkey" />
+        <LinearLayout
 
+            android:id="@+id/first_row"
+            android:layout_width="@dimen/first_row_max_width"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/animal_image"
+            android:layout_toRightOf="@id/animal_image"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-    <TextView
-        android:id="@+id/weight_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="weight" />
+            <TextView
+                android:id="@+id/name_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:text="name" />
 
-    <TextView
-        android:id="@+id/height_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text="height" />
+            <TextView
+                android:id="@+id/age_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:text="age" />
 
+            <TextView
 
-</LinearLayout>
+                android:id="@+id/animal_type_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:text="monkey" />
+
+            <TextView
+                android:id="@+id/weight_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:text="weight" />
+
+            <TextView
+                android:id="@+id/height_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:text="height" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

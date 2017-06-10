@@ -49,7 +49,7 @@ public class AnimalStorage {
         onContentChangeListeners.remove(listener);
     }
 
-    private void notifyAllOnContentListeners(Animal animal) {
+    public void notifyAllOnContentListeners(Animal animal) {
         for (OnAnimalContentChangeListener listener : onContentChangeListeners) {
             listener.onContentChanged(animal);
         }

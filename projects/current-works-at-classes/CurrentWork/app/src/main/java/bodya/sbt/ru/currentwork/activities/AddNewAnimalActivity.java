@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,20 +21,16 @@ import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
 
 public class AddNewAnimalActivity extends AppCompatActivity {
 
-    private static final String NAME_KEY = "name_key";
-    private static final String AGE_KEY = "age_key";
-    private static final String WEIGHT_KEY = "weight_key";
-    private static final String HEIGHT_KEY = "height_key";
-    private static final String ID_KEY = "id_key";
-    private static final String TYPE_KEY = "type_key";
+    private static final String ANIMAL_KEY = "animal_key";
 
-    private EditText ageEditText;
-    private EditText heightEditText;
-    private EditText weightEditText;
-    private EditText nameEditText;
-    private EditText[] editTexts;
+    private TextInputEditText ageEditText;
+    private TextInputEditText heightEditText;
+    private TextInputEditText weightEditText;
+    private TextInputEditText nameEditText;
+    private TextInputEditText[] editTexts;
     private Button addButton;
 
+    private Animal cachedAnimal;
     private AnimalStorage animalStorage;
     private boolean updateMode = false;
 
@@ -49,16 +46,16 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         AnimalsStorageProvider animalsStorageProvider = (AnimalsStorageProvider) getApplication();
         animalStorage = animalsStorageProvider.getAnimalsStorage();
 
-        nameEditText = (EditText) findViewById(R.id.name_edit_text);
-        ageEditText = (EditText) findViewById(R.id.age_edit_text);
-        weightEditText = (EditText) findViewById(R.id.weight_edit_text);
-        heightEditText = (EditText) findViewById(R.id.height_edit_text);
+        nameEditText = (TextInputEditText) findViewById(R.id.name_edit_text);
+        ageEditText = (TextInputEditText) findViewById(R.id.age_edit_text);
+        weightEditText = (TextInputEditText) findViewById(R.id.weight_edit_text);
+        heightEditText = (TextInputEditText) findViewById(R.id.height_edit_text);
 
         addButton = (Button) findViewById(R.id.add_animal_button);
 
-        editTexts = new EditText[]{ageEditText, nameEditText, weightEditText, heightEditText};
+        editTexts = new TextInputEditText[]{ageEditText, nameEditText, weightEditText, heightEditText};
 
-        for (EditText editText : editTexts) {
+        for (TextInputEditText editText : editTexts) {
             editText.addTextChangedListener(new EditTextWatcherImpl());
         }
 
@@ -74,39 +71,47 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         });
 
         if (getIntent().getExtras() != null) {
+            addButton.setText(getResources().getString(R.string.update_animal_upper_case));
             getDataFromExtras();
             updateMode = true;
         }
     }
 
-    private Animal createAnimalFromEditTexts() {
+    private void updateCachedAnimal() {
+        String name = nameEditText.getText().toString();
         int age = Integer.valueOf(ageEditText.getText().toString());
         int weight = Integer.valueOf(weightEditText.getText().toString());
         int height = Integer.valueOf(heightEditText.getText().toString());
-        String name = nameEditText.getText().toString();
 
-        return new Animal(name, age, weight, height);
+        cachedAnimal.setName(name);
+        cachedAnimal.setAge(age);
+        cachedAnimal.setWeight(weight);
+        cachedAnimal.setHeight(height);
+
     }
 
-    private void fillNotEditableParams(Animal animal) {
-        Bundle bundle = getIntent().getExtras();
-        animal.setId(bundle.getLong(ID_KEY));
-        animal.setAnimalType(Animal.AnimalType.valueOf(bundle.getString(TYPE_KEY)));
-    }
 
     private void updateAnimal() {
-        Animal animal = createAnimalFromEditTexts();
-        fillNotEditableParams(animal);
-        animalStorage.updateAnimal(animal);
+        if (cachedAnimal == null) {
+            createAnimal();
+        }
+        updateCachedAnimal();
+        animalStorage.updateAnimal(cachedAnimal);
         updateMode = false;
         finish();
     }
 
     private void createAnimal() {
-        Animal animal = createAnimalFromEditTexts();
-        animalStorage.addAnimal(animal);
+        String name = nameEditText.getText().toString();
+        int age = Integer.valueOf(ageEditText.getText().toString());
+        int weight = Integer.valueOf(weightEditText.getText().toString());
+        int height = Integer.valueOf(heightEditText.getText().toString());
+
+        cachedAnimal = new Animal(name, age, weight, height);
+        animalStorage.addAnimal(cachedAnimal);
         finish();
     }
+
 
     private class EditTextWatcherImpl implements TextWatcher {
         @Override
@@ -132,9 +137,13 @@ public class AddNewAnimalActivity extends AppCompatActivity {
 
     private void getDataFromExtras() {
         Bundle bundle = getIntent().getExtras();
-        nameEditText.setText(bundle.getString(NAME_KEY));
-        ageEditText.setText(String.valueOf(bundle.getInt(AGE_KEY)));
-        weightEditText.setText(String.valueOf(bundle.getInt(WEIGHT_KEY)));
-        heightEditText.setText(String.valueOf(bundle.getInt(HEIGHT_KEY)));
+        cachedAnimal = bundle.getParcelable(ANIMAL_KEY);
+        if (cachedAnimal == null) {
+            return;
+        }
+        nameEditText.setText(cachedAnimal.getName());
+        ageEditText.setText(String.valueOf(cachedAnimal.getAge()));
+        weightEditText.setText(String.valueOf(cachedAnimal.getWeight()));
+        heightEditText.setText(String.valueOf(cachedAnimal.getHeight()));
     }
 }

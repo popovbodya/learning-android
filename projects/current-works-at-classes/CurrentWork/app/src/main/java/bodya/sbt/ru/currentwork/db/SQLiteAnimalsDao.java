@@ -18,10 +18,10 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
     private static final String TAG = SQLiteAnimalsDao.class.getName();
 
     private static final String NAME = "animals.db";
-    private static final long NO_ID = -1;
     private static final short ROW_UPDATE_STATUS = 0;
     private static final short ROW_COUNT_UPDATED = 0;
     private static final int CURRENT_VERSION = 1;
+    private static final long NO_ID = -1;
 
     public static final String TABLE_NAME = "animals";
 
@@ -57,7 +57,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            ContentValues values = createValuesFromAnimal(animal);
+            ContentValues values = DaoUtils.createValuesFromAnimal(animal);
             id = db.insert(TABLE_NAME, null, values);
             db.setTransactionSuccessful();
         } finally {
@@ -77,7 +77,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
             animals = new ArrayList<>();
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                animals.add(createAnimal(cursor));
+                animals.add(DaoUtils.createAnimal(cursor));
                 cursor.moveToNext();
             }
         } finally {
@@ -95,11 +95,10 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         Cursor cursor = null;
         SQLiteDatabase db = getReadableDatabase();
         try {
-            cursor = db.query(TABLE_NAME, null, AnimalsContract.Animal._ID + "=" + id, null, null, null, null
-            );
+            cursor = db.query(TABLE_NAME, null, AnimalsContract.Animal._ID + "=" + id, null, null, null, null);
             cursor.moveToFirst();
             if (cursor.isFirst()) {
-                animal = createAnimal(cursor);
+                animal = DaoUtils.createAnimal(cursor);
             }
         } finally {
             if (cursor != null) {
@@ -116,7 +115,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            rowUpdated = db.update(TABLE_NAME, createValuesFromAnimal(animal), AnimalsContract.Animal._ID + " = " + animal.getId(), null);
+            rowUpdated = db.update(TABLE_NAME, DaoUtils.createValuesFromAnimal(animal), AnimalsContract.Animal._ID + " = " + animal.getId(), null);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -140,36 +139,5 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         return isAnimalDeleted;
     }
 
-    private static Animal createAnimal(Cursor cursor) {
-        Animal animal = new Animal();
-        animal.setId(getLong(cursor, AnimalsContract.Animal._ID));
-        animal.setName(getString(cursor, AnimalsContract.Animal.NAME));
-        animal.setAge(getInt(cursor, AnimalsContract.Animal.AGE));
-        animal.setAnimalType(bodya.sbt.ru.currentwork.Animal.AnimalType.valueOf(getString(cursor, AnimalsContract.Animal.TYPE)));
-        animal.setWeight(getInt(cursor, AnimalsContract.Animal.WEIGHT));
-        animal.setHeight(getInt(cursor, AnimalsContract.Animal.HEIGHT));
-        return animal;
-    }
 
-    private static ContentValues createValuesFromAnimal(Animal animal) {
-        ContentValues values = new ContentValues();
-        values.put(AnimalsContract.Animal.NAME, animal.getName());
-        values.put(AnimalsContract.Animal.AGE, animal.getAge());
-        values.put(AnimalsContract.Animal.TYPE, animal.getAnimalType().toString());
-        values.put(AnimalsContract.Animal.WEIGHT, animal.getWeight());
-        values.put(AnimalsContract.Animal.HEIGHT, animal.getHeight());
-        return values;
-    }
-
-    private static long getLong(Cursor cursor, String columnName) {
-        return cursor.getLong(cursor.getColumnIndex(columnName));
-    }
-
-    private static String getString(Cursor cursor, String columnName) {
-        return cursor.getString(cursor.getColumnIndex(columnName));
-    }
-
-    private static int getInt(Cursor cursor, String columnName) {
-        return cursor.getInt(cursor.getColumnIndex(columnName));
-    }
 }

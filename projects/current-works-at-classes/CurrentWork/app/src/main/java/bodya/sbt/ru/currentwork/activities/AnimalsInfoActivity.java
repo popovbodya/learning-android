@@ -2,6 +2,7 @@ package bodya.sbt.ru.currentwork.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -28,16 +27,9 @@ public class AnimalsInfoActivity extends AppCompatActivity {
 
     private static final int ANIMAL_ID = 0;
     private static final String TAG = "AnimalsInfoActivity";
-
     private static final String DELETE_STATUS = "delete_status";
     private static final String UPDATE_STATUS = "update_status";
-
-    private static final String NAME_KEY = "name_key";
-    private static final String AGE_KEY = "age_key";
-    private static final String WEIGHT_KEY = "weight_key";
-    private static final String HEIGHT_KEY = "height_key";
-    private static final String ID_KEY = "id_key";
-    private static final String TYPE_KEY = "type_key";
+    private static final String ANIMAL_KEY = "animal_key";
 
     private AnimalStorage animalStorage;
     private AnimalsAdapter adapter;
@@ -73,14 +65,9 @@ public class AnimalsInfoActivity extends AppCompatActivity {
                 if (updateStatus) {
                     Log.e(TAG, "onItemClick with updateMode: " + animal.getName());
                     Intent intent = AddNewAnimalActivity.newIntent(AnimalsInfoActivity.this);
-                    intent.putExtra(NAME_KEY, animal.getName());
-                    intent.putExtra(AGE_KEY, animal.getAge());
-                    intent.putExtra(WEIGHT_KEY, animal.getWeight());
-                    intent.putExtra(HEIGHT_KEY, animal.getHeight());
-                    intent.putExtra(ID_KEY, animal.getId());
-                    intent.putExtra(TYPE_KEY, animal.getAnimalType().toString());
+                    intent.putExtra(ANIMAL_KEY, (Parcelable) animal);
                     startActivity(intent);
-                    deleteStatus = false;
+                    updateStatus = false;
                 }
 
             }
@@ -134,6 +121,7 @@ public class AnimalsInfoActivity extends AppCompatActivity {
             deleteStatus = false;
         }
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

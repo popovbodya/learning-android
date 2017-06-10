@@ -10,10 +10,12 @@
     <string name="name_edit_text">Name:</string>
     <string name="height_edit_text">Height:</string>
     <string name="add_new_animal">Add new Animal</string>
+    <string name="update_animal_upper_case">Update Animal</string>
     <string name="age_edit_text">Age:</string>
     <string name="weight_edit_text">Weight:</string>
     <string name="add_animal">add animal</string>
     <string name="animal_type_edit_text">Type:</string>
     <string name="update_animal">update animal</string>
     <string name="delete_animal">delete_animal</string>
+    <string name="change_mode_on">Change Mode On</string>
 </resources>

@@ -1,10 +1,20 @@
 package bodya.sbt.ru.currentwork;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class Animal implements Serializable {
+public class Animal implements Serializable, Parcelable {
 
-    public enum AnimalType {
+    private String name;
+    private AnimalType animalType;
+    private int weight;
+    private int height;
+    private int age;
+    private long id;
+
+    public enum AnimalType implements Serializable {
         Dog,
         Cat,
         Cow,
@@ -14,13 +24,6 @@ public class Animal implements Serializable {
         Owl,
         Monkey
     }
-
-    private String name;
-    private AnimalType animalType;
-    private int weight;
-    private int height;
-    private int age;
-    private long id;
 
     public Animal() {
     }
@@ -33,8 +36,40 @@ public class Animal implements Serializable {
         this.animalType = getRandomType();
     }
 
-    public String getRandomAnimalType() {
-        return getRandomType().toString();
+    protected Animal(Parcel in) {
+        name = in.readString();
+        weight = in.readInt();
+        height = in.readInt();
+        age = in.readInt();
+        id = in.readLong();
+        animalType = (AnimalType) in.readSerializable();
+    }
+
+    public static final Creator<Animal> CREATOR = new Creator<Animal>() {
+        @Override
+        public Animal createFromParcel(Parcel in) {
+            return new Animal(in);
+        }
+
+        @Override
+        public Animal[] newArray(int size) {
+            return new Animal[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeInt(weight);
+        dest.writeInt(height);
+        dest.writeInt(age);
+        dest.writeLong(id);
+        dest.writeSerializable(animalType);
     }
 
     public String getName() {

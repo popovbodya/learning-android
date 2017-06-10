@@ -5,14 +5,19 @@
     android:layout_margin="10dp"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/layout_for_fragment"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         tools:listitem="@layout/animal_list_item"/>
-
-
-
 
 </LinearLayout>

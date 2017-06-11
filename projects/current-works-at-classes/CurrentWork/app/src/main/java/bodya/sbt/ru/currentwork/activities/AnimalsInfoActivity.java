@@ -1,10 +1,8 @@
 package bodya.sbt.ru.currentwork.activities;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,69 +10,110 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import bodya.sbt.ru.currentwork.Animal;
-import bodya.sbt.ru.currentwork.AnimalLoader;
+import bodya.sbt.ru.currentwork.AnimalsInfoApplication;
 import bodya.sbt.ru.currentwork.AnimalStorage;
 import bodya.sbt.ru.currentwork.AnimalsAdapter;
 import bodya.sbt.ru.currentwork.R;
-import bodya.sbt.ru.currentwork.interfaces.AnimalsStorageProvider;
+import bodya.sbt.ru.currentwork.async.DataBaseLoaderFunctions;
+import bodya.sbt.ru.currentwork.async.DataBaseWorker;
+import bodya.sbt.ru.currentwork.interfaces.DataBaseLoaderProvider;
 
 
-public class AnimalsInfoActivity extends AppCompatActivity {
+public class AnimalsInfoActivity extends AppCompatActivity implements DataBaseWorker.LoaderCallback {
 
-    private static final int ANIMAL_ID = 0;
     private static final String TAG = "AnimalsInfoActivity";
-    private static final String DELETE_STATUS = "delete_status";
-    private static final String UPDATE_STATUS = "update_status";
     private static final String ANIMAL_KEY = "animal_key";
+    private static final String EDIT_MODE_KEY = "edit_mode_key";
+
+    private TextView modeTextView;
 
     private AnimalStorage animalStorage;
     private AnimalsAdapter adapter;
+    private DataBaseWorker dataBaseWorker;
+    private EditMode editMode;
 
-    private boolean deleteStatus = false;
-    private boolean updateStatus = false;
+    private enum EditMode implements Serializable {
+        Update,
+        Delete,
+        View
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState != null) {
-            deleteStatus = savedInstanceState.getBoolean(DELETE_STATUS);
-            updateStatus = savedInstanceState.getBoolean(UPDATE_STATUS);
-        }
+        Application application = getApplication();
 
-        AnimalsStorageProvider animalsStorageProvider = (AnimalsStorageProvider) getApplication();
-        animalStorage = animalsStorageProvider.getAnimalsStorage();
+        animalStorage = ((AnimalsInfoApplication) application).getAnimalsStorage();
+
+        DataBaseLoaderProvider dataBaseLoaderProvider = (DataBaseLoaderProvider) application;
+        dataBaseWorker = dataBaseLoaderProvider.getDataBaseWorker();
+        dataBaseWorker.setListener(this);
 
         adapter = new AnimalsAdapter();
+
+        if (savedInstanceState != null) {
+            editMode = (EditMode) savedInstanceState.getSerializable(EDIT_MODE_KEY);
+            getCachedData();
+        } else {
+            dataBaseWorker.queueTask(DataBaseLoaderFunctions.READ_USERS);
+        }
+
+        modeTextView = (TextView) findViewById(R.id.text_view_mode);
+
+
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Animal animal = adapter.getItem(position);
-                if (deleteStatus) {
+                if (editMode == EditMode.Delete) {
                     Log.e(TAG, "onItemClick with deleteMode: " + animal.getName());
-                    animalStorage.deleteAnimal(animal);
-                    deleteStatus = false;
+                    dataBaseWorker.queueTask(DataBaseLoaderFunctions.DELETE_USER, animal);
                 }
-                if (updateStatus) {
+                if (editMode == EditMode.Update) {
                     Log.e(TAG, "onItemClick with updateMode: " + animal.getName());
                     Intent intent = AddNewAnimalActivity.newIntent(AnimalsInfoActivity.this);
-                    intent.putExtra(ANIMAL_KEY, (Parcelable) animal);
+                    intent.putExtra(ANIMAL_KEY, animal);
                     startActivity(intent);
-                    updateStatus = false;
                 }
-
             }
         });
-
-        getSupportLoaderManager().initLoader(ANIMAL_ID, null, new AnimalLoaderCallbacks());
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (editMode == null) {
+            return;
+        }
+        switch (editMode) {
+            case View:
+                modeTextView.setText(getResources().getString(R.string.view_mode));
+                break;
+            case Delete:
+                modeTextView.setText(getResources().getString(R.string.delete_mode));
+                break;
+            case Update:
+                modeTextView.setText(getResources().getString(R.string.update_mode));
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "onDestroy");
+        dataBaseWorker.setListener(null);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,66 +125,48 @@ public class AnimalsInfoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean handled = false;
         switch (item.getItemId()) {
+            case R.id.observe_animals: {
+                editMode = EditMode.View;
+                modeTextView.setText(getResources().getString(R.string.view_mode));
+                break;
+            }
             case R.id.add_animal_menu_item: {
                 startActivity(AddNewAnimalActivity.newIntent(this));
                 break;
             }
             case R.id.update_animal: {
-                updateStatus = true;
-                reverseDeleteStatus();
+                editMode = EditMode.Update;
+                modeTextView.setText(getResources().getString(R.string.update_mode));
                 break;
             }
-
             case R.id.delete_animal: {
-                deleteStatus = true;
-                reverseUpdateStatus();
+                editMode = EditMode.Delete;
+                modeTextView.setText(getResources().getString(R.string.delete_mode));
                 break;
             }
             default: {
                 handled = super.onOptionsItemSelected(item);
-                reverseDeleteStatus();
-                reverseUpdateStatus();
             }
         }
         return handled;
     }
 
-    private void reverseUpdateStatus() {
-        if (updateStatus) {
-            updateStatus = false;
-        }
-    }
-
-    private void reverseDeleteStatus() {
-        if (deleteStatus) {
-            deleteStatus = false;
-        }
+    private void getCachedData() {
+        Log.e(TAG, "getCachedData");
+        adapter.setAnimals(animalStorage.getCachedAnimalList());
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(DELETE_STATUS, deleteStatus);
-        outState.putBoolean(UPDATE_STATUS, updateStatus);
+        outState.putSerializable(EDIT_MODE_KEY, editMode);
     }
 
-    private class AnimalLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<Animal>> {
-
-        @Override
-        public Loader<List<Animal>> onCreateLoader(int id, Bundle args) {
-            Log.e(TAG, "onCreateLoader with: " + AnimalsInfoActivity.this);
-            return new AnimalLoader(AnimalsInfoActivity.this, animalStorage);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<List<Animal>> loader, List<Animal> data) {
-            Log.e(TAG, "onLoadFinished");
-            adapter.setAnimals(data);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<List<Animal>> loader) {
-        }
+    @Override
+    public void onLoadFinished(List<Animal> data) {
+        Log.e(TAG, "onLoadFinished in AnimalsActivity");
+        adapter.setAnimals(data);
     }
+
 }

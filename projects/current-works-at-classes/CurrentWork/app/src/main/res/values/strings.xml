@@ -13,9 +13,13 @@
     <string name="update_animal_upper_case">Update Animal</string>
     <string name="age_edit_text">Age:</string>
     <string name="weight_edit_text">Weight:</string>
-    <string name="add_animal">add animal</string>
+    <string name="add_animal">Add</string>
     <string name="animal_type_edit_text">Type:</string>
-    <string name="update_animal">update animal</string>
-    <string name="delete_animal">delete_animal</string>
+    <string name="update_animal">Update</string>
+    <string name="delete_animal">Delete</string>
     <string name="change_mode_on">Change Mode On</string>
+    <string name="view_mode">View Mode</string>
+    <string name="update_mode">Update Mode</string>
+    <string name="delete_mode">Delete Mode</string>
+    <string name="observe_animals">Observe</string>
 </resources>

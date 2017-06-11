@@ -2,6 +2,7 @@ package bodya.sbt.ru.currentwork;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,8 +58,11 @@ public class AnimalsAdapter extends BaseAdapter {
     }
 
     public void setAnimals(List<Animal> animals) {
+        Log.e("adapter", "setAnimals");
         animalList.clear();
-        animalList.addAll(animals);
+        if (animals != null) {
+            animalList.addAll(animals);
+        }
         notifyDataSetChanged();
     }
 

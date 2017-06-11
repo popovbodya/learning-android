@@ -17,19 +17,18 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
 
     private static final String TAG = SQLiteAnimalsDao.class.getName();
 
+    private static final String TABLE_NAME = "animals";
     private static final String NAME = "animals.db";
     private static final short ROW_UPDATE_STATUS = 0;
     private static final short ROW_COUNT_UPDATED = 0;
     private static final int CURRENT_VERSION = 1;
     private static final long NO_ID = -1;
 
-    public static final String TABLE_NAME = "animals";
-
     public SQLiteAnimalsDao(Context context) {
         this(context, NAME, CURRENT_VERSION);
     }
 
-    public SQLiteAnimalsDao(Context context, String name, int version) {
+    private SQLiteAnimalsDao(Context context, String name, int version) {
         super(context, name, null, version, null);
     }
 
@@ -57,7 +56,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            ContentValues values = DaoUtils.createValuesFromAnimal(animal);
+            ContentValues values = AnimalsDaoHelper.createValuesFromAnimal(animal);
             id = db.insert(TABLE_NAME, null, values);
             db.setTransactionSuccessful();
         } finally {
@@ -77,7 +76,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
             animals = new ArrayList<>();
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                animals.add(DaoUtils.createAnimal(cursor));
+                animals.add(AnimalsDaoHelper.createAnimal(cursor));
                 cursor.moveToNext();
             }
         } finally {
@@ -96,9 +95,8 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         SQLiteDatabase db = getReadableDatabase();
         try {
             cursor = db.query(TABLE_NAME, null, AnimalsContract.Animal._ID + "=" + id, null, null, null, null);
-            cursor.moveToFirst();
-            if (cursor.isFirst()) {
-                animal = DaoUtils.createAnimal(cursor);
+            if (cursor.moveToFirst()) {
+                animal = AnimalsDaoHelper.createAnimal(cursor);
             }
         } finally {
             if (cursor != null) {
@@ -115,7 +113,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            rowUpdated = db.update(TABLE_NAME, DaoUtils.createValuesFromAnimal(animal), AnimalsContract.Animal._ID + " = " + animal.getId(), null);
+            rowUpdated = db.update(TABLE_NAME, AnimalsDaoHelper.createValuesFromAnimal(animal), AnimalsContract.Animal._ID + "=" + animal.getId(), null);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -130,7 +128,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            isAnimalDeleted = db.delete(TABLE_NAME, AnimalsContract.Animal._ID + " = " + animal.getId(), null);
+            isAnimalDeleted = db.delete(TABLE_NAME, AnimalsContract.Animal._ID + "=" + animal.getId(), null);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -138,6 +136,5 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         }
         return isAnimalDeleted;
     }
-
 
 }

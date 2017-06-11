@@ -5,13 +5,16 @@
     android:layout_margin="10dp"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/layout_for_fragment"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/text_view_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:gravity="center"
+        android:text="@string/view_mode"
+        android:layout_margin="@dimen/card_view_margin"
+        />
 
     <ListView
         android:id="@+id/list_view"

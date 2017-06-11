@@ -1,11 +1,8 @@
 package bodya.sbt.ru.currentwork;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
-public class Animal implements Serializable, Parcelable {
+public class Animal implements Serializable {
 
     private String name;
     private AnimalType animalType;
@@ -36,41 +33,6 @@ public class Animal implements Serializable, Parcelable {
         this.animalType = getRandomType();
     }
 
-    protected Animal(Parcel in) {
-        name = in.readString();
-        weight = in.readInt();
-        height = in.readInt();
-        age = in.readInt();
-        id = in.readLong();
-        animalType = (AnimalType) in.readSerializable();
-    }
-
-    public static final Creator<Animal> CREATOR = new Creator<Animal>() {
-        @Override
-        public Animal createFromParcel(Parcel in) {
-            return new Animal(in);
-        }
-
-        @Override
-        public Animal[] newArray(int size) {
-            return new Animal[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeInt(weight);
-        dest.writeInt(height);
-        dest.writeInt(age);
-        dest.writeLong(id);
-        dest.writeSerializable(animalType);
-    }
 
     public String getName() {
         return name;

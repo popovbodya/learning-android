@@ -1,6 +1,8 @@
 package bodya.sbt.ru.currentwork;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +11,11 @@ import bodya.sbt.ru.currentwork.interfaces.OnAnimalContentChangeListener;
 
 public class AnimalStorage {
 
+    private static final String TAG = "AnimalStorage";
+
     private final AnimalsDao animalsDao;
     private final List<OnAnimalContentChangeListener> onContentChangeListeners;
+    private List<Animal> cachedAnimalList;
 
     public AnimalStorage(AnimalsDao animalsDao) {
         this.animalsDao = animalsDao;
@@ -18,23 +23,29 @@ public class AnimalStorage {
     }
 
     public List<Animal> getAnimalList() {
-        return animalsDao.getAnimals();
+        Log.e(TAG, "getAnimalList");
+        cachedAnimalList = animalsDao.getAnimals();
+        notifyAllOnContentListeners(cachedAnimalList);
+        return cachedAnimalList;
     }
 
     public void addAnimal(Animal animal) {
         animalsDao.insertAnimal(animal);
-        notifyAllOnContentListeners(animal);
-
+        getAnimalList();
     }
 
     public void deleteAnimal(Animal animal) {
         animalsDao.deleteAnimal(animal);
-        notifyAllOnContentListeners(animal);
+        getAnimalList();
     }
 
     public void updateAnimal(Animal animal) {
         animalsDao.updateAnimal(animal);
-        notifyAllOnContentListeners(animal);
+        getAnimalList();
+    }
+
+    public List<Animal> getCachedAnimalList() {
+        return cachedAnimalList;
     }
 
     public Animal getAnimalByID(long animalId) {
@@ -49,9 +60,9 @@ public class AnimalStorage {
         onContentChangeListeners.remove(listener);
     }
 
-    public void notifyAllOnContentListeners(Animal animal) {
+    private void notifyAllOnContentListeners(List<Animal> loadedList) {
         for (OnAnimalContentChangeListener listener : onContentChangeListeners) {
-            listener.onContentChanged(animal);
+            listener.onContentChanged(loadedList);
         }
     }
 

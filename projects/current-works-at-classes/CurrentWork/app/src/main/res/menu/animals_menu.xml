@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <item
+        android:id="@+id/observe_animals"
+        android:title="@string/observe_animals" />
+
     <item
         android:id="@+id/add_animal_menu_item"
-        android:title="@string/add_animal"/>
+        android:title="@string/add_animal" />
 
     <item
         android:id="@+id/update_animal"
-        android:title="@string/update_animal"/>
-
+        android:title="@string/update_animal" />
 
     <item
         android:id="@+id/delete_animal"
-        android:title="@string/delete_animal"/>
+        android:title="@string/delete_animal" />
 
 </menu>

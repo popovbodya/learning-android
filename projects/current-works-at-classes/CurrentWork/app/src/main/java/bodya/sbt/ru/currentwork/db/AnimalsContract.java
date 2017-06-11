@@ -3,7 +3,7 @@ package bodya.sbt.ru.currentwork.db;
 
 import android.provider.BaseColumns;
 
-public class AnimalsContract {
+class AnimalsContract {
 
     public static class Animal implements BaseColumns {
 

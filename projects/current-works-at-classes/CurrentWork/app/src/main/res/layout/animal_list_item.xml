@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="@dimen/card_view_margin"
     card_view:cardCornerRadius="@dimen/card_view_corner_dimen">
 
     <RelativeLayout
@@ -14,7 +15,11 @@
             android:id="@+id/animal_image"
             android:layout_width="@dimen/image_width"
             android:layout_height="@dimen/image_height"
-            android:layout_margin="@dimen/image_margin"
+            android:layout_marginEnd="@dimen/image_left_right_margin"
+            android:layout_marginLeft="@dimen/image_left_right_margin"
+            android:layout_marginRight="@dimen/image_left_right_margin"
+            android:layout_marginStart="@dimen/image_left_right_margin"
+            android:layout_marginTop="@dimen/image_top_margin"
             android:src="@drawable/animal" />
 
         <LinearLayout
@@ -32,14 +37,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 tools:text="name" />
 
             <TextView
                 android:id="@+id/age_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 tools:text="age" />
 
             <TextView
@@ -47,21 +52,21 @@
                 android:id="@+id/animal_type_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 tools:text="monkey" />
 
             <TextView
                 android:id="@+id/weight_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 tools:text="weight" />
 
             <TextView
                 android:id="@+id/height_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 tools:text="height" />
 
         </LinearLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CurrentWork</string>
+    <string name="app_name">Animal Watcher</string>
     <string name="update">Update</string>
     <string name="weight">Weight: %d</string>
     <string name="height">Height: %d</string>

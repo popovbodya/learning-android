@@ -25,23 +25,24 @@ public class AnimalStorage {
     public List<Animal> getAnimalList() {
         Log.e(TAG, "getAnimalList");
         cachedAnimalList = animalsDao.getAnimals();
-        notifyAllOnContentListeners(cachedAnimalList);
         return cachedAnimalList;
     }
 
     public void addAnimal(Animal animal) {
         animalsDao.insertAnimal(animal);
-        getAnimalList();
+        notifyAllOnContentListeners();
     }
 
     public void deleteAnimal(Animal animal) {
         animalsDao.deleteAnimal(animal);
-        getAnimalList();
+        notifyAllOnContentListeners();
     }
 
     public void updateAnimal(Animal animal) {
-        animalsDao.updateAnimal(animal);
-        getAnimalList();
+        if (!cachedAnimalList.contains(animal)) {
+            animalsDao.updateAnimal(animal);
+            notifyAllOnContentListeners();
+        }
     }
 
     public List<Animal> getCachedAnimalList() {
@@ -60,9 +61,9 @@ public class AnimalStorage {
         onContentChangeListeners.remove(listener);
     }
 
-    private void notifyAllOnContentListeners(List<Animal> loadedList) {
+    private void notifyAllOnContentListeners() {
         for (OnAnimalContentChangeListener listener : onContentChangeListeners) {
-            listener.onContentChanged(loadedList);
+            listener.onContentChanged();
         }
     }
 

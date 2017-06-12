@@ -25,9 +25,10 @@ class AnimalsDaoHelper {
         animal.setId(AnimalsDaoHelper.getLong(cursor, AnimalsContract.Animal._ID));
         animal.setName(AnimalsDaoHelper.getString(cursor, AnimalsContract.Animal.NAME));
         animal.setAge(AnimalsDaoHelper.getInt(cursor, AnimalsContract.Animal.AGE));
-        animal.setAnimalType(Animal.AnimalType.valueOf(AnimalsDaoHelper.getString(cursor, AnimalsContract.Animal.TYPE)));
         animal.setWeight(AnimalsDaoHelper.getInt(cursor, AnimalsContract.Animal.WEIGHT));
         animal.setHeight(AnimalsDaoHelper.getInt(cursor, AnimalsContract.Animal.HEIGHT));
+        int index = AnimalsDaoHelper.getInt(cursor, AnimalsContract.Animal.TYPE);
+        animal.setAnimalType(Animal.AnimalType.values()[index]);
         return animal;
     }
 
@@ -35,7 +36,7 @@ class AnimalsDaoHelper {
         ContentValues values = new ContentValues();
         values.put(AnimalsContract.Animal.NAME, animal.getName());
         values.put(AnimalsContract.Animal.AGE, animal.getAge());
-        values.put(AnimalsContract.Animal.TYPE, animal.getAnimalType().toString());
+        values.put(AnimalsContract.Animal.TYPE, animal.getAnimalType().ordinal());
         values.put(AnimalsContract.Animal.WEIGHT, animal.getWeight());
         values.put(AnimalsContract.Animal.HEIGHT, animal.getHeight());
         return values;

@@ -31,7 +31,7 @@ public class DataBaseWorker extends HandlerThread implements OnAnimalContentChan
         void onLoadFinished(List<Animal> animalList);
     }
 
-    public void setListener(LoaderCallback callback) {
+    public synchronized void setListener(LoaderCallback callback) {
         callbackWeakReference = new WeakReference<>(callback);
     }
 
@@ -54,8 +54,12 @@ public class DataBaseWorker extends HandlerThread implements OnAnimalContentChan
     }
 
     @Override
-    public void onContentChanged(List<Animal> animalList) {
-        loadUsers(animalList);
+    public void onContentChanged() {
+        Log.e(TAG, "onContentChanged");
+
+        cachedData = new ArrayList<>(storage.getAnimalList());
+        loadAnimals();
+
     }
 
     @Override
@@ -78,42 +82,48 @@ public class DataBaseWorker extends HandlerThread implements OnAnimalContentChan
             public boolean handleMessage(Message msg) {
                 Log.e(TAG, "handleMessage");
                 switch (msg.what) {
-                    case DataBaseLoaderFunctions.READ_USERS: {
-                        cachedData = new ArrayList<>(storage.getAnimalList());
+                    case DataBaseLoaderFunctions.READ_ANIMALS: {
+                        if (cachedData == null) {
+                            cachedData = new ArrayList<>(storage.getAnimalList());
+                            loadAnimals();
+                        } else {
+                            cachedData = new ArrayList<>(storage.getAnimalList());
+                        }
                         return true;
+
                     }
-                    case DataBaseLoaderFunctions.DELETE_USER: {
+                    case DataBaseLoaderFunctions.DELETE_ANIMAL: {
                         storage.deleteAnimal((Animal) msg.getData().getSerializable(ANIMAL_KEY));
                         return true;
                     }
-                    case DataBaseLoaderFunctions.UPDATE_USER: {
+                    case DataBaseLoaderFunctions.UPDATE_ANIMAL: {
                         storage.updateAnimal((Animal) msg.getData().getSerializable(ANIMAL_KEY));
                         return true;
                     }
-                    case DataBaseLoaderFunctions.CREATE_USER: {
+                    case DataBaseLoaderFunctions.CREATE_ANIMAL: {
                         storage.addAnimal((Animal) msg.getData().getSerializable(ANIMAL_KEY));
                         return true;
                     }
                     default:
                         return false;
                 }
-
             }
         });
     }
 
-    private void loadUsers(List<Animal> loadedAnimals) {
-        Log.e(TAG, "loadUsers with thread" + Thread.currentThread().toString());
-        cachedData = new ArrayList<>(loadedAnimals);
-        final LoaderCallback loaderCallback = callbackWeakReference.get();
-        if (loaderCallback != null) {
-            Handler mainHandler = new Handler(Looper.getMainLooper());
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    loaderCallback.onLoadFinished(cachedData);
-                }
-            });
+    private void loadAnimals() {
+        Log.e(TAG, "loadAnimals with thread" + Thread.currentThread().toString());
+        synchronized (this) {
+            final LoaderCallback loaderCallback = callbackWeakReference.get();
+            if (loaderCallback != null) {
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        loaderCallback.onLoadFinished(cachedData);
+                    }
+                });
+            }
         }
     }
 

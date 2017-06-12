@@ -19,13 +19,14 @@ import bodya.sbt.ru.currentwork.Animal;
 import bodya.sbt.ru.currentwork.R;
 import bodya.sbt.ru.currentwork.async.DataBaseLoaderFunctions;
 import bodya.sbt.ru.currentwork.async.DataBaseWorker;
-import bodya.sbt.ru.currentwork.interfaces.DataBaseLoaderProvider;
+import bodya.sbt.ru.currentwork.interfaces.ModelProvider;
 
-public class AddNewAnimalActivity extends AppCompatActivity {
+public class EditAnimalActivity extends AppCompatActivity {
 
-    private static final String ANIMAL_KEY = "animal_key";
-    private static final String TAG = "AddNewAnimalActivity";
+    private static final String TAG = "EditAnimalActivity";
     private static final byte MAX_EDIT_TEXT_LENGTH = 9;
+    private static final String UPDATE_MODE_KEY = "update_mode_key";
+
 
     private TextInputEditText ageEditText;
     private TextInputEditText heightEditText;
@@ -34,12 +35,12 @@ public class AddNewAnimalActivity extends AppCompatActivity {
     private TextInputEditText[] editTexts;
     private Button addButton;
 
-    private Animal cachedAnimal;
+    private Animal extrasAnimal;
     private DataBaseWorker dataBaseWorker;
     private boolean updateMode = false;
 
     public static Intent newIntent(Context context) {
-        return new Intent(context, AddNewAnimalActivity.class);
+        return new Intent(context, EditAnimalActivity.class);
     }
 
     @Override
@@ -47,8 +48,8 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_animal_layout);
 
-        DataBaseLoaderProvider dataBaseLoaderProvider = (DataBaseLoaderProvider) getApplication();
-        dataBaseWorker = dataBaseLoaderProvider.getDataBaseWorker();
+        ModelProvider modelProvider = (ModelProvider) getApplication();
+        dataBaseWorker = modelProvider.getDataBaseWorker();
 
         nameEditText = (TextInputEditText) findViewById(R.id.name_edit_text);
         ageEditText = (TextInputEditText) findViewById(R.id.age_edit_text);
@@ -74,12 +75,22 @@ public class AddNewAnimalActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            addButton.setText(getResources().getString(R.string.update_animal_upper_case));
-            getDataFromExtras(extras);
-            updateMode = true;
+            extrasAnimal = (Animal) extras.getSerializable(UPDATE_MODE_KEY);
+            if (extrasAnimal != null) {
+                fillEditTexts(extrasAnimal);
+                addButton.setText(getResources().getString(R.string.update_animal_upper_case));
+                updateMode = true;
+            }
         }
     }
 
+    private void updateAnimal() {
+        Log.e(TAG, "updateAnimal");
+        updateCachedAnimal();
+        dataBaseWorker.queueTask(DataBaseLoaderFunctions.UPDATE_ANIMAL, extrasAnimal);
+        updateMode = false;
+        finish();
+    }
 
     private void updateCachedAnimal() {
         Log.e(TAG, "updateCachedAnimal");
@@ -88,20 +99,14 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         int weight = Integer.valueOf(weightEditText.getText().toString());
         int height = Integer.valueOf(heightEditText.getText().toString());
 
-        cachedAnimal.setName(name);
-        cachedAnimal.setAge(age);
-        cachedAnimal.setWeight(weight);
-        cachedAnimal.setHeight(height);
+        extrasAnimal.setName(name);
+        extrasAnimal.setAge(age);
+        extrasAnimal.setWeight(weight);
+        extrasAnimal.setHeight(height);
 
     }
 
-    private void updateAnimal() {
-        Log.e(TAG, "updateAnimal");
-        updateCachedAnimal();
-        dataBaseWorker.queueTask(DataBaseLoaderFunctions.UPDATE_USER, cachedAnimal);
-        updateMode = false;
-        finish();
-    }
+
 
     private void createAnimal() {
         Log.e(TAG, "createAnimal");
@@ -110,21 +115,20 @@ public class AddNewAnimalActivity extends AppCompatActivity {
         int weight = Integer.valueOf(weightEditText.getText().toString());
         int height = Integer.valueOf(heightEditText.getText().toString());
 
-        cachedAnimal = new Animal(name, age, weight, height);
-        dataBaseWorker.queueTask(DataBaseLoaderFunctions.CREATE_USER, cachedAnimal);
+        Animal animal = new Animal(name, age, weight, height);
+        dataBaseWorker.queueTask(DataBaseLoaderFunctions.CREATE_ANIMAL, animal);
         finish();
     }
 
 
-    private void getDataFromExtras(Bundle bundle) {
-        cachedAnimal = (Animal) bundle.getSerializable(ANIMAL_KEY);
-        if (cachedAnimal == null) {
+    private void fillEditTexts(Animal animal) {
+        if (animal == null) {
             return;
         }
-        nameEditText.setText(cachedAnimal.getName());
-        ageEditText.setText(String.valueOf(cachedAnimal.getAge()));
-        weightEditText.setText(String.valueOf(cachedAnimal.getWeight()));
-        heightEditText.setText(String.valueOf(cachedAnimal.getHeight()));
+        nameEditText.setText(animal.getName());
+        ageEditText.setText(String.valueOf(animal.getAge()));
+        weightEditText.setText(String.valueOf(animal.getWeight()));
+        heightEditText.setText(String.valueOf(animal.getHeight()));
     }
 
     private class EditTextWatcherImpl implements TextWatcher {

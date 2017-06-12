@@ -6,9 +6,9 @@ import android.app.Application;
 import bodya.sbt.ru.currentwork.async.DataBaseWorker;
 import bodya.sbt.ru.currentwork.db.AnimalsDao;
 import bodya.sbt.ru.currentwork.db.SQLiteAnimalsDao;
-import bodya.sbt.ru.currentwork.interfaces.DataBaseLoaderProvider;
+import bodya.sbt.ru.currentwork.interfaces.ModelProvider;
 
-public class AnimalsInfoApplication extends Application implements DataBaseLoaderProvider {
+public class AnimalsInfoApplication extends Application implements ModelProvider {
 
     private AnimalStorage animalsStorage;
     private DataBaseWorker dataBaseWorker;
@@ -23,6 +23,7 @@ public class AnimalsInfoApplication extends Application implements DataBaseLoade
         dataBaseWorker.start();
     }
 
+    @Override
     public AnimalStorage getAnimalsStorage() {
         return animalsStorage;
     }

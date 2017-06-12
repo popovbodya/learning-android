@@ -1,6 +1,5 @@
 package bodya.sbt.ru.currentwork.activities;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,20 +15,18 @@ import java.io.Serializable;
 import java.util.List;
 
 import bodya.sbt.ru.currentwork.Animal;
-import bodya.sbt.ru.currentwork.AnimalsInfoApplication;
 import bodya.sbt.ru.currentwork.AnimalStorage;
 import bodya.sbt.ru.currentwork.AnimalsAdapter;
 import bodya.sbt.ru.currentwork.R;
 import bodya.sbt.ru.currentwork.async.DataBaseLoaderFunctions;
 import bodya.sbt.ru.currentwork.async.DataBaseWorker;
-import bodya.sbt.ru.currentwork.interfaces.DataBaseLoaderProvider;
+import bodya.sbt.ru.currentwork.interfaces.ModelProvider;
 
 
 public class AnimalsInfoActivity extends AppCompatActivity implements DataBaseWorker.LoaderCallback {
 
     private static final String TAG = "AnimalsInfoActivity";
-    private static final String ANIMAL_KEY = "animal_key";
-    private static final String EDIT_MODE_KEY = "edit_mode_key";
+    private static final String UPDATE_MODE_KEY = "update_mode_key";
 
     private TextView modeTextView;
 
@@ -49,21 +46,19 @@ public class AnimalsInfoActivity extends AppCompatActivity implements DataBaseWo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Application application = getApplication();
+        ModelProvider modelProvider = (ModelProvider) getApplication();
 
-        animalStorage = ((AnimalsInfoApplication) application).getAnimalsStorage();
-
-        DataBaseLoaderProvider dataBaseLoaderProvider = (DataBaseLoaderProvider) application;
-        dataBaseWorker = dataBaseLoaderProvider.getDataBaseWorker();
+        animalStorage = modelProvider.getAnimalsStorage();
+        dataBaseWorker = modelProvider.getDataBaseWorker();
         dataBaseWorker.setListener(this);
 
         adapter = new AnimalsAdapter();
 
         if (savedInstanceState != null) {
-            editMode = (EditMode) savedInstanceState.getSerializable(EDIT_MODE_KEY);
+            editMode = (EditMode) savedInstanceState.getSerializable(UPDATE_MODE_KEY);
             getCachedData();
         } else {
-            dataBaseWorker.queueTask(DataBaseLoaderFunctions.READ_USERS);
+            dataBaseWorker.queueTask(DataBaseLoaderFunctions.READ_ANIMALS);
         }
 
         modeTextView = (TextView) findViewById(R.id.text_view_mode);
@@ -77,12 +72,12 @@ public class AnimalsInfoActivity extends AppCompatActivity implements DataBaseWo
                 Animal animal = adapter.getItem(position);
                 if (editMode == EditMode.Delete) {
                     Log.e(TAG, "onItemClick with deleteMode: " + animal.getName());
-                    dataBaseWorker.queueTask(DataBaseLoaderFunctions.DELETE_USER, animal);
+                    dataBaseWorker.queueTask(DataBaseLoaderFunctions.DELETE_ANIMAL, animal);
                 }
                 if (editMode == EditMode.Update) {
                     Log.e(TAG, "onItemClick with updateMode: " + animal.getName());
-                    Intent intent = AddNewAnimalActivity.newIntent(AnimalsInfoActivity.this);
-                    intent.putExtra(ANIMAL_KEY, animal);
+                    Intent intent = EditAnimalActivity.newIntent(AnimalsInfoActivity.this);
+                    intent.putExtra(UPDATE_MODE_KEY, animal);
                     startActivity(intent);
                 }
             }
@@ -131,7 +126,7 @@ public class AnimalsInfoActivity extends AppCompatActivity implements DataBaseWo
                 break;
             }
             case R.id.add_animal_menu_item: {
-                startActivity(AddNewAnimalActivity.newIntent(this));
+                startActivity(EditAnimalActivity.newIntent(this));
                 break;
             }
             case R.id.update_animal: {
@@ -160,7 +155,7 @@ public class AnimalsInfoActivity extends AppCompatActivity implements DataBaseWo
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(EDIT_MODE_KEY, editMode);
+        outState.putSerializable(UPDATE_MODE_KEY, editMode);
     }
 
     @Override

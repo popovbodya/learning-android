@@ -38,7 +38,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
                 AnimalsContract.Animal._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 AnimalsContract.Animal.NAME + " TEXT NOT NULL, " +
                 AnimalsContract.Animal.AGE + " INTEGER NOT NULL, " +
-                AnimalsContract.Animal.TYPE + " TEXT NOT NULL, " +
+                AnimalsContract.Animal.TYPE + " INTEGER NOT NULL, " +
                 AnimalsContract.Animal.WEIGHT + " INTEGER NOT NULL, " +
                 AnimalsContract.Animal.HEIGHT + " INTEGER NOT NULL " +
                 ");";
@@ -94,7 +94,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         Cursor cursor = null;
         SQLiteDatabase db = getReadableDatabase();
         try {
-            cursor = db.query(TABLE_NAME, null, AnimalsContract.Animal._ID + "=" + id, null, null, null, null);
+            cursor = db.query(TABLE_NAME, null, AnimalsContract.Animal._ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
             if (cursor.moveToFirst()) {
                 animal = AnimalsDaoHelper.createAnimal(cursor);
             }
@@ -113,7 +113,8 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            rowUpdated = db.update(TABLE_NAME, AnimalsDaoHelper.createValuesFromAnimal(animal), AnimalsContract.Animal._ID + "=" + animal.getId(), null);
+            rowUpdated = db.update(TABLE_NAME, AnimalsDaoHelper.createValuesFromAnimal(animal),
+                    AnimalsContract.Animal._ID + " = ?", new String[]{String.valueOf(animal.getId())});
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -128,7 +129,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
-            isAnimalDeleted = db.delete(TABLE_NAME, AnimalsContract.Animal._ID + "=" + animal.getId(), null);
+            isAnimalDeleted = db.delete(TABLE_NAME, AnimalsContract.Animal._ID + " = ?", new String[]{String.valueOf(animal.getId())});
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();

@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">EventsManager</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="pick_time">Pick Time</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="event_image_view">event_image_view</string>
+
+    <string name="event_start">Start: %s</string>
+    <string name="event_end">End: %s</string>
+    <string name="event_title">Title: %s</string>
+    <string name="event_desc">Description: %s</string>
+    <string name="empty_event_title">No title</string>
+    <string name="empty_event_desc">No description</string>
+    <string name="title_edit_text">Title</string>
+    <string name="dtend_image">Description</string>
+    <string name="dtstart_image">Start</string>
+    <string name="dtend_image_button">End</string>
+    <string name="add_new_event">Add</string>
+    <string name="modify_event">Modify</string>
+    <string name="pick_start_time">Pick Start Time</string>
+    <string name="pick_end_time">Pick End Time</string>
+
+
+</resources>

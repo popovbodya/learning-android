@@ -34,30 +34,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <ImageButton
             android:id="@+id/pick_time_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/dtstart_image"
-            android:drawableLeft="@drawable/timer"
-            android:drawableStart="@drawable/timer"
-            android:padding="@dimen/text_view_padding"
-            android:text="@string/pick_start_time"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+            android:src="@drawable/timer" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/pick_end_time_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/dtend_image"
-            android:drawableLeft="@drawable/timer_off"
-            android:drawableStart="@drawable/timer_off"
-            android:padding="@dimen/text_view_padding"
-            android:src="@drawable/timer_off"
-            android:text="@string/pick_end_time"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+            android:src="@drawable/timer_off" />
 
     </LinearLayout>
 

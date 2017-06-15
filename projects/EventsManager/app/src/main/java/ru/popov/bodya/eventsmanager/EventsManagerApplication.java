@@ -3,34 +3,33 @@ package ru.popov.bodya.eventsmanager;
 
 import android.app.Application;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
+import ru.popov.bodya.eventsmanager.db.ResolverEventDao;
+import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
 
-public class EventsManagerApplication extends Application {
+public class EventsManagerApplication extends Application implements ModelProvider {
 
-
-    private Queue<Byte> dbTasksQueue;
-    private EventsLoader eventsLoader;
+    private EventStorage eventStorage;
+    private DataBaseWorker dataBaseWorker;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        dbTasksQueue = new ArrayDeque<>();
+        ResolverEventDao animalsDao = new ResolverEventDao(this);
+        eventStorage = new EventStorage(animalsDao);
+
+        dataBaseWorker = new DataBaseWorker(eventStorage);
+        dataBaseWorker.start();
     }
 
-    public EventsLoader getEventsLoader() {
-        return eventsLoader;
+    @Override
+    public EventStorage getEventStorage() {
+        return eventStorage;
     }
 
-    public void setEventsLoader(EventsLoader eventsLoader) {
-        this.eventsLoader = eventsLoader;
+    @Override
+    public DataBaseWorker getDataBaseWorker() {
+        return dataBaseWorker;
     }
 
-    public synchronized void addTaskToQueue(byte task) {
-        dbTasksQueue.add(task);
-    }
-
-    public synchronized Byte getTaskFromQueue() {
-        return dbTasksQueue.poll();
-    }
 }

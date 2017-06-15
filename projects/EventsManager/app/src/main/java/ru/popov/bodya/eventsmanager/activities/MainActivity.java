@@ -7,8 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,42 +23,69 @@ import android.view.MenuItem;
 
 import java.util.List;
 
-import ru.popov.bodya.eventsmanager.DataBaseLoaderFunctions;
-import ru.popov.bodya.eventsmanager.DatePickerFragment;
 import ru.popov.bodya.eventsmanager.Event;
-import ru.popov.bodya.eventsmanager.EventsLoader;
+import ru.popov.bodya.eventsmanager.EventStorage;
+import ru.popov.bodya.eventsmanager.db.DataBaseLoaderFunctions;
+import ru.popov.bodya.eventsmanager.DatePickerFragment;
 import ru.popov.bodya.eventsmanager.EventsManagerApplication;
 import ru.popov.bodya.eventsmanager.R;
 import ru.popov.bodya.eventsmanager.RecyclerViewAdapter;
 import ru.popov.bodya.eventsmanager.TimePickerFragment;
+import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
+import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DataBaseWorker.LoaderCallback {
 
     private static final String TAG = MainActivity.class.getName();
     private static final String DATE_PICKER_TAG = "datePicker";
     private static final String TIME_PICKER_TAG = "timePicker";
-    private static final int LOADER_ID = 1;
     private static final int PERMISSION_REQUEST_CODE = 0;
 
     private RecyclerViewAdapter recyclerViewAdapter;
-    private EventsManagerApplication eventsManagerApplication;
+
+    private DataBaseWorker dataBaseWorker;
+    private EventStorage eventStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        eventsManagerApplication = (EventsManagerApplication) getApplication();
+        checkReadWriteCalendarPermissions();
+
+        ModelProvider modelProvider = (ModelProvider) getApplication();
+        dataBaseWorker = modelProvider.getDataBaseWorker();
+        dataBaseWorker.setListener(this);
+        eventStorage = modelProvider.getEventStorage();
+
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerViewAdapter = new RecyclerViewAdapter();
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+        if (savedInstanceState != null) {
+            getCachedData();
+        } else {
+            dataBaseWorker.queueTask(new Runnable() {
+                @Override
+                public void run() {
+                    onLoadFinished(eventStorage.getEventList());
+                }
+            });
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // on handle click
-                eventsManagerApplication.addTaskToQueue(DataBaseLoaderFunctions.CREATE_EVENT);
-                eventsManagerApplication.getEventsLoader().forceLoad();
+
 
             }
         });
@@ -73,16 +98,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        checkReadWriteCalendarPermissions();
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerViewAdapter = new RecyclerViewAdapter();
-        recyclerView.setAdapter(recyclerViewAdapter);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "onDestroy");
+        dataBaseWorker.setListener(null);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -139,15 +164,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (permissions.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // initLoader
-                getSupportLoaderManager().initLoader(LOADER_ID, null, new EventsLoaderCallbacks());
                 Log.e(TAG, "onRequestPermissionsResult");
             }
         }
     }
 
+    @Override
+    public void onLoadFinished(List<Event> eventList) {
+        Log.e(TAG, "onLoadFinished in MainActivity");
+        recyclerViewAdapter.setEvents(eventList);
+    }
+
     void onDatePicked(int hourOfDay, int minute) {
         Log.e(TAG, "onDatePicked with time: hours = " + hourOfDay + ", minute = " + minute);
         showTimePickerDialog();
+    }
+
+    private void getCachedData() {
+        Log.e(TAG, "getCachedData");
+        recyclerViewAdapter.setEvents(eventStorage.getCachedEventList());
     }
 
     private void checkReadWriteCalendarPermissions() {
@@ -156,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             requestBothPermissions();
         } else {
             Log.e(TAG, "checkReadWriteCalendarPermissions");
-            getSupportLoaderManager().initLoader(LOADER_ID, null, new EventsLoaderCallbacks());
+            // initLoader
         }
     }
 
@@ -174,25 +209,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         newFragment.show(getSupportFragmentManager(), TIME_PICKER_TAG);
     }
 
-    private class EventsLoaderCallbacks implements LoaderManager.LoaderCallbacks<List<Event>> {
 
-        @Override
-        public Loader<List<Event>> onCreateLoader(int id, Bundle args) {
-            EventsLoader eventsLoader = new EventsLoader(MainActivity.this);
-            eventsManagerApplication.setEventsLoader(eventsLoader);
-            return eventsLoader;
-        }
-
-        @Override
-        public void onLoadFinished(Loader<List<Event>> loader, List<Event> data) {
-            Log.e(TAG, "onLoadFinished");
-            recyclerViewAdapter.setEvents(data);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<List<Event>> loader) {
-
-        }
-    }
 
 }

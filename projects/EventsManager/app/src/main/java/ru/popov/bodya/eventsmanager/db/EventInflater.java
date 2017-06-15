@@ -1,10 +1,12 @@
-package ru.popov.bodya.eventsmanager;
+package ru.popov.bodya.eventsmanager.db;
 
 
 import android.database.Cursor;
 import android.provider.CalendarContract;
 
 import java.util.List;
+
+import ru.popov.bodya.eventsmanager.Event;
 
 public class EventInflater {
 

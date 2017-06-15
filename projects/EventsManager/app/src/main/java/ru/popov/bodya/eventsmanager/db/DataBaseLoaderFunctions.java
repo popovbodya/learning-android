@@ -1,4 +1,4 @@
-package ru.popov.bodya.eventsmanager;
+package ru.popov.bodya.eventsmanager.db;
 
 
 public class DataBaseLoaderFunctions {

@@ -28,6 +28,5 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Log.e(TAG, "onTimeSet with time: year = " + year + ", month = " + month + ", day = " + day);
         Log.e(TAG, "" + getTheme());
-
     }
 }

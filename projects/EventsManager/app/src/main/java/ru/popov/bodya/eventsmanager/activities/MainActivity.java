@@ -21,8 +21,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Calendar;
 import java.util.List;
 
+import ru.popov.bodya.eventsmanager.DateHelper;
 import ru.popov.bodya.eventsmanager.Event;
 import ru.popov.bodya.eventsmanager.EventStorage;
 import ru.popov.bodya.eventsmanager.db.DataBaseLoaderFunctions;
@@ -34,7 +36,7 @@ import ru.popov.bodya.eventsmanager.TimePickerFragment;
 import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
 import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DataBaseWorker.LoaderCallback {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DataBaseWorker.LoaderCallback  {
 
     private static final String TAG = MainActivity.class.getName();
     private static final String DATE_PICKER_TAG = "datePicker";
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 // on handle click
-
+                startActivity(ModifyEventActivity.newIntent(MainActivity.this));
 
             }
         });
@@ -208,7 +210,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), TIME_PICKER_TAG);
     }
-
-
 
 }

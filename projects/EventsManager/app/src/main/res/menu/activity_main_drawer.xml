@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/observe_mode"
-        android:icon="@drawable/ic_menu_share"
+        android:icon="@drawable/observe_icon"
         android:title="@string/observe_mode" />
 
     <item
         android:id="@+id/update_mode"
-        android:icon="@drawable/ic_menu_share"
+        android:icon="@drawable/add_event_icon"
         android:title="@string/update_mode" />
 
     <item
         android:id="@+id/delete_mode"
-        android:icon="@drawable/ic_menu_share"
+        android:icon="@drawable/delete_icon"
         android:title="@string/delete_mode" />
 
 

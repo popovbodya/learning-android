@@ -23,7 +23,8 @@
     <string name="modify_event">Modify</string>
     <string name="pick_start_time">Pick Start Time</string>
     <string name="pick_end_time">Pick End Time</string>
-
+    <string name="drawer_desc">Event Manager for your daily tasks</string>
+    <string name="drawer_title">Event Manager</string>
 
 
 </resources>

@@ -34,8 +34,6 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
     private static final String UPDATE_MODE_KEY = "update_mode";
     private static final String DATE_PICKER_TAG = "datePicker";
     private static final String TIME_PICKER_TAG = "timePicker";
-    private static final byte START_TIME_KEY = 0;
-    private static final byte END_TIME_KEY = 1;
     private static final int ONE_HOUR_IN_MILLIS = 3600000;
 
     private TextInputEditText titleEditText;

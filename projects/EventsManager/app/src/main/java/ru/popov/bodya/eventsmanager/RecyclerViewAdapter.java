@@ -68,6 +68,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
                 Log.e(TAG, "onItemClick with event: " + event.getTitle());
                 EditModeHolder.EditMode editMode = provider.getEditModeHolder().getEditMode();
+
                 switch (editMode) {
                     case Update:
                         Log.e(TAG, "onItemClick with update mode");
@@ -77,7 +78,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         break;
                     case Delete:
                         Log.e(TAG, "onItemClick with delete mode");
-                        provider.getEventStorage().deleteEvent(event);
+                        provider.getDataBaseWorker().queueTask(new Runnable() {
+                            @Override
+                            public void run() {
+                                provider.getEventStorage().deleteEvent(event);
+                            }
+                        });
                         break;
                 }
             }

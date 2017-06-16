@@ -24,7 +24,6 @@ public class DateHelper {
     public static void changeTimeInCalendar(Calendar calendar, int hourOfDay, int minute) {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
-        Log.e("DateHelper", "changeTimeInCalendar: " + getDateInFormat(calendar.getTimeInMillis()));
     }
 
     private static Date getDateFromMills(long mills) {

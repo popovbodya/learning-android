@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.popov.bodya.eventsmanager.db.EventDao;
-import ru.popov.bodya.eventsmanager.db.ResolverEventDao;
 import ru.popov.bodya.eventsmanager.interfaces.OnEventContentChangeListener;
 
 public class EventStorage {

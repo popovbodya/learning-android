@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -27,18 +25,14 @@ import java.util.List;
 import ru.popov.bodya.eventsmanager.EditModeHolder;
 import ru.popov.bodya.eventsmanager.Event;
 import ru.popov.bodya.eventsmanager.EventStorage;
-import ru.popov.bodya.eventsmanager.fragments.DatePickerFragment;
 import ru.popov.bodya.eventsmanager.R;
 import ru.popov.bodya.eventsmanager.RecyclerViewAdapter;
-import ru.popov.bodya.eventsmanager.fragments.TimePickerFragment;
 import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
 import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DataBaseWorker.LoaderCallback {
+public class EventInfoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DataBaseWorker.LoaderCallback {
 
-    private static final String TAG = MainActivity.class.getName();
-    private static final String DATE_PICKER_TAG = "datePicker";
-    private static final String TIME_PICKER_TAG = "timePicker";
+    private static final String TAG = EventInfoActivity.class.getName();
     private static final int PERMISSION_REQUEST_CODE = 0;
 
     private RecyclerViewAdapter recyclerViewAdapter;
@@ -66,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editModeHolder = modelProvider.getEditModeHolder();
         editModeTextView = (TextView) findViewById(R.id.text_view_mode);
 
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -85,13 +78,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // on handle click
-                startActivity(ModifyEventActivity.newIntent(MainActivity.this));
-
+                startActivity(ModifyEventActivity.newIntent(EventInfoActivity.this));
             }
         });
 
@@ -102,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
     }
 
@@ -141,28 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
@@ -188,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onLoadFinished(List<Event> eventList) {
-        Log.e(TAG, "onLoadFinished in MainActivity");
+        Log.e(TAG, "onLoadFinished in EventInfoActivity");
         recyclerViewAdapter.setEvents(eventList);
     }
 
@@ -196,8 +164,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (permissions.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // initLoader
-                Log.e(TAG, "onRequestPermissionsResult");
+                Log.wtf(TAG, "Permissions Granted, congratz");
             }
         }
     }
@@ -206,9 +173,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (PermissionChecker.checkSelfPermission(this, Manifest.permission.READ_CALENDAR)
                 + PermissionChecker.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             requestCalendarPermissions();
-        } else {
-            Log.e(TAG, "checkReadWriteCalendarPermissions");
-            // initLoader
         }
     }
 
@@ -219,16 +183,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void getCachedData() {
         Log.e(TAG, "getCachedData");
         recyclerViewAdapter.setEvents(eventStorage.getCachedEventList());
-    }
-
-    private void showDatePickerDialog() {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), DATE_PICKER_TAG);
-    }
-
-    private void showTimePickerDialog() {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getSupportFragmentManager(), TIME_PICKER_TAG);
     }
 
 }

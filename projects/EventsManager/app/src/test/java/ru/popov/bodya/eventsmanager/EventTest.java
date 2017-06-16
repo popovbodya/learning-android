@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import ru.popov.bodya.eventsmanager.model.Event;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -16,7 +18,7 @@ public class EventTest {
 
 
     @Test
-    public void serializabilityCheck() throws IOException, ClassNotFoundException {
+    public void testSerializability() throws IOException, ClassNotFoundException {
 
         Event expectedEvent = new Event();
         expectedEvent.setTitle("expectedEvent title");
@@ -28,7 +30,6 @@ public class EventTest {
         ObjectOutputStream out = new ObjectOutputStream(bos);
         out.writeObject(expectedEvent);
         out.flush();
-
         byte[] eventBytes = bos.toByteArray();
         bos.close();
 

@@ -1,7 +1,9 @@
 package ru.popov.bodya.eventsmanager;
 
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable {
 
     private long id;
     private String description;

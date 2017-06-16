@@ -2,14 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/time_picker"
+        android:id="@+id/observe_mode"
         android:icon="@drawable/ic_menu_share"
-        android:title="@string/pick_time" />
+        android:title="@string/observe_mode" />
 
     <item
-        android:id="@+id/date_picker"
+        android:id="@+id/update_mode"
         android:icon="@drawable/ic_menu_share"
-        android:title="@string/pick_date" />
+        android:title="@string/update_mode" />
+
+    <item
+        android:id="@+id/delete_mode"
+        android:icon="@drawable/ic_menu_share"
+        android:title="@string/delete_mode" />
 
 
 </menu>

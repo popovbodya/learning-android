@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -40,6 +41,8 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
     private TextInputEditText titleEditText;
     private TextInputEditText descEditText;
     private TextInputEditText[] editTexts;
+    private TextView startTimeTextView;
+    private TextView endTimeTextView;
     private ImageButton startTimeImageButton;
     private ImageButton endTimeImageButton;
     private Button modifyButton;
@@ -71,8 +74,10 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
             editText.addTextChangedListener(new EditTextWatcherImpl());
         }
 
-        startTimeImageButton = (ImageButton) findViewById(R.id.pick_time_text_view);
-        endTimeImageButton = (ImageButton) findViewById(R.id.pick_end_time_text_view);
+        startTimeTextView = (TextView) findViewById(R.id.picked_start_time_text_view);
+        endTimeTextView = (TextView) findViewById(R.id.picked_end_time_text_view);
+        startTimeImageButton = (ImageButton) findViewById(R.id.pick_start_time_image_button);
+        endTimeImageButton = (ImageButton) findViewById(R.id.pick_end_time_image_button);
         modifyButton = (Button) findViewById(R.id.modify_event_button);
 
         modifyButton.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +85,8 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
             public void onClick(View v) {
                 if (!updateMode) {
                     addEventToDb();
+                } else {
+                    updateEventInDb();
                 }
             }
         });
@@ -106,6 +113,18 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
         } else {
             cachedEvent = new Event();
         }
+    }
+
+    private void updateEventInDb() {
+        cachedEvent.setTitle(titleEditText.getText().toString());
+        cachedEvent.setDescription(descEditText.getText().toString());
+        dataBaseWorker.queueTask(new Runnable() {
+            @Override
+            public void run() {
+                storage.updateEvent(cachedEvent);
+            }
+        });
+        finish();
     }
 
     private void addEventToDb() {
@@ -141,8 +160,10 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
 
         if (timeMode == DateHelper.TimeMode.Start) {
             cachedEvent.setDateStart(String.valueOf(calendar.getTimeInMillis()));
+            startTimeTextView.setText(DateHelper.getDateInFormat(calendar.getTimeInMillis()));
         } else if (timeMode == DateHelper.TimeMode.End) {
             cachedEvent.setDateEnd(String.valueOf(calendar.getTimeInMillis()));
+            endTimeTextView.setText(DateHelper.getDateInFormat(calendar.getTimeInMillis()));
         }
     }
 
@@ -161,8 +182,10 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
         if (event == null) {
             return;
         }
+        startTimeTextView.setText(DateHelper.getDateInFormat(Long.valueOf(event.getDateStart())));
+        endTimeTextView.setText(DateHelper.getDateInFormat(Long.valueOf(event.getDateEnd())));
         titleEditText.setText(event.getTitle());
-        descEditText.setText(String.valueOf(event.getDescription()));
+        descEditText.setText(event.getDescription());
         modifyButton.setText(getResources().getString(R.string.modify_event));
     }
 

@@ -20,9 +20,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.List;
 
+import ru.popov.bodya.eventsmanager.EditModeHolder;
 import ru.popov.bodya.eventsmanager.Event;
 import ru.popov.bodya.eventsmanager.EventStorage;
 import ru.popov.bodya.eventsmanager.fragments.DatePickerFragment;
@@ -32,7 +34,7 @@ import ru.popov.bodya.eventsmanager.fragments.TimePickerFragment;
 import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
 import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DataBaseWorker.LoaderCallback  {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DataBaseWorker.LoaderCallback {
 
     private static final String TAG = MainActivity.class.getName();
     private static final String DATE_PICKER_TAG = "datePicker";
@@ -40,9 +42,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int PERMISSION_REQUEST_CODE = 0;
 
     private RecyclerViewAdapter recyclerViewAdapter;
+    private TextView editModeTextView;
 
     private DataBaseWorker dataBaseWorker;
     private EventStorage eventStorage;
+    private EditModeHolder editModeHolder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +63,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataBaseWorker = modelProvider.getDataBaseWorker();
         dataBaseWorker.setListener(this);
         eventStorage = modelProvider.getEventStorage();
+        editModeHolder = modelProvider.getEditModeHolder();
+        editModeTextView = (TextView) findViewById(R.id.text_view_mode);
 
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerViewAdapter = new RecyclerViewAdapter();
+        recyclerViewAdapter = new RecyclerViewAdapter(this);
         recyclerView.setAdapter(recyclerViewAdapter);
 
         if (savedInstanceState != null) {
@@ -97,6 +104,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EditModeHolder.EditMode editMode = editModeHolder.getEditMode();
+        switch (editMode) {
+            case Observe:
+                editModeTextView.setText(getResources().getString(R.string.observe_mode));
+                break;
+            case Delete:
+                editModeTextView.setText(getResources().getString(R.string.delete_mode));
+                break;
+            case Update:
+                editModeTextView.setText(getResources().getString(R.string.update_mode));
+        }
     }
 
     @Override
@@ -144,11 +167,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.time_picker:
-                showTimePickerDialog();
+            case R.id.observe_mode:
+                editModeHolder.setEditMode(EditModeHolder.EditMode.Observe);
+                editModeTextView.setText(getResources().getString(R.string.observe_mode));
                 break;
-            case R.id.date_picker:
-                showDatePickerDialog();
+            case R.id.update_mode:
+                editModeHolder.setEditMode(EditModeHolder.EditMode.Update);
+                editModeTextView.setText(getResources().getString(R.string.update_mode));
+                break;
+            case R.id.delete_mode:
+                editModeHolder.setEditMode(EditModeHolder.EditMode.Delete);
+                editModeTextView.setText(getResources().getString(R.string.delete_mode));
                 break;
         }
 

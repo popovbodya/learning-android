@@ -18,10 +18,13 @@ import java.util.List;
 
 import ru.popov.bodya.eventsmanager.Event;
 
+
 public class ResolverEventDao implements EventDao {
 
     private static final String TAG = ResolverEventDao.class.getName();
     private static final long NO_ID = -1;
+    private static final short ROW_UPDATE_STATUS = 0;
+    private static final short ROW_COUNT_UPDATED = 0;
 
     private Context appContext;
 
@@ -59,17 +62,31 @@ public class ResolverEventDao implements EventDao {
 
     @Override
     public Event getEventById(long id) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
+    @SuppressWarnings("MissingPermission")
     @Override
     public int updateEvent(Event event) {
-        return 0;
+        int rowUpdated = ROW_COUNT_UPDATED;
+        ContentResolver resolver = appContext.getContentResolver();
+        ContentValues contentValues = EventInflateHelper.createValuesFromEvent(event);
+        if (permissionsGranted()) {
+            rowUpdated = resolver.update(CalendarContract.Events.CONTENT_URI, contentValues, CalendarContract.Events._ID + "=?", new String[]{String.valueOf(event.getId())});
+        }
+        return rowUpdated;
     }
 
+
+    @SuppressWarnings("MissingPermission")
     @Override
     public int deleteEvent(Event event) {
-        return 0;
+        int animalDeletedStatus = ROW_UPDATE_STATUS;
+        ContentResolver resolver = appContext.getContentResolver();
+        if (permissionsGranted()) {
+            animalDeletedStatus = resolver.delete(CalendarContract.Events.CONTENT_URI, CalendarContract.Events._ID + "=?", new String[]{String.valueOf(event.getId())});
+        }
+        return animalDeletedStatus;
     }
 
     @SuppressWarnings("MissingPermission")

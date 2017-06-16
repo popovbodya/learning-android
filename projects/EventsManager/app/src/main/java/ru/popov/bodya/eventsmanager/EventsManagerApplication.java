@@ -2,7 +2,6 @@ package ru.popov.bodya.eventsmanager;
 
 
 import android.app.Application;
-
 import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
 import ru.popov.bodya.eventsmanager.db.ResolverEventDao;
 import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
@@ -11,13 +10,15 @@ public class EventsManagerApplication extends Application implements ModelProvid
 
     private EventStorage eventStorage;
     private DataBaseWorker dataBaseWorker;
+    private EditModeHolder editModeHolder;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         ResolverEventDao animalsDao = new ResolverEventDao(this);
         eventStorage = new EventStorage(animalsDao);
-
+        editModeHolder = new EditModeHolder(EditModeHolder.EditMode.Observe);
         dataBaseWorker = new DataBaseWorker(eventStorage);
         dataBaseWorker.start();
     }
@@ -26,6 +27,12 @@ public class EventsManagerApplication extends Application implements ModelProvid
     public EventStorage getEventStorage() {
         return eventStorage;
     }
+
+    @Override
+    public EditModeHolder getEditModeHolder() {
+        return editModeHolder;
+    }
+
 
     @Override
     public DataBaseWorker getDataBaseWorker() {

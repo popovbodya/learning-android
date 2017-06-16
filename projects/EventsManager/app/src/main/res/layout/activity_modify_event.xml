@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -13,21 +14,23 @@
             android:id="@+id/title_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/title_edit_text" />
+            android:hint="@string/title_edit_text"
+            android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/text_input_layout_top_margin">
+        android:layout_marginTop="@dimen/text_input_layout_top_margin"
+        android:inputType="text">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/desc_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/dtend_image"
-            android:inputType="number" />
+            android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
@@ -35,7 +38,7 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/pick_time_text_view"
+            android:id="@+id/pick_start_time_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -43,7 +46,7 @@
             android:src="@drawable/timer" />
 
         <ImageButton
-            android:id="@+id/pick_end_time_text_view"
+            android:id="@+id/pick_end_time_image_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -52,6 +55,27 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/picked_start_time_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/picked_end_time_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/modify_event_button"

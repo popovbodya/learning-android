@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.popov.bodya.eventsmanager.db.EventDao;
+import ru.popov.bodya.eventsmanager.db.ResolverEventDao;
 import ru.popov.bodya.eventsmanager.interfaces.OnEventContentChangeListener;
 
 public class EventStorage {
@@ -31,6 +32,18 @@ public class EventStorage {
     public void addEvent(Event event) {
         eventDao.insertEvent(event);
         notifyAllOnContentListeners();
+    }
+
+    public void deleteEvent(Event event) {
+        eventDao.deleteEvent(event);
+        notifyAllOnContentListeners();
+    }
+
+    public void updateEvent(Event event) {
+        if (!cachedEventList.contains(event)) {
+            eventDao.updateEvent(event);
+            notifyAllOnContentListeners();
+        }
     }
 
     public List<Event> getCachedEventList() {

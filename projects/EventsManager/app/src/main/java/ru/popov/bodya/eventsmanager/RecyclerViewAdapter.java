@@ -2,8 +2,10 @@ package ru.popov.bodya.eventsmanager;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +14,23 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.popov.bodya.eventsmanager.activities.ModifyEventActivity;
+import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private List<Event> eventList;
+    private static final String TAG = RecyclerViewAdapter.class.getName();
+    private static final String UPDATE_MODE_KEY = "update_mode";
 
-    public RecyclerViewAdapter() {
+    private List<Event> eventList;
+    private Context context;
+    private ModelProvider provider;
+
+    public RecyclerViewAdapter(Context context) {
         eventList = new ArrayList<>();
+        this.context = context;
+        provider = (ModelProvider) context.getApplicationContext();
+
     }
 
     @Override
@@ -28,8 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        Event event = eventList.get(i);
-        Context context = viewHolder.title.getContext();
+        final Event event = eventList.get(i);
 
         String eventTitle = event.getTitle();
         if (TextUtils.isEmpty(eventTitle)) {
@@ -50,6 +62,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         String endDateFromMills = DateHelper.getDateInFormat(Long.valueOf(event.getDateEnd()));
         viewHolder.dtend.setText(context.getResources().getString(R.string.event_end, endDateFromMills));
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "onItemClick with event: " + event.getTitle());
+                EditModeHolder.EditMode editMode = provider.getEditModeHolder().getEditMode();
+                switch (editMode) {
+                    case Update:
+                        Log.e(TAG, "onItemClick with update mode");
+                        Intent intent = ModifyEventActivity.newIntent(context);
+                        intent.putExtra(UPDATE_MODE_KEY, event);
+                        context.startActivity(intent);
+                        break;
+                    case Delete:
+                        Log.e(TAG, "onItemClick with delete mode");
+                        provider.getEventStorage().deleteEvent(event);
+                        break;
+                }
+            }
+        });
     }
 
     @Override

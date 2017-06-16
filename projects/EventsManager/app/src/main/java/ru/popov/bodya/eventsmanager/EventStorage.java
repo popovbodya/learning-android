@@ -28,6 +28,11 @@ public class EventStorage {
         return cachedEventList;
     }
 
+    public void addEvent(Event event) {
+        eventDao.insertEvent(event);
+        notifyAllOnContentListeners();
+    }
+
     public List<Event> getCachedEventList() {
         return cachedEventList;
     }

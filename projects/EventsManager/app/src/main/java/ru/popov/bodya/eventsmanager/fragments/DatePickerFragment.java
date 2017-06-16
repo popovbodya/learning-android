@@ -1,4 +1,4 @@
-package ru.popov.bodya.eventsmanager;
+package ru.popov.bodya.eventsmanager.fragments;
 
 
 import android.app.DatePickerDialog;
@@ -10,8 +10,9 @@ import android.util.Log;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
+
+import ru.popov.bodya.eventsmanager.DateHelper;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 

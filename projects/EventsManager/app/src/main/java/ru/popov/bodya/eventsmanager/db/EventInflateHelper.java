@@ -1,14 +1,18 @@
 package ru.popov.bodya.eventsmanager.db;
 
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.CalendarContract;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import ru.popov.bodya.eventsmanager.Event;
 
-public class EventInflater {
+public class EventInflateHelper {
+
+    private static final byte DEFAULT_CALENDAR_ID = 1;
 
     public static void fillList(Cursor source, List<Event> target) {
         if (source.moveToFirst()) {
@@ -17,6 +21,17 @@ public class EventInflater {
                 source.moveToNext();
             }
         }
+    }
+
+    public static ContentValues createValuesFromEvent (Event event) {
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.TITLE, event.getTitle());
+        values.put(CalendarContract.Events.DESCRIPTION, event.getDescription());
+        values.put(CalendarContract.Events.DTSTART, event.getDateStart());
+        values.put(CalendarContract.Events.DTEND, event.getDateEnd());
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
+        values.put(CalendarContract.Events.CALENDAR_ID, DEFAULT_CALENDAR_ID);
+        return values;
     }
 
     private static Event createCallFromCursor(Cursor cursor) {

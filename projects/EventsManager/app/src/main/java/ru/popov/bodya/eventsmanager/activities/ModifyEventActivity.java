@@ -16,12 +16,16 @@ import android.widget.ImageButton;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import ru.popov.bodya.eventsmanager.DateHelper;
-import ru.popov.bodya.eventsmanager.DatePickerFragment;
+import ru.popov.bodya.eventsmanager.EventStorage;
+import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
+import ru.popov.bodya.eventsmanager.fragments.DatePickerFragment;
 import ru.popov.bodya.eventsmanager.Event;
 import ru.popov.bodya.eventsmanager.R;
-import ru.popov.bodya.eventsmanager.TimePickerFragment;
+import ru.popov.bodya.eventsmanager.fragments.TimePickerFragment;
+import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
 
 public class ModifyEventActivity extends AppCompatActivity implements DatePickerFragment.onDateListener, TimePickerFragment.OnTimeListener {
 
@@ -31,6 +35,7 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
     private static final String TIME_PICKER_TAG = "timePicker";
     private static final byte START_TIME_KEY = 0;
     private static final byte END_TIME_KEY = 1;
+    private static final int ONE_HOUR_IN_MILLIS = 3600000;
 
     private TextInputEditText titleEditText;
     private TextInputEditText descEditText;
@@ -39,7 +44,12 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
     private ImageButton endTimeImageButton;
     private Button modifyButton;
 
+    private DataBaseWorker dataBaseWorker;
+    private EventStorage storage;
     private boolean updateMode;
+    private Calendar startTime;
+    private Calendar endTime;
+    private Event cachedEvent;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, ModifyEventActivity.class);
@@ -49,6 +59,10 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_event);
+
+        ModelProvider provider = (ModelProvider) getApplication();
+        dataBaseWorker = provider.getDataBaseWorker();
+        storage = provider.getEventStorage();
 
         titleEditText = (TextInputEditText) findViewById(R.id.title_edit_text);
         descEditText = (TextInputEditText) findViewById(R.id.desc_edit_text);
@@ -61,6 +75,14 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
         endTimeImageButton = (ImageButton) findViewById(R.id.pick_end_time_text_view);
         modifyButton = (Button) findViewById(R.id.modify_event_button);
 
+        modifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!updateMode) {
+                    addEventToDb();
+                }
+            }
+        });
 
         startTimeImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,12 +100,34 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
 
         Serializable eventWithUpdate = getIntent().getSerializableExtra(UPDATE_MODE_KEY);
         if (eventWithUpdate != null) {
-            Event extrasEvent = (Event) eventWithUpdate;
-            changeContentInViews(extrasEvent);
+            cachedEvent = (Event) eventWithUpdate;
+            changeContentInViews(cachedEvent);
             this.updateMode = true;
+        } else {
+            cachedEvent = new Event();
         }
-
     }
+
+    private void addEventToDb() {
+        cachedEvent.setTitle(titleEditText.getText().toString());
+        cachedEvent.setDescription(descEditText.getText().toString());
+        if (TextUtils.isEmpty(cachedEvent.getDateStart())) {
+            long timeInMillis = Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis();
+            cachedEvent.setDateStart(String.valueOf(timeInMillis));
+        }
+        if (TextUtils.isEmpty(cachedEvent.getDateEnd())) {
+            long timeInMillis = Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis() + ONE_HOUR_IN_MILLIS;
+            cachedEvent.setDateEnd(String.valueOf(timeInMillis));
+        }
+        dataBaseWorker.queueTask(new Runnable() {
+            @Override
+            public void run() {
+                storage.addEvent(cachedEvent);
+            }
+        });
+        finish();
+    }
+
     @Override
     public void onDatePicked(Calendar calendar, DateHelper.TimeMode timeMode) {
         Log.e(TAG, "onDatePicked with calendar: " + calendar.toString() + " with timeMode: " + timeMode);
@@ -94,6 +138,12 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
     public void onTimePicked(Calendar calendar, DateHelper.TimeMode timeMode) {
         Log.e(TAG, "onTimePicked with timeMode: " + timeMode);
         Log.e(TAG, "onTimePicked with calendar: " + DateHelper.getDateInFormat(calendar.getTimeInMillis()));
+
+        if (timeMode == DateHelper.TimeMode.Start) {
+            cachedEvent.setDateStart(String.valueOf(calendar.getTimeInMillis()));
+        } else if (timeMode == DateHelper.TimeMode.End) {
+            cachedEvent.setDateEnd(String.valueOf(calendar.getTimeInMillis()));
+        }
     }
 
     private void showDatePickerDialog(DateHelper.TimeMode timeMode) {

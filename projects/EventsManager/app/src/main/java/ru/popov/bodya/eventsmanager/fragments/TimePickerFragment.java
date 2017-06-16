@@ -1,4 +1,4 @@
-package ru.popov.bodya.eventsmanager;
+package ru.popov.bodya.eventsmanager.fragments;
 
 
 import android.app.Dialog;
@@ -12,6 +12,8 @@ import android.util.Log;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+
+import ru.popov.bodya.eventsmanager.DateHelper;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 

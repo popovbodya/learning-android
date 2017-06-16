@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/dtstart_image"
-            android:src="@drawable/timer" />
+            android:src="@drawable/timer_on" />
 
         <ImageButton
             android:id="@+id/pick_end_time_image_button"

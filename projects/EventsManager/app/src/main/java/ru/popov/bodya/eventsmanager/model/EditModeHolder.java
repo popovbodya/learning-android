@@ -1,4 +1,4 @@
-package ru.popov.bodya.eventsmanager;
+package ru.popov.bodya.eventsmanager.model;
 
 
 public class EditModeHolder {

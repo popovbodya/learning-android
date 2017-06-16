@@ -11,7 +11,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:src="@drawable/event"
+        android:src="@drawable/event_icon"
         android:contentDescription="@string/event_image_view" />
 
     <TextView

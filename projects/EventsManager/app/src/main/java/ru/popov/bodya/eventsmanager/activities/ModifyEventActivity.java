@@ -20,10 +20,11 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import ru.popov.bodya.eventsmanager.DateHelper;
-import ru.popov.bodya.eventsmanager.EventStorage;
+import ru.popov.bodya.eventsmanager.model.EventStorage;
+import ru.popov.bodya.eventsmanager.model.TimeMode;
 import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
 import ru.popov.bodya.eventsmanager.fragments.DatePickerFragment;
-import ru.popov.bodya.eventsmanager.Event;
+import ru.popov.bodya.eventsmanager.model.Event;
 import ru.popov.bodya.eventsmanager.R;
 import ru.popov.bodya.eventsmanager.fragments.TimePickerFragment;
 import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
@@ -41,16 +42,12 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
     private TextInputEditText[] editTexts;
     private TextView startTimeTextView;
     private TextView endTimeTextView;
-    private ImageButton startTimeImageButton;
-    private ImageButton endTimeImageButton;
     private Button modifyButton;
 
     private DataBaseWorker dataBaseWorker;
     private EventStorage storage;
-    private boolean updateMode;
-    private Calendar startTime;
-    private Calendar endTime;
     private Event cachedEvent;
+    private boolean updateMode;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, ModifyEventActivity.class);
@@ -74,17 +71,17 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
 
         startTimeTextView = (TextView) findViewById(R.id.picked_start_time_text_view);
         endTimeTextView = (TextView) findViewById(R.id.picked_end_time_text_view);
-        startTimeImageButton = (ImageButton) findViewById(R.id.pick_start_time_image_button);
-        endTimeImageButton = (ImageButton) findViewById(R.id.pick_end_time_image_button);
         modifyButton = (Button) findViewById(R.id.modify_event_button);
+        ImageButton startTimeImageButton = (ImageButton) findViewById(R.id.pick_start_time_image_button);
+        ImageButton endTimeImageButton = (ImageButton) findViewById(R.id.pick_end_time_image_button);
 
         modifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!updateMode) {
-                    addEventToDb();
-                } else {
+                if (updateMode) {
                     updateEventInDb();
+                } else {
+                    addEventToDb();
                 }
             }
         });
@@ -92,14 +89,14 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
         startTimeImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(DateHelper.TimeMode.Start);
+                showDatePickerDialog(TimeMode.Start);
             }
         });
 
         endTimeImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(DateHelper.TimeMode.End);
+                showDatePickerDialog(TimeMode.End);
             }
         });
 
@@ -146,31 +143,31 @@ public class ModifyEventActivity extends AppCompatActivity implements DatePicker
     }
 
     @Override
-    public void onDatePicked(Calendar calendar, DateHelper.TimeMode timeMode) {
+    public void onDatePicked(Calendar calendar, TimeMode timeMode) {
         Log.e(TAG, "onDatePicked with calendar: " + calendar.toString() + " with timeMode: " + timeMode);
         showTimePickerDialog(timeMode, calendar);
     }
 
     @Override
-    public void onTimePicked(Calendar calendar, DateHelper.TimeMode timeMode) {
+    public void onTimePicked(Calendar calendar, TimeMode timeMode) {
         Log.e(TAG, "onTimePicked with timeMode: " + timeMode);
         Log.e(TAG, "onTimePicked with calendar: " + DateHelper.getDateInFormat(calendar.getTimeInMillis()));
 
-        if (timeMode == DateHelper.TimeMode.Start) {
+        if (timeMode == TimeMode.Start) {
             cachedEvent.setDateStart(String.valueOf(calendar.getTimeInMillis()));
             startTimeTextView.setText(DateHelper.getDateInFormat(calendar.getTimeInMillis()));
-        } else if (timeMode == DateHelper.TimeMode.End) {
+        } else if (timeMode == TimeMode.End) {
             cachedEvent.setDateEnd(String.valueOf(calendar.getTimeInMillis()));
             endTimeTextView.setText(DateHelper.getDateInFormat(calendar.getTimeInMillis()));
         }
     }
 
-    private void showDatePickerDialog(DateHelper.TimeMode timeMode) {
+    private void showDatePickerDialog(TimeMode timeMode) {
         DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(timeMode);
         datePickerFragment.show(getSupportFragmentManager(), DATE_PICKER_TAG);
     }
 
-    private void showTimePickerDialog(DateHelper.TimeMode timeMode, Calendar calendar) {
+    private void showTimePickerDialog(TimeMode timeMode, Calendar calendar) {
         TimePickerFragment timePickerFragment = TimePickerFragment.newInstance(timeMode, calendar);
         timePickerFragment.show(getSupportFragmentManager(), TIME_PICKER_TAG);
     }

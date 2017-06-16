@@ -10,8 +10,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.popov.bodya.eventsmanager.Event;
-import ru.popov.bodya.eventsmanager.EventStorage;
+import ru.popov.bodya.eventsmanager.model.Event;
+import ru.popov.bodya.eventsmanager.model.EventStorage;
 import ru.popov.bodya.eventsmanager.interfaces.OnEventContentChangeListener;
 
 public class DataBaseWorker extends HandlerThread implements OnEventContentChangeListener {

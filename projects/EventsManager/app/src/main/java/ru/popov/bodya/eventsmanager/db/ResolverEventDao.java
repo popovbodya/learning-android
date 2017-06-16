@@ -16,7 +16,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.popov.bodya.eventsmanager.Event;
+import ru.popov.bodya.eventsmanager.model.Event;
 
 
 public class ResolverEventDao implements EventDao {
@@ -32,18 +32,6 @@ public class ResolverEventDao implements EventDao {
         appContext = context;
     }
 
-    @SuppressWarnings("MissingPermission")
-    @Override
-    public long insertEvent(Event event) {
-        long id = NO_ID;
-        ContentValues contentValues = EventInflateHelper.createValuesFromEvent(event);
-        ContentResolver contentResolver = appContext.getContentResolver();
-        if (permissionsGranted()) {
-            Uri uri = contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues);
-            id = ContentUris.parseId(uri);
-        }
-        return id;
-    }
 
     @Override
     public List<Event> getEvents() {
@@ -60,9 +48,34 @@ public class ResolverEventDao implements EventDao {
         return eventList;
     }
 
+    @SuppressWarnings("MissingPermission")
     @Override
     public Event getEventById(long id) {
-        throw new UnsupportedOperationException();
+        Cursor cursor;
+        Event event = null;
+        ContentResolver contentResolver = appContext.getContentResolver();
+        if (permissionsGranted()) {
+            cursor = contentResolver.query(CalendarContract.Events.CONTENT_URI, null, CalendarContract.Events._ID + "=?", new String[]{String.valueOf(id)}, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                event = EventInflateHelper.createEventFromCursor(cursor);
+            }
+        }
+
+        return event;
+    }
+
+
+    @SuppressWarnings("MissingPermission")
+    @Override
+    public long insertEvent(Event event) {
+        long id = NO_ID;
+        ContentValues contentValues = EventInflateHelper.createValuesFromEvent(event);
+        ContentResolver contentResolver = appContext.getContentResolver();
+        if (permissionsGranted()) {
+            Uri uri = contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues);
+            id = ContentUris.parseId(uri);
+        }
+        return id;
     }
 
     @SuppressWarnings("MissingPermission")

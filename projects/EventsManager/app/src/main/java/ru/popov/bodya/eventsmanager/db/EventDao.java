@@ -3,7 +3,7 @@ package ru.popov.bodya.eventsmanager.db;
 
 import java.util.List;
 
-import ru.popov.bodya.eventsmanager.Event;
+import ru.popov.bodya.eventsmanager.model.Event;
 
 public interface EventDao {
     long insertEvent(Event event);

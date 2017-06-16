@@ -8,7 +8,7 @@ import android.provider.CalendarContract;
 import java.util.List;
 import java.util.TimeZone;
 
-import ru.popov.bodya.eventsmanager.Event;
+import ru.popov.bodya.eventsmanager.model.Event;
 
 public class EventInflateHelper {
 
@@ -17,13 +17,13 @@ public class EventInflateHelper {
     public static void fillList(Cursor source, List<Event> target) {
         if (source.moveToFirst()) {
             while (!source.isAfterLast()) {
-                target.add(createCallFromCursor(source));
+                target.add(createEventFromCursor(source));
                 source.moveToNext();
             }
         }
     }
 
-    public static ContentValues createValuesFromEvent (Event event) {
+    public static ContentValues createValuesFromEvent(Event event) {
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Events.TITLE, event.getTitle());
         values.put(CalendarContract.Events.DESCRIPTION, event.getDescription());
@@ -34,7 +34,7 @@ public class EventInflateHelper {
         return values;
     }
 
-    private static Event createCallFromCursor(Cursor cursor) {
+    public static Event createEventFromCursor(Cursor cursor) {
         Event event = new Event();
         event.setId(getLong(cursor, CalendarContract.Events._ID));
         event.setDateStart(getString(cursor, CalendarContract.Events.DTSTART));

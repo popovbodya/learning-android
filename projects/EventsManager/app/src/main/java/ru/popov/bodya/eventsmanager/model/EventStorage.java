@@ -1,4 +1,4 @@
-package ru.popov.bodya.eventsmanager;
+package ru.popov.bodya.eventsmanager.model;
 
 
 import android.util.Log;
@@ -29,16 +29,19 @@ public class EventStorage {
     }
 
     public void addEvent(Event event) {
+        Log.e(TAG, "addEvent");
         eventDao.insertEvent(event);
         notifyAllOnContentListeners();
     }
 
     public void deleteEvent(Event event) {
+        Log.e(TAG, "deleteEvent");
         eventDao.deleteEvent(event);
         notifyAllOnContentListeners();
     }
 
     public void updateEvent(Event event) {
+        Log.e(TAG, "updateEvent");
         if (!cachedEventList.contains(event)) {
             eventDao.updateEvent(event);
             notifyAllOnContentListeners();
@@ -46,6 +49,7 @@ public class EventStorage {
     }
 
     public List<Event> getCachedEventList() {
+        Log.e(TAG, "getCachedEventList");
         return cachedEventList;
     }
 

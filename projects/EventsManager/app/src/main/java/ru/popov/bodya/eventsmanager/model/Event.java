@@ -1,4 +1,4 @@
-package ru.popov.bodya.eventsmanager;
+package ru.popov.bodya.eventsmanager.model;
 
 
 import java.io.Serializable;

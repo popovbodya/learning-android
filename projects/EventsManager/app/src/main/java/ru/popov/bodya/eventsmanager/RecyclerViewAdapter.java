@@ -16,6 +16,8 @@ import java.util.List;
 
 import ru.popov.bodya.eventsmanager.activities.ModifyEventActivity;
 import ru.popov.bodya.eventsmanager.interfaces.ModelProvider;
+import ru.popov.bodya.eventsmanager.model.EditModeHolder;
+import ru.popov.bodya.eventsmanager.model.Event;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
@@ -27,10 +29,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ModelProvider provider;
 
     public RecyclerViewAdapter(Context context) {
-        eventList = new ArrayList<>();
         this.context = context;
+        eventList = new ArrayList<>();
         provider = (ModelProvider) context.getApplicationContext();
-
     }
 
     @Override
@@ -58,10 +59,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         String startDateFromMills = DateHelper.getDateInFormat(Long.valueOf(event.getDateStart()));
-        viewHolder.dtstart.setText(context.getResources().getString(R.string.event_start, startDateFromMills));
+        viewHolder.dateStart.setText(context.getResources().getString(R.string.event_start, startDateFromMills));
 
         String endDateFromMills = DateHelper.getDateInFormat(Long.valueOf(event.getDateEnd()));
-        viewHolder.dtend.setText(context.getResources().getString(R.string.event_end, endDateFromMills));
+        viewHolder.dateEnd.setText(context.getResources().getString(R.string.event_end, endDateFromMills));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,19 +96,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return eventList.size();
     }
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView description;
-        private TextView dtstart;
-        private TextView dtend;
+        private TextView dateStart;
+        private TextView dateEnd;
 
         ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_text_view);
             description = (TextView) itemView.findViewById(R.id.description_text_view);
-            dtstart = (TextView) itemView.findViewById(R.id.dtstart_text_view);
-            dtend = (TextView) itemView.findViewById(R.id.dtend_text_view);
+            dateStart = (TextView) itemView.findViewById(R.id.dtstart_text_view);
+            dateEnd = (TextView) itemView.findViewById(R.id.dtend_text_view);
         }
     }
 

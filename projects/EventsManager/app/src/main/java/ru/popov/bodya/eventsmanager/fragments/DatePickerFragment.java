@@ -12,20 +12,20 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import ru.popov.bodya.eventsmanager.DateHelper;
+import ru.popov.bodya.eventsmanager.model.TimeMode;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = DatePickerFragment.class.getName();
     private static final String TIME_MODE = "time mode";
     private onDateListener onDateListener;
-    private DateHelper.TimeMode timeMode;
+    private TimeMode timeMode;
 
     public interface onDateListener {
-        void onDatePicked(Calendar calendar, DateHelper.TimeMode timeMode);
+        void onDatePicked(Calendar calendar, TimeMode timeMode);
     }
 
-    public static DatePickerFragment newInstance(DateHelper.TimeMode timeMode) {
+    public static DatePickerFragment newInstance(TimeMode timeMode) {
         Log.e(TAG, "newInstance");
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         Bundle args = new Bundle();
@@ -36,17 +36,17 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public void onAttach(Context context) {
-        Log.e(TAG, "onAttach");
-        timeMode = (DateHelper.TimeMode) getArguments().getSerializable(TIME_MODE);
-        onDateListener = (DatePickerFragment.onDateListener) getActivity();
         super.onAttach(context);
+        Log.e(TAG, "onAttach");
+        timeMode = (TimeMode) getArguments().getSerializable(TIME_MODE);
+        onDateListener = (DatePickerFragment.onDateListener) getActivity();
     }
 
     @Override
     public void onDetach() {
         Log.e(TAG, "onDetach");
-        super.onDetach();
         onDateListener = null;
+        super.onDetach();
     }
 
     @Override

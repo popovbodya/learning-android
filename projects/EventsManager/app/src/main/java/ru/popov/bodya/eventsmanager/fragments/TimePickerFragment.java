@@ -14,6 +14,7 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import ru.popov.bodya.eventsmanager.DateHelper;
+import ru.popov.bodya.eventsmanager.model.TimeMode;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
@@ -22,13 +23,13 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     private static final String CALENDAR_KEY = "calendar_key";
     private OnTimeListener onTimeListener;
     private Calendar calendar;
-    private DateHelper.TimeMode timeMode;
+    private TimeMode timeMode;
 
     public interface OnTimeListener {
-        void onTimePicked(Calendar calendar, DateHelper.TimeMode timeMode);
+        void onTimePicked(Calendar calendar, TimeMode timeMode);
     }
 
-    public static TimePickerFragment newInstance(DateHelper.TimeMode timeMode, Calendar calendar) {
+    public static TimePickerFragment newInstance(TimeMode timeMode, Calendar calendar) {
         Log.e(TAG, "newInstance");
         TimePickerFragment timePickerFragment = new TimePickerFragment();
         Bundle args = new Bundle();
@@ -40,18 +41,18 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     @Override
     public void onAttach(Context context) {
+        super.onAttach(context);
         Log.e(TAG, "onAttach");
-        timeMode = (DateHelper.TimeMode) getArguments().getSerializable(TIME_MODE_KEY);
+        timeMode = (TimeMode) getArguments().getSerializable(TIME_MODE_KEY);
         calendar = (Calendar) getArguments().getSerializable(CALENDAR_KEY);
         onTimeListener = (OnTimeListener) getActivity();
-        super.onAttach(context);
     }
 
     @Override
     public void onDetach() {
         Log.e(TAG, "onDetach");
-        super.onDetach();
         onTimeListener = null;
+        super.onDetach();
     }
 
     @NonNull

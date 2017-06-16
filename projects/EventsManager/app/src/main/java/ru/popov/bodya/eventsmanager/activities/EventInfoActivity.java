@@ -22,9 +22,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ru.popov.bodya.eventsmanager.EditModeHolder;
-import ru.popov.bodya.eventsmanager.Event;
-import ru.popov.bodya.eventsmanager.EventStorage;
+import ru.popov.bodya.eventsmanager.model.EditModeHolder;
+import ru.popov.bodya.eventsmanager.model.Event;
+import ru.popov.bodya.eventsmanager.model.EventStorage;
 import ru.popov.bodya.eventsmanager.R;
 import ru.popov.bodya.eventsmanager.RecyclerViewAdapter;
 import ru.popov.bodya.eventsmanager.db.DataBaseWorker;
@@ -164,7 +164,7 @@ public class EventInfoActivity extends AppCompatActivity implements NavigationVi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (permissions.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.wtf(TAG, "Permissions Granted, congratz");
+                Log.wtf(TAG, "Permissions granted, congratz");
             }
         }
     }

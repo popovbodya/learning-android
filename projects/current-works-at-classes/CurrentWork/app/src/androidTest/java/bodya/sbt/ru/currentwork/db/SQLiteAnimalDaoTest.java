@@ -1,7 +1,5 @@
 package bodya.sbt.ru.currentwork.db;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import org.junit.Rule;
@@ -11,7 +9,6 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TestName;
 import org.junit.rules.TestRule;
 
-import java.util.Arrays;
 import java.util.List;
 
 import bodya.sbt.ru.currentwork.Animal;
@@ -21,7 +18,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.isIn;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.*;
 
 public class SQLiteAnimalDaoTest {
@@ -37,18 +33,6 @@ public class SQLiteAnimalDaoTest {
             .outerRule(daoRule)
             .around(expectedException)
             .around(testName);
-
-    @Test
-    public void testDbCreation() {
-        Log.e(TAG, testName.getMethodName());
-        List<String> expected = daoRule.getAllAnimalsContracts();
-        SQLiteDatabase db = daoRule.getSqLiteAnimalsDao().getReadableDatabase();
-        Cursor cursor = db.query(SQLiteAnimalsDao.TABLE_NAME, null, null, null, null, null, null);
-        assertThat(cursor, notNullValue());
-        List<String> actual = Arrays.asList(cursor.getColumnNames());
-        cursor.close();
-        assertThat(actual, everyItem(isIn(expected)));
-    }
 
     @Test
     public void testInsert() {

@@ -1,6 +1,5 @@
 package bodya.sbt.ru.currentwork;
 
-
 import android.util.Log;
 
 import org.junit.After;

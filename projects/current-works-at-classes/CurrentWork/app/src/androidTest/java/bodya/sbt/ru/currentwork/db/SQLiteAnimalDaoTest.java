@@ -1,9 +1,7 @@
 package bodya.sbt.ru.currentwork.db;
 
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import org.junit.Rule;
@@ -12,7 +10,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestName;
 import org.junit.rules.TestRule;
-import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,9 +37,8 @@ public class SQLiteAnimalDaoTest {
             .around(expectedException)
             .around(testName);
 
-
     @Test
-    public void dbCreationTest() {
+    public void testDbCreation() {
         Log.e(TAG, testName.getMethodName());
         List<String> expected = daoRule.getAllAnimalsContracts();
         SQLiteDatabase db = daoRule.getSqLiteAnimalsDao().getReadableDatabase();
@@ -63,9 +59,8 @@ public class SQLiteAnimalDaoTest {
     @Test
     public void testInsertNull() {
         Log.e(TAG, testName.getMethodName());
-        Animal animal = null;
         expectedException.expect(NullPointerException.class);
-        daoRule.getSqLiteAnimalsDao().insertAnimal(animal);
+        daoRule.getSqLiteAnimalsDao().insertAnimal(null);
     }
 
     @Test
@@ -115,9 +110,8 @@ public class SQLiteAnimalDaoTest {
     @Test
     public void testUpdateNullAnimal() {
         Log.e(TAG, testName.getMethodName());
-        Animal animal = null;
         expectedException.expect(NullPointerException.class);
-        daoRule.getSqLiteAnimalsDao().updateAnimal(animal);
+        daoRule.getSqLiteAnimalsDao().updateAnimal(null);
     }
 
 }

@@ -107,7 +107,6 @@ public class EditAnimalActivity extends AppCompatActivity {
     }
 
 
-
     private void createAnimal() {
         Log.e(TAG, "createAnimal");
         String name = nameEditText.getText().toString();

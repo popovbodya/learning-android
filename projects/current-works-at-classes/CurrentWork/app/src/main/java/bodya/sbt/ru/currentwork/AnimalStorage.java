@@ -17,14 +17,14 @@ public class AnimalStorage {
     private final List<OnAnimalContentChangeListener> onContentChangeListeners;
     private List<Animal> cachedAnimalList;
 
-    public AnimalStorage(AnimalsDao animalsDao) {
+    AnimalStorage(AnimalsDao animalsDao) {
         this.animalsDao = animalsDao;
         onContentChangeListeners = new ArrayList<>();
     }
 
     public List<Animal> getAnimalList() {
         Log.e(TAG, "getAnimalList");
-        cachedAnimalList = animalsDao.getAnimals();
+        setCachedAnimalList(animalsDao.getAnimals());
         return cachedAnimalList;
     }
 
@@ -49,7 +49,7 @@ public class AnimalStorage {
         return cachedAnimalList;
     }
 
-    public Animal getAnimalByID(long animalId) {
+    Animal getAnimalByID(long animalId) {
         return animalsDao.getAnimalById(animalId);
     }
 
@@ -59,6 +59,10 @@ public class AnimalStorage {
 
     public void removeOnContentChangeListener(OnAnimalContentChangeListener listener) {
         onContentChangeListeners.remove(listener);
+    }
+
+    void setCachedAnimalList(List<Animal> cachedAnimalList) {
+        this.cachedAnimalList = cachedAnimalList;
     }
 
     private void notifyAllOnContentListeners() {

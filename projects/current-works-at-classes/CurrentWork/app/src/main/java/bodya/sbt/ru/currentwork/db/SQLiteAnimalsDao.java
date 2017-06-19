@@ -17,18 +17,18 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
 
     private static final String TAG = SQLiteAnimalsDao.class.getName();
 
-    private static final String TABLE_NAME = "animals";
+    static final int CURRENT_VERSION = 1;
+    static final String TABLE_NAME = "animals";
     private static final String NAME = "animals.db";
     private static final short ROW_UPDATE_STATUS = 0;
     private static final short ROW_COUNT_UPDATED = 0;
-    private static final int CURRENT_VERSION = 1;
     private static final long NO_ID = -1;
 
     public SQLiteAnimalsDao(Context context) {
         this(context, NAME, CURRENT_VERSION);
     }
 
-    private SQLiteAnimalsDao(Context context, String name, int version) {
+    SQLiteAnimalsDao(Context context, String name, int version) {
         super(context, name, null, version, null);
     }
 

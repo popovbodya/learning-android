@@ -21,4 +21,5 @@
     <string name="view_mode">View Mode</string>
     <string name="update_mode">Update Mode</string>
     <string name="delete_mode">Delete Mode</string>
+    <string name="observe_animals">Observe</string>
 </resources>

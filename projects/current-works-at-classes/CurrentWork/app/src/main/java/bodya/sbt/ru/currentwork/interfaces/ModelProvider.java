@@ -6,6 +6,7 @@ import bodya.sbt.ru.currentwork.async.DataBaseWorker;
 
 public interface ModelProvider {
     DataBaseWorker getDataBaseWorker();
+
     AnimalStorage getAnimalsStorage();
 
 }

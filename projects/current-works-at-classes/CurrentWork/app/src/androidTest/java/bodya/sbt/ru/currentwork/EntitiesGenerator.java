@@ -28,6 +28,12 @@ public class EntitiesGenerator {
         return animals;
     }
 
+    public static void updateAnimal(Animal animal) {
+        int hashCode = animal.hashCode();
+        animal.setHeight(hashCode);
+        animal.setAge(hashCode);
+    }
+
     static long createRandomLong() {
         return RANDOM.nextLong();
     }

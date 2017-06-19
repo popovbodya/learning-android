@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.isIn;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.*;
 
 public class SQLiteAnimalDaoTest {
@@ -43,8 +44,9 @@ public class SQLiteAnimalDaoTest {
         List<String> expected = daoRule.getAllAnimalsContracts();
         SQLiteDatabase db = daoRule.getSqLiteAnimalsDao().getReadableDatabase();
         Cursor cursor = db.query(SQLiteAnimalsDao.TABLE_NAME, null, null, null, null, null, null);
-        cursor.close();
+        assertThat(cursor, notNullValue());
         List<String> actual = Arrays.asList(cursor.getColumnNames());
+        cursor.close();
         assertThat(actual, everyItem(isIn(expected)));
     }
 
@@ -100,11 +102,11 @@ public class SQLiteAnimalDaoTest {
         Animal expected = EntitiesGenerator.createRandomAnimal();
         long id = daoRule.getSqLiteAnimalsDao().insertAnimal(expected);
         expected.setId(id);
-        expected.setAge(expected.hashCode());
-        expected.setHeight(expected.hashCode());
-        daoRule.getSqLiteAnimalsDao().updateAnimal(expected);
-        Animal actual = daoRule.getSqLiteAnimalsDao().getAnimalById(id);
-        assertThat(actual, is(expected));
+        EntitiesGenerator.updateAnimal(expected);
+        int rowsUpdatedCount = daoRule.getSqLiteAnimalsDao().updateAnimal(expected);
+        assertThat(rowsUpdatedCount, is(1));
+        Animal actualAnimal = daoRule.getSqLiteAnimalsDao().getAnimalById(id);
+        assertThat(actualAnimal, is(expected));
     }
 
     @Test

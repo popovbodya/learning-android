@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -39,6 +40,7 @@ public class SQLiteOpenHelperTest {
             }
         }
         List<String> actual = Arrays.asList(cursor.getColumnNames());
+        assertThat(cursor.getColumnNames().length, is(expected.size()));
         assertThat(actual, everyItem(isIn(expected)));
     }
 }

@@ -48,6 +48,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
     }
 
     @Override
@@ -137,5 +138,4 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper implements AnimalsDao {
         }
         return isAnimalDeleted;
     }
-
 }

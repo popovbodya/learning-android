@@ -25,4 +25,11 @@ public class Response {
         return userList;
     }
 
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 }

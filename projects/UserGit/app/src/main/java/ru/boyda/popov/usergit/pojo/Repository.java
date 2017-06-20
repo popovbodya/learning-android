@@ -42,6 +42,27 @@ public class Repository {
         return createdAt;
     }
 
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "Repository{" +

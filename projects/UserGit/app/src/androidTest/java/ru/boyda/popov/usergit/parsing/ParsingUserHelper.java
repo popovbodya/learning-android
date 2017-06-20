@@ -23,7 +23,7 @@ class ParsingUserHelper {
         return userList;
     }
 
-     static User createOneSpecifiedUser(String username, double score, String url, String avatarUrl) {
+    static User createOneSpecifiedUser(String username, double score, String url, String avatarUrl) {
         User user = new User();
         user.setUsername(username);
         user.setScore(score);

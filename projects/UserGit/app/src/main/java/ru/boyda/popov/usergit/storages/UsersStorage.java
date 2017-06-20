@@ -69,4 +69,8 @@ public class UsersStorage {
     public void incrementCounter() {
         pageCounter++;
     }
+
+    List<OnLoadMoreListener> getOnLoadMoreListeners() {
+        return onLoadMoreListeners;
+    }
 }

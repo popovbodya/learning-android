@@ -65,7 +65,7 @@ public class UsersLoader extends AsyncTaskLoader<LoadResult<User>> implements On
             return new LoadResult<>(searchValue, null, e);
         }
         if (addToCache) {
-            addToCache = false;
+            setAddToCache(false);
             List<User> updatedList = new ArrayList<>(cachedResult.getResult());
             updatedList.addAll(response.getUserList());
             return new LoadResult<>(searchValue, updatedList, null);
@@ -74,7 +74,7 @@ public class UsersLoader extends AsyncTaskLoader<LoadResult<User>> implements On
     }
 
 
-    private Response getResponseWithSpecifiedValue(String value) throws IOException {
+    Response getResponseWithSpecifiedValue(String value) throws IOException {
         if (addToCache) {
             usersStorage.incrementCounter();
         } else {
@@ -95,7 +95,16 @@ public class UsersLoader extends AsyncTaskLoader<LoadResult<User>> implements On
 
     @Override
     public void onLoadMore() {
-        addToCache = true;
+        setAddToCache(true);
         forceLoad();
+    }
+
+
+    public void setAddToCache(boolean addToCache) {
+        this.addToCache = addToCache;
+    }
+
+    public void setCachedResult(LoadResult<User> cachedResult) {
+        this.cachedResult = cachedResult;
     }
 }

@@ -32,6 +32,22 @@ public class User {
         return avatarUrl;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

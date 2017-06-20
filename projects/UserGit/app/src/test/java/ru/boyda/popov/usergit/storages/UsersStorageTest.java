@@ -45,7 +45,7 @@ public class UsersStorageTest {
     @Test
     public void testNotifyOnLoadMoreListeners() {
         usersStorage.notifyOnLoadMoreListeners();
-        for (OnLoadMoreListener mockedListener: usersStorage.getOnLoadMoreListeners()) {
+        for (OnLoadMoreListener mockedListener : usersStorage.getOnLoadMoreListeners()) {
             verify(mockedListener, times(LISTENER_LIST_SIZE)).onLoadMore();
         }
     }

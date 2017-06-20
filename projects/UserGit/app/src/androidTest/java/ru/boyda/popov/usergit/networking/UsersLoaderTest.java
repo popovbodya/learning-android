@@ -79,7 +79,7 @@ public class UsersLoaderTest {
 
         List<User> expectedUserList = new ArrayList<>(firstLoadedUserList);
         expectedUserList.addAll(secondLoadedUserList);
-        LoadResult<User> expected = new LoadResult<>(TEST_SEARCH_VALUE, expectedUserList,null);
+        LoadResult<User> expected = new LoadResult<>(TEST_SEARCH_VALUE, expectedUserList, null);
 
         spyUsersLoader.setAddToCache(true);
         LoadResult<User> actual = spyUsersLoader.loadInBackground();

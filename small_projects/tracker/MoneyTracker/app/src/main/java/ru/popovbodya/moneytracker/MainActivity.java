@@ -1,6 +1,7 @@
 package ru.popovbodya.moneytracker;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final View view = getLayoutInflater().inflate(R.layout.list_item, null);
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            final View view = getLayoutInflater().inflate(R.layout.list_item, parent);
             final Item item = getItem(position);
             ((TextView) view.findViewById(R.id.name)).setText(item.name);
             ((TextView) view.findViewById(R.id.price)).setText(String.valueOf(item.price));
